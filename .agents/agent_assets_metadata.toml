@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "ql319fnxNgcTyrjNiFkuK"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-building.png"
+type = "image"
+title = "School building exterior"
+
+[[generated]]
+id = "Td0fJSNmnvIqwAzQRGOg9"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-classroom.png"
+type = "image"
+title = "Bright modern classroom"
+
+[[generated]]
+id = "8JLMK4cwEx7-5WM8utvmI"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-library.png"
+type = "image"
+title = "School library with students"
+
+[[generated]]
+id = "Ne704LsdwmMhm4ag3Eu-t"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-sports.png"
+type = "image"
+title = "Sports day competition"
+
+[[generated]]
+id = "vsdVHjo_j2d9U3ijUxq-l"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-annual-function.png"
+type = "image"
+title = "Annual cultural function"
+
+[[generated]]
+id = "rP66to7mplPV5Jqx95eAX"
+uri = "file://artifacts/hgss-school/src/assets/images/gallery-science-lab.png"
+type = "image"
+title = "Science laboratory"

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Hindu Girls Senior Secondary School"
+version = "1.0.0"
+id = "artifacts/hgss-school"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22873
+
+[services.development]
+run = "pnpm --filter @workspace/hgss-school run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hgss-school", "run", "build" ]
+publicDir = "artifacts/hgss-school/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22873"
+BASE_PATH = "/"

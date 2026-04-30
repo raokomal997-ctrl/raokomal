@@ -1,0 +1,88 @@
+## TECH STACK
+- React + Vite
+- Plain CSS (no Tailwind)
+- Google Fonts (Playfair Display + DM Sans)
+- Unsplash images (free, no API key needed)
+
+## NAVBAR REQUIREMENTS
+- Fixed navbar at top on all pages
+- Logo on left side
+- Navigation links with DROPDOWN MENUS:
+  - "About" dropdown → Our Story, Our Team, Awards
+  - "Services" dropdown → Design, Development, Marketing, Mobile Apps
+  - "Portfolio" dropdown → Gallery, Case Studies
+  - "Home" and "Contact" are direct links (no dropdown)
+- Dropdown opens on click with smooth animation (scaleY + opacity)
+- Arrow icon rotates when dropdown is open
+- "Get Started" CTA button on right side
+- Navbar background becomes solid dark on scroll
+- Close dropdown when clicking outside
+
+## PAGES (Each page has same Navbar + Footer)
+1. HOME PAGE
+   - Hero section with dark background, floating photo cards (3 photos with float animation)
+   - Stats bar (250+ Projects, 98% Satisfaction, 12 Awards, 6+ Years)
+   - Featured projects grid (3 cards with images)
+
+2. ABOUT PAGE
+   - Dark header banner with page title
+   - Two-column layout: text on left, image on right
+   - Stats bar below
+
+3. TEAM PAGE
+   - Dark header banner
+   - Team member grid with circular avatar photos, name, and role
+
+4. AWARDS PAGE
+   - Dark header banner
+   - List of awards with year, award name, organization
+
+5. SERVICES PAGE
+   - Dark header banner
+   - Numbered list of services (01, 02, 03...) with title and description
+
+6. GALLERY PAGE
+   - Dark header banner
+   - CSS Grid photo gallery with hover zoom effect
+   - First image spans 2 columns
+
+7. CONTACT PAGE
+   - Dark header banner
+   - Two-column: contact info on left, form on right
+   - Form with Name, Email, Subject, Message fields
+   - Success message on submit
+
+## FOOTER REQUIREMENTS
+- Same footer on all pages
+- 4-column layout: Brand info, Company links, Services links, Contact info
+- Social media icon buttons
+- Copyright bar at bottom
+
+## DESIGN STYLE
+- Color scheme: Dark ink (#0f0e0b), Cream (#faf7f2), Gold (#c9a84c), White
+- Fonts: Playfair Display (headings) + DM Sans (body)
+- Smooth animations: fadeUp on page load, float animation on hero photos
+- Scroll reveal: elements fade in when scrolled into view (IntersectionObserver)
+- Cards lift up on hover (translateY + box-shadow)
+- Page transitions: smooth fadeUp when switching pages
+- All images from Unsplash (use direct URLs with ?w=600&q=80)
+
+## ROUTING
+- Use React useState for page navigation (no React Router needed)
+- navigate() function passed as prop to all pages
+- Scroll to top on page change
+
+## FILE STRUCTURE
+- src/App.jsx (main app with routing)
+- src/components/Navbar.jsx
+- src/components/Footer.jsx
+- src/pages/HomePage.jsx
+- src/pages/AboutPage.jsx
+- src/pages/TeamPage.jsx
+- src/pages/AwardsPage.jsx
+- src/pages/ServicesPage.jsx
+- src/pages/GalleryPage.jsx
+- src/pages/ContactPage.jsx
+- src/styles/global.css (all styles)
+
+Make the website fully functional, visually premium, and mobile responsive.

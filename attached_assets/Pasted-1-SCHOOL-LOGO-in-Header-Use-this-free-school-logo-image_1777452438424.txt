@@ -1,0 +1,62 @@
+1. SCHOOL LOGO in Header:
+- Use this free school logo image from web:
+  https://img.icons8.com/color/96/school.png
+- Place it in header next to school name
+- Make it round with golden border
+
+2. HERO SECTION - Add Image Slider/Carousel:
+- Add 3 sliding background images using these 
+  free URLs:
+  Image 1: https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200
+  Image 2: https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1200
+  Image 3: https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200
+- Auto slide every 3 seconds
+- Add fade animation between slides
+- Add dot navigation at bottom
+
+3. SCHOOL BUILDING SECTION:
+- Add new section called "Our Campus"
+- Add this building image:
+  https://images.unsplash.com/photo-1562774053-701939374585?w=1200
+- Add slide-in animation from left when scrolled
+- Add text: "Our beautiful campus in Model Town, 
+  Kaithal, Haryana"
+
+4. KIDS GALLERY SECTION (separate):
+- Section title: "Our Little Stars - Primary Students"
+- Add 6 images using these URLs:
+  https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400
+  https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=400
+  https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400
+  https://images.unsplash.com/photo-1497375638960-ca368c7231a4?w=400
+  https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=400
+  https://images.unsplash.com/photo-1560785496-3c9d27877182?w=400
+- 3 column grid layout
+- Hover zoom effect on each image
+- Lightbox popup on click
+
+5. STUDENTS GALLERY SECTION (separate):
+- Section title: "Our Achievers - Senior Students"
+- Add 6 images using these URLs:
+  https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400
+  https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=400
+  https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400
+  https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400
+  https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400
+  https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=400
+- Same 3 column grid with hover zoom
+- Lightbox popup on click
+- Different background color from kids section
+
+6. ANIMATIONS to add:
+- Fade-in effect when images come into view
+- Smooth zoom on hover for all gallery images
+- Slide-in animation for campus building image
+- Floating animation on school logo in header
+- Loading shimmer effect on images while loading
+
+7. LIGHTBOX POPUP for all gallery images:
+- Click any image to open full screen
+- Left/Right arrows to navigate
+- Click outside or X button to close
+- Smooth open/close animation

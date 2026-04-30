@@ -190,7 +190,10 @@
 
     /* ===================== HERO ===================== */
     #home {
-      background: var(--red);
+      background:
+        linear-gradient(135deg, rgba(44,62,80,.85), rgba(44,62,80,.72)),
+        url('/photos/marching-uniform.jpeg') center 30% / cover no-repeat,
+        var(--red);
       position: relative;
       min-height: 92vh;
       display: flex;
@@ -204,8 +207,9 @@
       content: '';
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(244, 208, 63,.18) 1.5px, transparent 1.5px);
+      background-image: radial-gradient(circle, rgba(244, 208, 63,.14) 1.5px, transparent 1.5px);
       background-size: 36px 36px;
+      pointer-events: none;
     }
     #home::after {
       content: '';
@@ -456,6 +460,125 @@
     .facility-card:hover .fac-icon { background: var(--saffron); }
     .facility-card h3 { font-size: 1.1rem; color: var(--red); margin-bottom: 8px; }
     .facility-card p { font-size: 0.87rem; color: #666; line-height: 1.65; }
+
+    /* ===================== GALLERY ===================== */
+    #gallery { background: #fff; padding: 80px 24px; }
+    .gallery-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 28px auto 36px;
+      max-width: 720px;
+    }
+    .gal-tab {
+      padding: 9px 22px;
+      border-radius: 999px;
+      border: 1.5px solid var(--red);
+      background: transparent;
+      color: var(--red);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .gal-tab:hover { background: rgba(44,62,80,.08); }
+    .gal-tab.active {
+      background: var(--red);
+      color: var(--gold);
+      border-color: var(--red);
+      box-shadow: 0 4px 14px rgba(44,62,80,.25);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .gal-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      background: #f0f0f0;
+    }
+    .gal-item.tall { aspect-ratio: 3 / 4; }
+    .gal-item.wide { grid-column: span 2; aspect-ratio: 16 / 9; }
+    @media (max-width: 600px) {
+      .gal-item.wide { grid-column: span 1; aspect-ratio: 4 / 3; }
+    }
+    .gal-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .55s ease;
+    }
+    .gal-item:hover img { transform: scale(1.08); }
+    .gal-cap {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 28px 16px 14px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      background: linear-gradient(to top, rgba(0,0,0,.78), transparent);
+      transform: translateY(20%);
+      opacity: 0;
+      transition: all .35s ease;
+    }
+    .gal-item:hover .gal-cap { transform: translateY(0); opacity: 1; }
+    .gal-tag {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--gold);
+      color: var(--red);
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .gal-item.hidden { display: none; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 12px 48px rgba(0,0,0,.6);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 22px; right: 28px;
+      background: var(--gold);
+      color: var(--red);
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
     /* ===================== NOTICE BOARD ===================== */
     #notice-board { background: #ECEFF1; }
@@ -833,6 +956,7 @@
       <li><a href="#about">About Us</a></li>
       <li><a href="#academics">Academics</a></li>
       <li><a href="#facilities">Facilities</a></li>
+      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#notice-board">Notice Board</a></li>
       <li><a href="#admissions">Admissions</a></li>
       <li><a href="#contact">Contact Us</a></li>
@@ -846,6 +970,7 @@
     <a href="#about">About Us</a>
     <a href="#academics">Academics</a>
     <a href="#facilities">Facilities</a>
+    <a href="#gallery">Gallery</a>
     <a href="#notice-board">Notice Board</a>
     <a href="#admissions">Admissions</a>
     <a href="#contact">Contact Us</a>
@@ -991,6 +1116,138 @@
     </div>
   </div>
 </section>
+
+<!-- ===== GALLERY ===== -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-title reveal">
+      <h2>Campus Life &amp; Gallery</h2>
+      <div class="underline-bar"></div>
+      <p>Glimpses of our students shining at cultural programs, sports, NCC parades, exhibitions and everyday classroom life.</p>
+    </div>
+
+    <div class="gallery-tabs reveal">
+      <button class="gal-tab active" data-filter="all">All</button>
+      <button class="gal-tab" data-filter="cultural">Cultural</button>
+      <button class="gal-tab" data-filter="sports">Sports &amp; NCC</button>
+      <button class="gal-tab" data-filter="academic">Academics</button>
+      <button class="gal-tab" data-filter="campus">Campus</button>
+      <button class="gal-tab" data-filter="achievements">Achievements</button>
+    </div>
+
+    <div class="gallery-grid reveal" id="galleryGrid">
+
+      <div class="gal-item wide" data-cat="achievements">
+        <span class="gal-tag">Toppers</span>
+        <img src="/photos/annual-day-toppers.jpeg" alt="Annual Day toppers and achievements banner" loading="lazy"/>
+        <div class="gal-cap">Annual Day — Honouring our board exam toppers</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Cultural</span>
+        <img src="/photos/cultural-bhangra.jpeg" alt="Cultural dance on stage" loading="lazy"/>
+        <div class="gal-cap">Energetic stage performance</div>
+      </div>
+
+      <div class="gal-item" data-cat="campus">
+        <span class="gal-tag">Campus</span>
+        <img src="/photos/assembly-building.jpeg" alt="Morning assembly at school building" loading="lazy"/>
+        <div class="gal-cap">Morning assembly</div>
+      </div>
+
+      <div class="gal-item" data-cat="sports">
+        <span class="gal-tag">NCC</span>
+        <img src="/photos/ncc-cadets.jpeg" alt="NCC cadets in uniform" loading="lazy"/>
+        <div class="gal-cap">NCC cadets — discipline &amp; pride</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Folk Dance</span>
+        <img src="/photos/folk-dance-group.jpeg" alt="Folk dance group performance" loading="lazy"/>
+        <div class="gal-cap">Traditional folk dance</div>
+      </div>
+
+      <div class="gal-item" data-cat="achievements sports">
+        <span class="gal-tag">Khelo India</span>
+        <img src="/photos/judo-winner.jpeg" alt="Judo Khelo India 3rd Place winner" loading="lazy"/>
+        <div class="gal-cap">Judo — 3rd Place at Khelo India</div>
+      </div>
+
+      <div class="gal-item" data-cat="academic">
+        <span class="gal-tag">Exhibition</span>
+        <img src="/photos/hindi-exhibition.jpeg" alt="Hindi Exhibition student projects" loading="lazy"/>
+        <div class="gal-cap">Hindi Exhibition</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Annual Day</span>
+        <img src="/photos/havan-ceremony.jpeg" alt="Havan ceremony with students in uniform" loading="lazy"/>
+        <div class="gal-cap">Havan ceremony</div>
+      </div>
+
+      <div class="gal-item" data-cat="sports">
+        <span class="gal-tag">Sports</span>
+        <img src="/photos/sports-weightlifting.jpeg" alt="Weightlifting performance" loading="lazy"/>
+        <div class="gal-cap">Strength &amp; sports day</div>
+      </div>
+
+      <div class="gal-item" data-cat="academic">
+        <span class="gal-tag">Art Class</span>
+        <img src="/photos/art-class.jpeg" alt="Students painting in classroom" loading="lazy"/>
+        <div class="gal-cap">Art &amp; craft in the classroom</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Performance</span>
+        <img src="/photos/shiva-dance-kids.jpeg" alt="Lord Shiva themed dance by little kids" loading="lazy"/>
+        <div class="gal-cap">Themed performance by juniors</div>
+      </div>
+
+      <div class="gal-item" data-cat="sports">
+        <span class="gal-tag">Parade</span>
+        <img src="/photos/marching-uniform.jpeg" alt="Students marching with flag" loading="lazy"/>
+        <div class="gal-cap">March-past with national flag</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Patriotic</span>
+        <img src="/photos/patriotic-dance.jpeg" alt="Patriotic dance performance" loading="lazy"/>
+        <div class="gal-cap">Patriotic dance — Republic Day</div>
+      </div>
+
+      <div class="gal-item" data-cat="academic">
+        <span class="gal-tag">Activities</span>
+        <img src="/photos/students-cooking.jpeg" alt="Students with cooked food" loading="lazy"/>
+        <div class="gal-cap">Cooking &amp; life-skills activity</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Junior Dance</span>
+        <img src="/photos/folk-dance-kids.jpeg" alt="Junior students folk dance" loading="lazy"/>
+        <div class="gal-cap">Junior school folk performance</div>
+      </div>
+
+      <div class="gal-item" data-cat="campus">
+        <span class="gal-tag">Entrance</span>
+        <img src="/photos/school-entrance.jpeg" alt="Hindu Girls Sr. Sec. School entrance signboard" loading="lazy"/>
+        <div class="gal-cap">School entrance — Ambala Road, Kaithal</div>
+      </div>
+
+      <div class="gal-item" data-cat="cultural">
+        <span class="gal-tag">Group</span>
+        <img src="/photos/students-traditional.jpeg" alt="Students in traditional dresses" loading="lazy"/>
+        <div class="gal-cap">Traditional Day group photo</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox for gallery -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img id="lightboxImg" src="" alt=""/>
+</div>
 
 <!-- ===== NOTICE BOARD ===== -->
 <section id="notice-board">
@@ -1294,6 +1551,49 @@
       const href = a.getAttribute('href').replace('#', '');
       scrollTo(href);
     });
+  });
+
+  // ===== Gallery: filter tabs =====
+  const galTabs = document.querySelectorAll('.gal-tab');
+  const galItems = document.querySelectorAll('#galleryGrid .gal-item');
+  galTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      galTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const f = tab.getAttribute('data-filter');
+      galItems.forEach(it => {
+        const cats = (it.getAttribute('data-cat') || '').split(/\s+/);
+        const show = f === 'all' || cats.includes(f);
+        it.classList.toggle('hidden', !show);
+      });
+    });
+  });
+
+  // ===== Gallery: lightbox =====
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  galItems.forEach(it => {
+    it.addEventListener('click', () => {
+      const img = it.querySelector('img');
+      if (!img) return;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    lightboxImg.src = '';
+  }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
   });
 
   // ===== Active nav link =====

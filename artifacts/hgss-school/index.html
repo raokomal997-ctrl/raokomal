@@ -583,6 +583,161 @@
       cursor: pointer;
     }
 
+    /* ===================== ADMISSION FORM MODAL ===================== */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(19, 28, 38, .78);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 9998;
+      padding: 40px 16px;
+      overflow-y: auto;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: #fff;
+      width: 100%;
+      max-width: 640px;
+      border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.4);
+      overflow: hidden;
+      animation: fadeUp .35s ease both;
+    }
+    .modal-head {
+      background: var(--red);
+      color: #fff;
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .modal-head h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: #fff;
+    }
+    .modal-head p { font-size: .85rem; color: rgba(255,255,255,.78); margin-top: 4px; }
+    .modal-close {
+      background: var(--gold);
+      color: var(--red);
+      border: none;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .modal-body { padding: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+    .form-field { display: flex; flex-direction: column; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label {
+      font-family: 'Poppins', sans-serif;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--red);
+      margin-bottom: 6px;
+      letter-spacing: .02em;
+    }
+    .form-field label .req { color: #c0392b; }
+    .form-field input, .form-field select, .form-field textarea {
+      font-family: inherit;
+      font-size: .95rem;
+      padding: 11px 14px;
+      border: 1.5px solid #cfd8dc;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(44,62,80,.12);
+    }
+    .form-field textarea { resize: vertical; min-height: 80px; }
+    .form-field .err {
+      color: #c0392b;
+      font-size: .75rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .form-field.invalid input,
+    .form-field.invalid select,
+    .form-field.invalid textarea { border-color: #c0392b; }
+    .form-field.invalid .err { display: block; }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #eceff1;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1.5px solid var(--red);
+      color: var(--red);
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-submit {
+      background: var(--red);
+      color: var(--gold);
+      border: none;
+      padding: 11px 26px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(44,62,80,.3);
+    }
+    .btn-submit:hover { background: var(--red-dk); }
+    .form-success {
+      text-align: center;
+      padding: 24px 16px 8px;
+    }
+    .form-success .check {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--red);
+      font-size: 2.4rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      font-weight: 700;
+    }
+    .form-success h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--red);
+      margin-bottom: 8px;
+    }
+    .form-success p { color: var(--muted); margin-bottom: 14px; }
+    .form-success .ref-no {
+      display: inline-block;
+      background: var(--cream);
+      color: var(--red);
+      font-family: 'Poppins', monospace;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 6px;
+      letter-spacing: .08em;
+    }
+    /* Make Apply Online step look clickable */
+    .step.clickable { cursor: pointer; }
+    .step.clickable:hover .step-circle { background: var(--red); transform: scale(1.08); }
+    .step.clickable:hover .step-num { background: var(--gold); color: var(--red); }
+
     /* ===================== NOTICE BOARD ===================== */
     #notice-board { background: #ECEFF1; }
     .board-wrap {
@@ -991,7 +1146,7 @@
     <h2>Shaping Tomorrow's <span>Leaders</span></h2>
     <p>Empowering girls through Education, Values &amp; Excellence for over 50 years</p>
     <div class="hero-btns">
-      <button class="btn btn-saffron" onclick="goToSection('admissions')">Apply Now</button>
+      <button class="btn btn-saffron" onclick="openAdmissionForm()">Apply Now</button>
       <button class="btn btn-outline" onclick="goToSection('about')">Learn More</button>
     </div>
   </div>
@@ -1247,6 +1402,112 @@
   </div>
 </section>
 
+<!-- ===== ADMISSION FORM MODAL ===== -->
+<div class="modal-backdrop" id="admissionModal" role="dialog" aria-modal="true" aria-labelledby="admissionTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="admissionTitle">Online Admission Form</h3>
+        <p>Hindu Girls Sr. Sec. School — Session 2026–27</p>
+      </div>
+      <button type="button" class="modal-close" id="admissionClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="admissionForm" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="af-student">Student's Full Name <span class="req">*</span></label>
+            <input type="text" id="af-student" name="student" required minlength="2"/>
+            <span class="err">Please enter the student's name</span>
+          </div>
+          <div class="form-field">
+            <label for="af-dob">Date of Birth <span class="req">*</span></label>
+            <input type="date" id="af-dob" name="dob" required/>
+            <span class="err">Please pick a valid date of birth</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="af-class">Class Applying For <span class="req">*</span></label>
+            <select id="af-class" name="class" required>
+              <option value="">Select class</option>
+              <option>Nursery</option>
+              <option>LKG</option>
+              <option>UKG</option>
+              <option>Class 1</option>
+              <option>Class 2</option>
+              <option>Class 3</option>
+              <option>Class 4</option>
+              <option>Class 5</option>
+              <option>Class 6</option>
+              <option>Class 7</option>
+              <option>Class 8</option>
+              <option>Class 9</option>
+              <option>Class 10</option>
+              <option>Class 11 — Science</option>
+              <option>Class 11 — Commerce</option>
+              <option>Class 11 — Humanities</option>
+              <option>Class 12</option>
+            </select>
+            <span class="err">Please choose a class</span>
+          </div>
+          <div class="form-field">
+            <label for="af-prev">Previous School (if any)</label>
+            <input type="text" id="af-prev" name="prevSchool"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="af-parent">Parent / Guardian Name <span class="req">*</span></label>
+            <input type="text" id="af-parent" name="parent" required minlength="2"/>
+            <span class="err">Please enter parent / guardian name</span>
+          </div>
+          <div class="form-field">
+            <label for="af-phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="af-phone" name="phone" required pattern="[0-9+\- ]{10,15}" placeholder="+91 98xxxxxxxx"/>
+            <span class="err">Enter a valid 10-digit phone number</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full">
+            <label for="af-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="af-email" name="email" required placeholder="parent@example.com"/>
+            <span class="err">Enter a valid email address</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full">
+            <label for="af-address">Residential Address <span class="req">*</span></label>
+            <textarea id="af-address" name="address" rows="2" required minlength="6"></textarea>
+            <span class="err">Please enter your address</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full">
+            <label for="af-message">Anything you'd like us to know? (optional)</label>
+            <textarea id="af-message" name="message" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" id="admissionCancel">Cancel</button>
+          <button type="submit" class="btn-submit">Submit Application</button>
+        </div>
+      </form>
+
+      <div class="form-success" id="admissionSuccess" style="display:none;">
+        <div class="check">✓</div>
+        <h4>Application Received!</h4>
+        <p>Thank you. Our admissions team will reach out within 2 working days.</p>
+        <p>Your reference number:</p>
+        <div class="ref-no" id="admissionRef">HGSS-000000</div>
+        <div class="modal-actions" style="justify-content:center;">
+          <button type="button" class="btn-submit" id="admissionDone">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Lightbox for gallery -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
@@ -1331,7 +1592,7 @@
       <p>A simple four-step process to join the HGSS family.</p>
     </div>
     <div class="steps-wrap">
-      <div class="step reveal">
+      <div class="step reveal clickable" onclick="openAdmissionForm()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAdmissionForm();}">
         <div class="step-circle">
           📝
           <span class="step-num">1</span>
@@ -1365,7 +1626,7 @@
       </div>
     </div>
     <div class="admissions-cta">
-      <button class="btn btn-saffron" onclick="goToSection('contact')">Start Your Application →</button>
+      <button class="btn btn-saffron" onclick="openAdmissionForm()">Start Your Application →</button>
     </div>
   </div>
 </section>
@@ -1555,6 +1816,99 @@
       const href = a.getAttribute('href').replace('#', '');
       goToSection(href);
     });
+  });
+
+  // ===== Admission Form Modal =====
+  const admissionModal   = document.getElementById('admissionModal');
+  const admissionForm    = document.getElementById('admissionForm');
+  const admissionSuccess = document.getElementById('admissionSuccess');
+  const admissionRef     = document.getElementById('admissionRef');
+  const admissionClose   = document.getElementById('admissionClose');
+  const admissionCancel  = document.getElementById('admissionCancel');
+  const admissionDone    = document.getElementById('admissionDone');
+
+  function openAdmissionForm() {
+    admissionForm.style.display = '';
+    admissionSuccess.style.display = 'none';
+    admissionForm.reset();
+    admissionForm.querySelectorAll('.form-field.invalid').forEach(f => f.classList.remove('invalid'));
+    admissionModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('af-student').focus(), 60);
+  }
+  function closeAdmissionForm() {
+    admissionModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // expose globally so inline onclick handlers can find it
+  window.openAdmissionForm  = openAdmissionForm;
+  window.closeAdmissionForm = closeAdmissionForm;
+
+  admissionClose.addEventListener('click', closeAdmissionForm);
+  admissionCancel.addEventListener('click', closeAdmissionForm);
+  admissionDone.addEventListener('click', closeAdmissionForm);
+  admissionModal.addEventListener('click', e => {
+    if (e.target === admissionModal) closeAdmissionForm();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && admissionModal.classList.contains('open')) closeAdmissionForm();
+  });
+
+  function validateField(input) {
+    const wrapper = input.closest('.form-field');
+    if (!wrapper) return true;
+    let ok = input.checkValidity();
+    if (ok && input.id === 'af-email') {
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    }
+    if (ok && input.id === 'af-phone') {
+      ok = (input.value.replace(/\D/g, '').length >= 10);
+    }
+    wrapper.classList.toggle('invalid', !ok);
+    return ok;
+  }
+  admissionForm.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('blur', () => validateField(el));
+    el.addEventListener('input', () => {
+      if (el.closest('.form-field').classList.contains('invalid')) validateField(el);
+    });
+  });
+
+  admissionForm.addEventListener('submit', e => {
+    e.preventDefault();
+    let allOk = true;
+    admissionForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(el => {
+      if (!validateField(el)) allOk = false;
+    });
+    // also validate the optional phone/email format if filled (already required above)
+    if (!allOk) {
+      const firstBad = admissionForm.querySelector('.form-field.invalid input, .form-field.invalid select, .form-field.invalid textarea');
+      if (firstBad) firstBad.focus();
+      return;
+    }
+    // Generate a friendly reference number
+    const ref = 'HGSS-' + new Date().getFullYear().toString().slice(-2)
+      + '-' + Math.floor(100000 + Math.random() * 900000);
+    admissionRef.textContent = ref;
+    admissionForm.style.display = 'none';
+    admissionSuccess.style.display = 'block';
+    // Persist locally so a parent can show it later if needed
+    try {
+      const data = Object.fromEntries(new FormData(admissionForm).entries());
+      data.ref = ref;
+      data.submittedAt = new Date().toISOString();
+      const all = JSON.parse(localStorage.getItem('hgss_applications') || '[]');
+      all.push(data);
+      localStorage.setItem('hgss_applications', JSON.stringify(all));
+    } catch (_) { /* localStorage may be unavailable in iframe; ignore */ }
+  });
+
+  // Allow deep-link via #apply (e.g. from emails / posters)
+  if (location.hash === '#apply') {
+    setTimeout(openAdmissionForm, 200);
+  }
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#apply') openAdmissionForm();
   });
 
   // ===== Gallery: filter tabs =====

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hindu Girls Senior Secondary School</title>
+  <link rel="icon" type="image/jpeg" href="/photos/school-logo.jpeg" />
+  <link rel="apple-touch-icon" href="/photos/school-logo.jpeg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -989,8 +991,8 @@
     <h2>Shaping Tomorrow's <span>Leaders</span></h2>
     <p>Empowering girls through Education, Values &amp; Excellence for over 50 years</p>
     <div class="hero-btns">
-      <button class="btn btn-saffron" onclick="scrollTo('admissions')">Apply Now</button>
-      <button class="btn btn-outline" onclick="scrollTo('about')">Learn More</button>
+      <button class="btn btn-saffron" onclick="goToSection('admissions')">Apply Now</button>
+      <button class="btn btn-outline" onclick="goToSection('about')">Learn More</button>
     </div>
   </div>
 </section>
@@ -1363,7 +1365,7 @@
       </div>
     </div>
     <div class="admissions-cta">
-      <button class="btn btn-saffron" onclick="scrollTo('contact')">Start Your Application →</button>
+      <button class="btn btn-saffron" onclick="goToSection('contact')">Start Your Application →</button>
     </div>
   </div>
 </section>
@@ -1541,7 +1543,7 @@
   });
 
   // ===== Smooth Scroll helper =====
-  function scrollTo(id) {
+  function goToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
@@ -1551,7 +1553,7 @@
     a.addEventListener('click', e => {
       e.preventDefault();
       const href = a.getAttribute('href').replace('#', '');
-      scrollTo(href);
+      goToSection(href);
     });
   });
 

@@ -11,15 +11,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red:    #8B0000;
-      --red-dk: #5c0000;
-      --red-lt: #a80000;
-      --saffron: #FF6B00;
-      --gold:   #D4A017;
-      --cream:  #FFF8F0;
-      --cream2: #f5e6d3;
-      --text:   #1a1a1a;
-      --muted:  #6b6b6b;
+      --red:    #2C3E50;
+      --red-dk: #1F2A38;
+      --red-lt: #34495E;
+      --saffron: #F4D03F;
+      --gold:   #F4D03F;
+      --cream:  #F7F9F9;
+      --cream2: #E5E7EB;
+      --text:   #2C3E50;
+      --muted:  #5D6D7E;
     }
 
     html { scroll-behavior: smooth; }
@@ -204,7 +204,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(212,160,23,.18) 1.5px, transparent 1.5px);
+      background-image: radial-gradient(circle, rgba(244, 208, 63,.18) 1.5px, transparent 1.5px);
       background-size: 36px 36px;
     }
     #home::after {
@@ -222,7 +222,7 @@
     .hero-motto {
       display: inline-block;
       background: rgba(0,0,0,.25);
-      border: 1px solid rgba(212,160,23,.4);
+      border: 1px solid rgba(244, 208, 63,.4);
       backdrop-filter: blur(6px);
       border-radius: 50px;
       padding: 8px 24px;
@@ -272,10 +272,10 @@
       font-family: 'Nunito', sans-serif;
       letter-spacing: .02em;
     }
-    .btn-saffron { background: var(--saffron); color: #fff; }
-    .btn-saffron:hover { background: #e05e00; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,0,.4); }
+    .btn-saffron { background: var(--saffron); color: var(--red); font-weight: 800; }
+    .btn-saffron:hover { background: #E5C034; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 208, 63,.4); }
     .btn-outline { background: transparent; color: var(--gold); border-color: var(--gold); }
-    .btn-outline:hover { background: rgba(212,160,23,.12); transform: translateY(-2px); }
+    .btn-outline:hover { background: rgba(244, 208, 63,.12); transform: translateY(-2px); }
 
     /* ===================== STATS ===================== */
     #stats {
@@ -332,7 +332,7 @@
     /* ===================== ABOUT ===================== */
     #about { background: var(--cream); }
     .about-frame {
-      border: 8px double rgba(139,0,0,.15);
+      border: 8px double rgba(44, 62, 80,.15);
       padding: 48px;
       background: #fff;
       box-shadow: 0 8px 40px rgba(0,0,0,.07);
@@ -363,7 +363,7 @@
     .mission-box {
       padding: 16px 20px;
       border-left: 4px solid var(--red);
-      background: rgba(139,0,0,.04);
+      background: rgba(44, 62, 80,.04);
       margin-bottom: 14px;
     }
     .mission-box h4 { font-size: 1rem; color: var(--red); margin-bottom: 4px; }
@@ -371,9 +371,9 @@
     .vision-box {
       padding: 16px 20px;
       border-left: 4px solid var(--saffron);
-      background: rgba(255,107,0,.04);
+      background: rgba(244, 208, 63,.04);
     }
-    .vision-box h4 { font-size: 1rem; color: var(--saffron); margin-bottom: 4px; }
+    .vision-box h4 { font-size: 1rem; color: var(--red); margin-bottom: 4px; }
     .vision-box p { font-size: 0.9rem; color: #666; font-style: italic; margin: 0; }
     .badges-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .badge-card {
@@ -409,7 +409,7 @@
       border-radius: 0 0 0 100%;
       transition: transform .3s;
     }
-    .program-card:hover { transform: translateY(-8px); box-shadow: 0 16px 48px rgba(139,0,0,.12); border-color: var(--gold); }
+    .program-card:hover { transform: translateY(-8px); box-shadow: 0 16px 48px rgba(44, 62, 80,.12); border-color: var(--gold); }
     .program-card:hover::before { transform: scale(1.15); }
     .prog-icon {
       width: 64px; height: 64px;
@@ -422,7 +422,7 @@
     }
     .prog-badge {
       display: inline-block;
-      background: rgba(212,160,23,.2);
+      background: rgba(244, 208, 63,.2);
       color: var(--red);
       font-weight: 700;
       font-size: 0.78rem;
@@ -446,7 +446,7 @@
     .facility-card:hover { transform: scale(1.04); box-shadow: 0 10px 32px rgba(0,0,0,.1); }
     .fac-icon {
       width: 50px; height: 50px;
-      background: rgba(255,107,0,.1);
+      background: rgba(244, 208, 63,.1);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.5rem;
@@ -458,12 +458,12 @@
     .facility-card p { font-size: 0.87rem; color: #666; line-height: 1.65; }
 
     /* ===================== NOTICE BOARD ===================== */
-    #notice-board { background: #d8c4ae; }
+    #notice-board { background: #ECEFF1; }
     .board-wrap {
       max-width: 800px;
       margin: 0 auto;
       background: var(--red-dk);
-      border: 12px solid #4a0000;
+      border: 12px solid #131C26;
       border-radius: 4px;
       padding: 24px 28px 32px;
       box-shadow: 0 12px 48px rgba(0,0,0,.4);
@@ -480,7 +480,7 @@
     .board-title-label h2 { font-size: 1.4rem; color: var(--red); letter-spacing: .08em; }
     .notice-list { display: flex; flex-direction: column; gap: 14px; }
     .notice-item {
-      background: #fff9f0;
+      background: #FFFFFF;
       padding: 14px 18px 14px 28px;
       position: relative;
       transform: rotate(-.2deg);
@@ -500,9 +500,9 @@
     .notice-meta { display: flex; gap: 12px; align-items: flex-start; padding-top: 4px; }
     .notice-date {
       background: var(--gold);
-      color: #fff;
+      color: var(--red);
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
       padding: 3px 10px;
       border-radius: 2px;
       white-space: nowrap;
@@ -535,7 +535,7 @@
       line-height: 1.88;
       color: rgba(255,255,255,.88);
       font-style: italic;
-      border-left: 3px solid rgba(212,160,23,.4);
+      border-left: 3px solid rgba(244, 208, 63,.4);
       padding-left: 20px;
       margin-bottom: 24px;
     }
@@ -558,7 +558,7 @@
       position: absolute;
       top: 32px; left: 80px; right: 80px;
       height: 2px;
-      background: rgba(139,0,0,.15);
+      background: rgba(44, 62, 80,.15);
     }
     .step {
       flex: 1;
@@ -588,7 +588,7 @@
       width: 22px; height: 22px;
       border-radius: 50%;
       background: var(--gold);
-      color: #fff;
+      color: var(--red);
       font-size: 0.7rem;
       font-weight: 800;
       display: flex; align-items: center; justify-content: center;
@@ -610,7 +610,7 @@
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 2px solid rgba(139,0,0,.2);
+      border-bottom: 2px solid rgba(44, 62, 80,.2);
       padding: 9px 0;
       font-size: 0.95rem;
       font-family: 'Nunito', sans-serif;
@@ -644,7 +644,7 @@
       bottom: -60px; right: -60px;
       width: 200px; height: 200px;
       border-radius: 50%;
-      background: rgba(255,107,0,.15);
+      background: rgba(244, 208, 63,.15);
     }
     .contact-info-wrap h3 { font-size: 1.7rem; color: var(--gold); margin-bottom: 28px; }
     .info-row { display: flex; gap: 16px; margin-bottom: 22px; }
@@ -728,9 +728,9 @@
       font-family: 'Nunito', sans-serif;
       transition: background .2s;
     }
-    .newsletter-form button:hover { background: #c08d10; }
+    .newsletter-form button:hover { background: #E5C034; }
     .footer-bottom {
-      background: #3a0000;
+      background: #131C26;
       text-align: center;
       padding: 14px 24px;
       font-size: 0.78rem;
@@ -996,8 +996,8 @@
 <section id="notice-board">
   <div class="container">
     <div class="section-title reveal">
-      <h2 style="color:#3a0000;">Notice Board</h2>
-      <div class="underline-bar" style="background:#3a0000;"></div>
+      <h2 style="color:#131C26;">Notice Board</h2>
+      <div class="underline-bar" style="background:#131C26;"></div>
     </div>
     <div class="board-wrap reveal">
       <div class="board-title-label"><h2>🗓 Notices &amp; Announcements</h2></div>

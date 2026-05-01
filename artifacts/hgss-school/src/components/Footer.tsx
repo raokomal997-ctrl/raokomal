@@ -70,7 +70,15 @@ export default function Footer({ navigate, openApply }: Props) {
 
         <div className="footer-bar">
           <span>© {new Date().getFullYear()} Hindu Girls Sr. Sec. School, Kaithal. <em>विद्या ददाति विनयम्</em></span>
-          <div className="footer-legal">
+          <div className="footer-bar-right">
+            <a href="mailto:hinduschoolktl@gmail.com" className="footer-mail-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-10 7L2 7"/>
+              </svg>
+              hinduschoolktl@gmail.com
+            </a>
+            <span className="footer-legal-sep">·</span>
             <button className="footer-legal-link" onClick={() => setPolicy("privacy")}>Privacy Policy</button>
             <span className="footer-legal-sep">·</span>
             <button className="footer-legal-link" onClick={() => setPolicy("terms")}>Terms of Use</button>

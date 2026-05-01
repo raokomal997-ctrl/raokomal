@@ -103,11 +103,11 @@ export default function Navbar({ route, navigate, openApply }: Props) {
           </li>
 
           {/* About — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "about" || isAbout ? " dropdown-open" : ""}`}>
+          <li className={`has-dropdown${openDropdown === "about" ? " dropdown-open" : ""}`}>
             <button
               className={`nav-link ${isAbout ? "active" : ""}`}
               aria-haspopup="true"
-              aria-expanded={openDropdown === "about" || isAbout}
+              aria-expanded={openDropdown === "about"}
               onClick={() => clickGroup("about", "our-history")}
             >
               About <span className="arrow">▼</span>
@@ -123,11 +123,11 @@ export default function Navbar({ route, navigate, openApply }: Props) {
           </li>
 
           {/* Academics — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "academics" || isAcademics ? " dropdown-open" : ""}`}>
+          <li className={`has-dropdown${openDropdown === "academics" ? " dropdown-open" : ""}`}>
             <button
               className={`nav-link ${isAcademics ? "active" : ""}`}
               aria-haspopup="true"
-              aria-expanded={openDropdown === "academics" || isAcademics}
+              aria-expanded={openDropdown === "academics"}
               onClick={() => clickGroup("academics", "curriculum")}
             >
               Academics <span className="arrow">▼</span>
@@ -143,11 +143,11 @@ export default function Navbar({ route, navigate, openApply }: Props) {
           </li>
 
           {/* Campus Life — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "campus" || isCampus ? " dropdown-open" : ""}`}>
+          <li className={`has-dropdown${openDropdown === "campus" ? " dropdown-open" : ""}`}>
             <button
               className={`nav-link ${isCampus ? "active" : ""}`}
               aria-haspopup="true"
-              aria-expanded={openDropdown === "campus" || isCampus}
+              aria-expanded={openDropdown === "campus"}
               onClick={() => clickGroup("campus", "events-activities")}
             >
               Campus Life <span className="arrow">▼</span>

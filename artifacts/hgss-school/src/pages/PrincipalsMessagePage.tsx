@@ -1,3 +1,5 @@
+import React from "react";
+
 const UP = (id: string) =>
   `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
 
@@ -6,8 +8,6 @@ const IC: React.CSSProperties = {
   borderRadius: 12, marginBottom: 12, display: "block",
   margin: "0 auto 12px",
 };
-
-import React from "react";
 
 export default function PrincipalsMessagePage() {
   return (

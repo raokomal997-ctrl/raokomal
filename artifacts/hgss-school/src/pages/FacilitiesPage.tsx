@@ -1,3 +1,5 @@
+import React from "react";
+
 const UP = (id: string) =>
   `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
 
@@ -5,8 +7,6 @@ const IC: React.CSSProperties = {
   width: 56, height: 56, objectFit: "cover",
   borderRadius: 12, marginBottom: 12, display: "block",
 };
-
-import React from "react";
 
 const facilities = [
   { img: UP("1523050854058-8df90110c9f1"), title: "Spacious Campus",      desc: "Sprawling building with bright airy classrooms and large open assembly grounds." },

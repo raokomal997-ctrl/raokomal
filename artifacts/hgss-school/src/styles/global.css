@@ -1250,6 +1250,9 @@ main { flex: 1; padding-top: 88px; }
   font-size: .82rem;
   color: var(--muted);
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .form-meta strong { color: var(--ink); }
 
@@ -1264,7 +1267,9 @@ main { flex: 1; padding-top: 88px; }
   margin: 0 auto 32px;
 }
 .maps-eyebrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: .78rem;
   letter-spacing: .15em;
   text-transform: uppercase;

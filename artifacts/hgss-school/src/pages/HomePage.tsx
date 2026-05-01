@@ -20,12 +20,36 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <>{n}{suffix}</>;
 }
 
+const KB_SLIDES = [
+  { src: "/photos/marching-uniform.jpeg",  dir: "kb-in"  },
+  { src: "/photos/assembly-building.jpeg", dir: "kb-out" },
+  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-in"  },
+  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-out" },
+];
+
 export default function HomePage({ navigate, openApply }: Props) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setCurrent(c => (c + 1) % KB_SLIDES.length), 5000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <>
       {/* HERO */}
       <section className="hero">
+        <div className="hero-bg">
+          {KB_SLIDES.map((slide, i) => (
+            <div
+              key={slide.src}
+              className={`hero-bg-slide ${slide.dir}${i === current ? " kb-active" : ""}`}
+              style={{ backgroundImage: `url(${slide.src})` }}
+            />
+          ))}
+        </div>
+        <div className="hero-overlay" />
+
         <div className="hero-grid">
           <div className="hero-text">
             <span className="eyebrow">CISCE Affiliated · Estd. 1974</span>
@@ -42,7 +66,17 @@ export default function HomePage({ navigate, openApply }: Props) {
               <button className="btn btn-outline" onClick={() => navigate("story")}>About Our School</button>
             </div>
           </div>
+        </div>
 
+        <div className="hero-kb-dots">
+          {KB_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-kb-dot${i === current ? " kb-dot-active" : ""}`}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
       </section>
 

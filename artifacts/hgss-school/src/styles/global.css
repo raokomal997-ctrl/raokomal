@@ -466,22 +466,14 @@ main { flex: 1; padding-top: 88px; }
   z-index: 200;
 }
 
-/* Show on hover */
-.nav-links > li.has-dropdown:hover .dropdown {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0);
-}
-
-/* Show on click (dropdown-open class) */
+/* Show only on click (dropdown-open class) — no hover */
 .nav-links > li.has-dropdown.dropdown-open .dropdown {
   opacity: 1;
   pointer-events: all;
   transform: translateY(0);
 }
 
-/* Rotate arrow when hovering or open */
-.nav-links > li.has-dropdown:hover .nav-link .arrow,
+/* Rotate arrow when open */
 .nav-links > li.has-dropdown.dropdown-open .nav-link .arrow {
   transform: rotate(180deg);
 }

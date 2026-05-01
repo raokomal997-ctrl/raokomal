@@ -20,21 +20,7 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   return <>{n}{suffix}</>;
 }
 
-const SLIDES = [
-  { src: "/photos/students-traditional.jpeg", alt: "Students in traditional attire" },
-  { src: "/photos/cultural-bhangra.jpeg",     alt: "Bhangra performance" },
-  { src: "/photos/annual-day-toppers.jpeg",   alt: "Annual day toppers" },
-];
-
 export default function HomePage({ navigate, openApply }: Props) {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCurrent(prev => (prev + 1) % SLIDES.length);
-    }, 4000);
-    return () => clearInterval(id);
-  }, []);
 
   return (
     <>
@@ -57,26 +43,6 @@ export default function HomePage({ navigate, openApply }: Props) {
             </div>
           </div>
 
-          <div className="hero-slideshow">
-            {SLIDES.map((slide, i) => (
-              <img
-                key={slide.src}
-                src={slide.src}
-                alt={slide.alt}
-                className={`hero-slide${i === current ? " hero-slide-active" : ""}`}
-              />
-            ))}
-            <div className="hero-dots">
-              {SLIDES.map((_, i) => (
-                <button
-                  key={i}
-                  className={`hero-dot${i === current ? " hero-dot-active" : ""}`}
-                  onClick={() => setCurrent(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 

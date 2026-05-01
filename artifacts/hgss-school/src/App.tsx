@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AdmissionModal from "./components/AdmissionModal";
+import LoadingScreen from "./components/LoadingScreen";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import FacultyPage from "./pages/FacultyPage";
@@ -28,8 +29,10 @@ export type Route =
   | "contact";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const [route, setRoute] = useState<Route>("home");
   const [showApply, setShowApply] = useState(false);
+  const handleLoadDone = useCallback(() => setLoading(false), []);
 
   // Load route from URL hash so deep links work and back/forward navigation works
   useEffect(() => {
@@ -92,6 +95,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      {loading && <LoadingScreen onDone={handleLoadDone} />}
       <Navbar route={route} navigate={navigate} openApply={openApply} />
       <main className="page-fade" key={route}>
         {route === "home" && <HomePage navigate={navigate} openApply={openApply} />}

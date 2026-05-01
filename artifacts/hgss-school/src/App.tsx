@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import AdmissionModal from "./components/AdmissionModal";
 import LoadingScreen from "./components/LoadingScreen";
 import NotificationTicker from "./components/NotificationTicker";
+import SocialSidebar from "./components/SocialSidebar";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import FacultyPage from "./pages/FacultyPage";
@@ -99,6 +100,7 @@ export default function App() {
     <div className={`app-shell${tickerVisible ? " has-ticker" : ""}`}>
       {loading && <LoadingScreen onDone={handleLoadDone} />}
       <NotificationTicker visible={tickerVisible} onClose={() => setTickerVisible(false)} />
+      <SocialSidebar />
       <Navbar route={route} navigate={navigate} openApply={openApply} />
       <main className="page-fade" key={route}>
         {route === "home" && <HomePage navigate={navigate} openApply={openApply} />}

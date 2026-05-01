@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Route } from "../App";
 import PolicyModal from "./PolicyModal";
+import { SOCIALS } from "../lib/socials";
 
 type PolicyType = "privacy" | "terms" | null;
 type Props = { navigate: (r: Route) => void; openApply: () => void };
@@ -22,10 +23,19 @@ export default function Footer({ navigate, openApply }: Props) {
               Empowering girls through Education, Values & Excellence for over 50 years.
             </p>
             <div className="footer-social">
-              <button title="Facebook">Fb</button>
-              <button title="Instagram">Ig</button>
-              <button title="YouTube">Yt</button>
-              <button title="X / Twitter">𝕏</button>
+              {SOCIALS.map(s => (
+                <a
+                  key={s.key}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`footer-social-icon fs-${s.key}`}
+                  aria-label={s.label}
+                  title={s.label}
+                >
+                  {s.icon}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -53,8 +63,8 @@ export default function Footer({ navigate, openApply }: Props) {
           <div className="footer-col">
             <h4>Reach Us</h4>
             <div className="footer-contact-line"><span className="ic">📍</span><span>Ambala Road, Model Town,<br/>Kaithal – 136027, Haryana</span></div>
-            <div className="footer-contact-line"><span className="ic">📞</span><span>+91 1746 222 333</span></div>
-            <div className="footer-contact-line"><span className="ic">✉</span><span>info@hgsskaithal.edu.in</span></div>
+            <div className="footer-contact-line"><span className="ic">📞</span><span>+91 1746 234 336</span></div>
+            <div className="footer-contact-line"><span className="ic">✉</span><span>hinduschoolktl@gmail.com</span></div>
           </div>
         </div>
 

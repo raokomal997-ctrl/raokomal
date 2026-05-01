@@ -111,6 +111,106 @@
   animation: ls-bar 1.6s cubic-bezier(.4,0,.2,1) 1.1s both;
 }
 
+/* ===================== SOCIAL SIDEBAR ===================== */
+@keyframes ss-slide-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.social-sidebar {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: ss-slide-in .6s ease .5s both;
+}
+
+.social-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+  overflow: hidden;
+  width: 44px;
+  height: 44px;
+  border-radius: 0 10px 10px 0;
+  background: var(--ink);
+  color: #fff;
+  transition: width .3s cubic-bezier(.4,0,.2,1), border-radius .3s ease, box-shadow .3s ease;
+  box-shadow: 2px 2px 12px rgba(0,0,0,.22);
+  position: relative;
+}
+
+.social-sidebar-item:hover {
+  width: 130px;
+  box-shadow: 4px 4px 20px rgba(0,0,0,.3);
+}
+
+.ss-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .3s ease;
+}
+.ss-icon svg { width: 20px; height: 20px; }
+
+.ss-label {
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity .25s ease .05s, transform .25s ease .05s;
+  padding-right: 12px;
+}
+.social-sidebar-item:hover .ss-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Per-platform accent colours */
+.ss-facebook:hover  { background: #1877F2; }
+.ss-instagram:hover { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+.ss-youtube:hover   { background: #FF0000; }
+.ss-whatsapp:hover  { background: #25D366; }
+
+/* Hide on very small screens */
+@media (max-width: 480px) { .social-sidebar { display: none; } }
+
+/* ===================== FOOTER SOCIAL ICONS ===================== */
+.footer-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.footer-social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all .25s ease;
+}
+.footer-social-icon svg { width: 18px; height: 18px; }
+.footer-social-icon:hover { transform: translateY(-4px); }
+.fs-facebook:hover  { background: #1877F2; border-color: #1877F2; color: #fff; box-shadow: 0 6px 18px rgba(24,119,242,.45); }
+.fs-instagram:hover { background: #E1306C; border-color: #E1306C; color: #fff; box-shadow: 0 6px 18px rgba(225,48,108,.45); }
+.fs-youtube:hover   { background: #FF0000; border-color: #FF0000; color: #fff; box-shadow: 0 6px 18px rgba(255,0,0,.4); }
+.fs-whatsapp:hover  { background: #25D366; border-color: #25D366; color: #fff; box-shadow: 0 6px 18px rgba(37,211,102,.4); }
+
 /* ===================== NOTIFICATION TICKER ===================== */
 @keyframes ticker-scroll {
   0%   { transform: translateX(0); }

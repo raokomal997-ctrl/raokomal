@@ -1,3 +1,6 @@
+const UP = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+
 export default function EventsActivitiesPage() {
   const featured = [
     {
@@ -27,12 +30,12 @@ export default function EventsActivitiesPage() {
   ];
 
   const events = [
-    { month: "April",     name: "New Session Inauguration",     icon: "🌸", desc: "Opening assembly, student orientation, and goal-setting for the new academic year." },
-    { month: "May",       name: "Annual Science Exhibition",     icon: "🔬", desc: "Students display innovative science projects and models from Classes VI–XII." },
-    { month: "July",      name: "Kargil Vijay Diwas",           icon: "🎖️", desc: "Special assembly with NCC cadets honouring India's defence heroes." },
-    { month: "September", name: "Teachers' Day",                 icon: "🎓", desc: "Students pay tribute to teachers with skits, songs, and heartfelt appreciation." },
-    { month: "December",  name: "Christmas & Winter Festival",  icon: "❄️", desc: "Carol singing, art exhibitions, and a winter fair celebrating diversity." },
-    { month: "February",  name: "Inter-School Competitions",    icon: "🥇", desc: "HGSS hosts and competes in quiz, debate, elocution, and creative arts contests." },
+    { month: "April",     name: "New Session Inauguration",    img: UP("1523050854058-8df90110c9f1"), desc: "Opening assembly, student orientation, and goal-setting for the new academic year." },
+    { month: "May",       name: "Annual Science Exhibition",   img: UP("1532094349884-543bc11b234d"), desc: "Students display innovative science projects and models from Classes VI–XII." },
+    { month: "July",      name: "Kargil Vijay Diwas",          img: UP("1569982175286-3f1b4a4b16a2"), desc: "Special assembly with NCC cadets honouring India's defence heroes." },
+    { month: "September", name: "Teachers' Day",               img: UP("1524178232363-1fb2b075b655"), desc: "Students pay tribute to teachers with skits, songs, and heartfelt appreciation." },
+    { month: "December",  name: "Christmas & Winter Festival", img: UP("1530103862676-de8c9debad1d"), desc: "Carol singing, art exhibitions, and a winter fair celebrating diversity." },
+    { month: "February",  name: "Inter-School Competitions",   img: UP("1546519638-68e109498ffc"),   desc: "HGSS hosts and competes in quiz, debate, elocution, and creative arts contests." },
   ];
 
   return (
@@ -93,7 +96,8 @@ export default function EventsActivitiesPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20, maxWidth: 1100, margin: "0 auto" }}>
           {events.map((e, i) => (
             <div key={i} className="feature-card reveal" style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: 22, cursor: "default", flexDirection: "row" }}>
-              <div style={{ fontSize: "2rem", flexShrink: 0 }}>{e.icon}</div>
+              <img src={e.img} alt={e.name}
+                style={{ width: 52, height: 52, objectFit: "cover", borderRadius: 10, flexShrink: 0 }} />
               <div>
                 <span style={{ fontSize: ".72rem", letterSpacing: ".15em", textTransform: "uppercase", color: "var(--gold-dk)", fontWeight: 700 }}>{e.month}</span>
                 <h4 style={{ margin: "4px 0 8px", fontSize: "1rem" }}>{e.name}</h4>

@@ -1,3 +1,6 @@
+const UP = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+
 export default function ClubsSocietiesPage() {
   const featured = [
     {
@@ -27,11 +30,11 @@ export default function ClubsSocietiesPage() {
   ];
 
   const clubs = [
-    { name: "Eco Club",               tagline: "Green campus, green future.",   icon: "🌿", color: "#2ECC71", desc: "Environmental campaigns, tree-plantation drives, waste management, and nature walks around Kaithal." },
-    { name: "Cultural & Fine Arts",   tagline: "Creativity in every form.",      icon: "🎨", color: "#9B59B6", desc: "Dance, drama, music, painting — preparing students for all cultural competitions and the annual 'Utsav' fest." },
-    { name: "Health & Wellness Club", tagline: "Mind, body, spirit.",            icon: "🧘‍♀️", color: "#E74C3C", desc: "Yoga, meditation, nutrition workshops, and first-aid training for senior students." },
-    { name: "Mathematics Club",       tagline: "Numbers are fun.",               icon: "📐", color: "#F39C12", desc: "Math puzzles, problem-solving challenges, and preparation for Math Olympiad and inter-school competitions." },
-    { name: "Community Service",      tagline: "Serve. Uplift. Inspire.",        icon: "🤝", color: "#1ABC9C", desc: "Orphanage visits, literacy drives, and village outreach — building compassion and responsibility." },
+    { name: "Eco Club",               tagline: "Green campus, green future.",   img: UP("1542601906-bff1a7e60e1d"), color: "#2ECC71", desc: "Environmental campaigns, tree-plantation drives, waste management, and nature walks around Kaithal." },
+    { name: "Cultural & Fine Arts",   tagline: "Creativity in every form.",      img: UP("1513364776144-60967b0f800f"), color: "#9B59B6", desc: "Dance, drama, music, painting — preparing students for all cultural competitions and the annual 'Utsav' fest." },
+    { name: "Health & Wellness Club", tagline: "Mind, body, spirit.",            img: UP("1506126613408-eca07ce68773"), color: "#E74C3C", desc: "Yoga, meditation, nutrition workshops, and first-aid training for senior students." },
+    { name: "Mathematics Club",       tagline: "Numbers are fun.",               img: UP("1509228627152-7b0f1a0f5b5d"), color: "#F39C12", desc: "Math puzzles, problem-solving challenges, and preparation for Math Olympiad and inter-school competitions." },
+    { name: "Community Service",      tagline: "Serve. Uplift. Inspire.",        img: UP("1529156069898-49953e39b3ac"), color: "#1ABC9C", desc: "Orphanage visits, literacy drives, and village outreach — building compassion and responsibility." },
   ];
 
   return (
@@ -99,7 +102,8 @@ export default function ClubsSocietiesPage() {
           {clubs.map((c, i) => (
             <div key={i} className="reveal" style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "var(--shadow-sm)", border: "1px solid var(--border)" }}>
               <div style={{ background: c.color, padding: "20px 24px", display: "flex", gap: 14, alignItems: "center" }}>
-                <span style={{ fontSize: "2rem" }}>{c.icon}</span>
+                <img src={c.img} alt={c.name}
+                  style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 10, flexShrink: 0 }} />
                 <div>
                   <h3 style={{ color: "#fff", margin: 0, fontSize: "1.05rem" }}>{c.name}</h3>
                   <p style={{ color: "rgba(255,255,255,.7)", fontSize: ".8rem", margin: "3px 0 0", fontStyle: "italic" }}>{c.tagline}</p>

@@ -1,36 +1,44 @@
+const UP = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+
+const IC: React.CSSProperties = {
+  width: 56, height: 56, objectFit: "cover",
+  borderRadius: 12, marginBottom: 12, display: "block",
+};
+
 export default function CulturalProgramsPage() {
   const featured = [
     {
       name: "Annual Cultural Fest — 'Utsav'",
       desc: "A grand two-day event where students showcase talent in classical dance, drama, music, poetry, and art. Open to parents and the broader Kaithal community.",
       img: "/photos/cultural-bhangra.jpeg",
-      icon: "🎭",
+      iconImg: UP("1530103862676-de8c9debad1d"),
     },
     {
       name: "Classical & Folk Dance",
       desc: "Trained classical and folk dance performances — Bharatnatyam, Giddha, and Kathak — presented at school events and inter-school festivals across Haryana.",
       img: "/photos/folk-dance-group.jpeg",
-      icon: "💃",
+      iconImg: UP("1518834107812-67b0b7c58434"),
     },
     {
       name: "Drama & Theatre",
       desc: "Annual school play and one-act drama competitions nurture public speaking, confidence, and storytelling. Our drama group won Best Play at the District Youth Festival 2023.",
       img: "/photos/shiva-dance-kids.jpeg",
-      icon: "🎬",
+      iconImg: UP("1522202176988-66273c2fd55f"),
     },
     {
       name: "Republic & Patriotic Celebrations",
       desc: "Patriotic cultural performances — tableaux, march-past by NCC cadets, and special skits — mark Republic Day, Independence Day, and Kargil Vijay Diwas with pride.",
       img: "/photos/patriotic-dance.jpeg",
-      icon: "🇮🇳",
+      iconImg: UP("1532375810709-75b1da00537c"),
     },
   ];
 
   const more = [
-    { name: "Vocal & Instrumental Music", desc: "School choir, harmonium, tabla, and vocal classical music classes under trained instructors.", icon: "🎵", img: "/photos/folk-dance-kids.jpeg" },
-    { name: "Hindi & Sanskrit Literary Events", desc: "Debate, elocution, essay writing, and poetry recitation celebrating our linguistic heritage.", icon: "📜", img: "/photos/hindi-exhibition.jpeg" },
-    { name: "English Debates & MUN", desc: "Regular debate sessions and a Model United Nations programme develop global discourse skills.", icon: "🗣️", img: "/photos/students-traditional.jpeg" },
-    { name: "Rangoli & Visual Arts", desc: "Festival rangoli, poster-making, and fine-arts exhibitions held throughout the year.", icon: "🎨", img: "/photos/havan-ceremony.jpeg" },
+    { name: "Vocal & Instrumental Music",       desc: "School choir, harmonium, tabla, and vocal classical music classes under trained instructors.", iconImg: UP("1511379938547-c1f69419868d"), img: "/photos/folk-dance-kids.jpeg" },
+    { name: "Hindi & Sanskrit Literary Events", desc: "Debate, elocution, essay writing, and poetry recitation celebrating our linguistic heritage.",  iconImg: UP("1455390582262-e3a3ce15d6d4"), img: "/photos/hindi-exhibition.jpeg" },
+    { name: "English Debates & MUN",            desc: "Regular debate sessions and a Model United Nations programme develop global discourse skills.", iconImg: UP("1529156069898-49953e39b3ac"), img: "/photos/students-traditional.jpeg" },
+    { name: "Rangoli & Visual Arts",            desc: "Festival rangoli, poster-making, and fine-arts exhibitions held throughout the year.",           iconImg: UP("1513364776144-60967b0f800f"), img: "/photos/havan-ceremony.jpeg" },
   ];
 
   return (
@@ -59,7 +67,7 @@ export default function CulturalProgramsPage() {
                     <img src={p.img} alt={p.name} />
                   </div>
                   <div className="about-text">
-                    <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>{p.icon}</div>
+                    <img src={p.iconImg} alt={p.name} style={IC} />
                     <h2 style={{ fontSize: "1.8rem", marginBottom: 14 }}>{p.name}</h2>
                     <p style={{ fontSize: "1.02rem", color: "var(--muted)", lineHeight: 1.75 }}>{p.desc}</p>
                   </div>
@@ -67,7 +75,7 @@ export default function CulturalProgramsPage() {
               ) : (
                 <>
                   <div className="about-text">
-                    <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>{p.icon}</div>
+                    <img src={p.iconImg} alt={p.name} style={IC} />
                     <h2 style={{ fontSize: "1.8rem", marginBottom: 14 }}>{p.name}</h2>
                     <p style={{ fontSize: "1.02rem", color: "var(--muted)", lineHeight: 1.75 }}>{p.desc}</p>
                   </div>
@@ -95,8 +103,9 @@ export default function CulturalProgramsPage() {
                 <img src={p.img} alt={p.name} />
               </div>
               <div className="body">
-                <span style={{ fontSize: "1.5rem" }}>{p.icon}</span>
-                <h3 style={{ marginTop: 8, fontSize: "1.05rem" }}>{p.name}</h3>
+                <img src={p.iconImg} alt={p.name}
+                  style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 8, marginBottom: 8, display: "block" }} />
+                <h3 style={{ marginTop: 0, fontSize: "1.05rem" }}>{p.name}</h3>
                 <p style={{ color: "var(--muted)", fontSize: ".88rem", lineHeight: 1.65 }}>{p.desc}</p>
               </div>
             </div>

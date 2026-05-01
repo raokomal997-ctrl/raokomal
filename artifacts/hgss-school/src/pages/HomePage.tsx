@@ -3,6 +3,14 @@ import type { Route } from "../App";
 
 type Props = { navigate: (r: Route) => void; openApply: () => void };
 
+const UP = (id: string, size = 64) =>
+  `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&q=80`;
+
+const IC: React.CSSProperties = {
+  width: 56, height: 56, objectFit: "cover",
+  borderRadius: 12, marginBottom: 10, display: "block",
+};
+
 function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const [n, setN] = useState(0);
   const [started, setStarted] = useState(false);
@@ -151,28 +159,28 @@ export default function HomePage({ navigate, openApply }: Props) {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20, maxWidth: 1200, margin: "0 auto" }}>
           {[
-            { icon: "🏛️", title: "Our History",         desc: "50+ years of shaping young women in Kaithal.",       route: "our-history" as Route },
-            { icon: "💬", title: "Principal's Message",  desc: "A warm welcome from the head of our institution.",   route: "principals-message" as Route },
-            { icon: "🎯", title: "Mission & Vision",     desc: "The values and goals that drive everything we do.",   route: "mission-vision" as Route },
-            { icon: "👩‍🏫", title: "Faculty & Staff",     desc: "Dedicated educators committed to every student.",    route: "faculty-staff" as Route },
-            { icon: "📚", title: "Curriculum",           desc: "CISCE-aligned learning from Pre-Primary to Class XII.", route: "curriculum" as Route },
-            { icon: "🔬", title: "Subjects Offered",     desc: "Science, Commerce & Humanities streams for XI–XII.",  route: "subjects-offered" as Route },
-            { icon: "📅", title: "Timetable",            desc: "Our structured daily and weekly school schedule.",    route: "timetable" as Route },
-            { icon: "📊", title: "Exam Results",         desc: "Outstanding ICSE & ISC board results year after year.", route: "exam-results" as Route },
-            { icon: "🏆", title: "Achievements",         desc: "Academic, sports, and cultural accolades.",           route: "achievements" as Route },
-            { icon: "🎉", title: "Events & Activities",  desc: "A vibrant annual calendar of school-wide events.",    route: "events-activities" as Route },
-            { icon: "🏃‍♀️", title: "Sports",               desc: "8 sports disciplines, courts, and champion teams.",  route: "sports" as Route },
-            { icon: "🎭", title: "Cultural Programs",    desc: "Dance, drama, music, and heritage celebrated.",        route: "cultural-programs" as Route },
-            { icon: "📸", title: "School Gallery",       desc: "A visual journey through campus life.",               route: "school-gallery" as Route },
-            { icon: "🤝", title: "Clubs & Societies",    desc: "8 clubs from Science to NCC to Literary Society.",    route: "clubs-societies" as Route },
-            { icon: "📋", title: "Admissions",           desc: "How to apply, eligibility, and important dates.",     route: "admissions" as Route },
+            { img: UP("1523050854058-8df90110c9f1"), title: "Our History",         desc: "50+ years of shaping young women in Kaithal.",       route: "our-history" as Route },
+            { img: UP("1573496359142-b8d87734a5a2"), title: "Principal's Message",  desc: "A warm welcome from the head of our institution.",   route: "principals-message" as Route },
+            { img: UP("1522202176988-66273c2fd55f"), title: "Mission & Vision",     desc: "The values and goals that drive everything we do.",   route: "mission-vision" as Route },
+            { img: UP("1524178232363-1fb2b075b655"), title: "Faculty & Staff",      desc: "Dedicated educators committed to every student.",    route: "faculty-staff" as Route },
+            { img: UP("1481627834876-b7833e8f5570"), title: "Curriculum",           desc: "CISCE-aligned learning from Pre-Primary to Class XII.", route: "curriculum" as Route },
+            { img: UP("1532094349884-543bc11b234d"), title: "Subjects Offered",     desc: "Science, Commerce & Humanities streams for XI–XII.",  route: "subjects-offered" as Route },
+            { img: UP("1506784983877-45594efa4cbe"), title: "Timetable",            desc: "Our structured daily and weekly school schedule.",    route: "timetable" as Route },
+            { img: UP("1434030216411-0b793f4b4173"), title: "Exam Results",         desc: "Outstanding ICSE & ISC board results year after year.", route: "exam-results" as Route },
+            { img: UP("1546519638-68e109498ffc"),   title: "Achievements",         desc: "Academic, sports, and cultural accolades.",           route: "achievements" as Route },
+            { img: UP("1530103862676-de8c9debad1d"), title: "Events & Activities",  desc: "A vibrant annual calendar of school-wide events.",    route: "events-activities" as Route },
+            { img: UP("1461896836934-ffe607ba8211"), title: "Sports",               desc: "8 sports disciplines, courts, and champion teams.",  route: "sports" as Route },
+            { img: UP("1518834107812-67b0b7c58434"), title: "Cultural Programs",    desc: "Dance, drama, music, and heritage celebrated.",        route: "cultural-programs" as Route },
+            { img: UP("1471341971476-ae15ff5dd4ea"), title: "School Gallery",       desc: "A visual journey through campus life.",               route: "school-gallery" as Route },
+            { img: UP("1529156069898-49953e39b3ac"), title: "Clubs & Societies",    desc: "8 clubs from Science to NCC to Literary Society.",    route: "clubs-societies" as Route },
+            { img: UP("1454165804606-c3d57bc86b40"), title: "Admissions",           desc: "How to apply, eligibility, and important dates.",     route: "admissions" as Route },
           ].map((c, i) => (
             <div key={i} className="reveal" onClick={() => navigate(c.route)}
               style={{ background: "#fff", borderRadius: 12, padding: "20px 22px", cursor: "pointer", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)", transition: "transform .25s ease, box-shadow .25s ease, border-color .25s ease" }}
               onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-5px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "var(--shadow-md)"; (e.currentTarget as HTMLDivElement).style.borderColor = "var(--gold)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ""; (e.currentTarget as HTMLDivElement).style.boxShadow = "var(--shadow-sm)"; (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"; }}
             >
-              <div style={{ fontSize: "2rem", marginBottom: 10 }}>{c.icon}</div>
+              <img src={c.img} alt={c.title} style={IC} />
               <h4 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1rem", fontWeight: 700, marginBottom: 6 }}>{c.title}</h4>
               <p style={{ color: "var(--muted)", fontSize: ".87rem", lineHeight: 1.6, margin: 0 }}>{c.desc}</p>
             </div>
@@ -190,18 +198,18 @@ export default function HomePage({ navigate, openApply }: Props) {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16, maxWidth: 1100, margin: "0 auto" }}>
           {[
-            { label: "Pre-Primary",     sub: "Nursery – KG",    icon: "🧸", route: "curriculum" as Route },
-            { label: "Primary",          sub: "Classes I – V",   icon: "📖", route: "curriculum" as Route },
-            { label: "Middle School",    sub: "Classes VI – VIII",icon: "🖊️", route: "curriculum" as Route },
-            { label: "Secondary",        sub: "Classes IX – X",  icon: "📐", route: "exam-results" as Route },
-            { label: "Senior Secondary", sub: "Classes XI – XII", icon: "🎓", route: "subjects-offered" as Route },
+            { img: UP("1503676260728-1c00da094a0b"), label: "Pre-Primary",     sub: "Nursery – KG",     route: "curriculum" as Route },
+            { img: UP("1481627834876-b7833e8f5570"), label: "Primary",          sub: "Classes I – V",    route: "curriculum" as Route },
+            { img: UP("1456513080510-7bf3a84b82f8"), label: "Middle School",    sub: "Classes VI – VIII", route: "curriculum" as Route },
+            { img: UP("1434030216411-0b793f4b4173"), label: "Secondary",        sub: "Classes IX – X",   route: "exam-results" as Route },
+            { img: UP("1523580494863-6f0b13b5a5c4"), label: "Senior Secondary", sub: "Classes XI – XII", route: "subjects-offered" as Route },
           ].map((l, i) => (
             <div key={i} className="reveal" onClick={() => navigate(l.route)}
               style={{ background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 12, padding: "24px 20px", textAlign: "center", cursor: "pointer", transition: "background .2s, border-color .2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(244,208,63,.12)"; (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(244,208,63,.3)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,.07)"; (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,.1)"; }}
             >
-              <div style={{ fontSize: "2.2rem", marginBottom: 10 }}>{l.icon}</div>
+              <img src={l.img} alt={l.label} style={{ ...IC, margin: "0 auto 10px", borderRadius: 10 }} />
               <h4 style={{ color: "#fff", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, marginBottom: 4 }}>{l.label}</h4>
               <p style={{ color: "rgba(255,255,255,.5)", fontSize: ".82rem" }}>{l.sub}</p>
             </div>
@@ -310,17 +318,17 @@ export default function HomePage({ navigate, openApply }: Props) {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
           {[
-            { icon: "🎓", title: "CISCE Board Affiliation", desc: "Nationally recognised ICSE & ISC curriculum with consistent 99%+ pass rates." },
-            { icon: "👩‍🔬", title: "Fully Equipped Labs", desc: "Physics, Chemistry, Biology & Computer labs for hands-on, practical learning." },
-            { icon: "📖", title: "8,000+ Book Library", desc: "A rich library with books, periodicals, and digital resources for all classes." },
-            { icon: "💻", title: "Smart Classrooms", desc: "Digital smart boards and e-learning tools integrated into every classroom." },
-            { icon: "🪖", title: "NCC Unit", desc: "Girls' NCC battalion providing military training, leadership and service." },
-            { icon: "🌿", title: "Green Campus", desc: "A lush, safe, and eco-conscious campus with outdoor play and learning areas." },
-            { icon: "🏅", title: "50 Years of Results", desc: "Generations of alumnae — doctors, officers, educators — across India and beyond." },
-            { icon: "🤲", title: "Affordable Education", desc: "Quality education accessible to families from all walks of life in Kaithal." },
+            { img: UP("1523580494863-6f0b13b5a5c4"), title: "CISCE Board Affiliation", desc: "Nationally recognised ICSE & ISC curriculum with consistent 99%+ pass rates." },
+            { img: UP("1532094349884-543bc11b234d"), title: "Fully Equipped Labs",     desc: "Physics, Chemistry, Biology & Computer labs for hands-on, practical learning." },
+            { img: UP("1481627834876-b7833e8f5570"), title: "8,000+ Book Library",     desc: "A rich library with books, periodicals, and digital resources for all classes." },
+            { img: UP("1516321318423-f06f85e504b3"), title: "Smart Classrooms",        desc: "Digital smart boards and e-learning tools integrated into every classroom." },
+            { img: UP("1569982175286-3f1b4a4b16a2"), title: "NCC Unit",               desc: "Girls' NCC battalion providing military training, leadership and service." },
+            { img: UP("1542601906-bff1a7e60e1d"),   title: "Green Campus",            desc: "A lush, safe, and eco-conscious campus with outdoor play and learning areas." },
+            { img: UP("1546519638-68e109498ffc"),   title: "50 Years of Results",     desc: "Generations of alumnae — doctors, officers, educators — across India and beyond." },
+            { img: UP("1529156069898-49953e39b3ac"), title: "Affordable Education",    desc: "Quality education accessible to families from all walks of life in Kaithal." },
           ].map((w, i) => (
             <div key={i} className="reveal" style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 12, padding: "22px 20px", boxShadow: "var(--shadow-sm)" }}>
-              <div style={{ fontSize: "2rem", marginBottom: 10 }}>{w.icon}</div>
+              <img src={w.img} alt={w.title} style={IC} />
               <h4 style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, marginBottom: 6, fontSize: ".98rem" }}>{w.title}</h4>
               <p style={{ color: "var(--muted)", fontSize: ".87rem", lineHeight: 1.6, margin: 0 }}>{w.desc}</p>
             </div>
@@ -372,103 +380,32 @@ export default function HomePage({ navigate, openApply }: Props) {
           {[
             { quote: "HGSS gave my daughter not just an education, but a purpose and a personality. She passed Class XII with distinction and secured admission to a top college.", name: "Mrs. Anita Rani", role: "Parent, Class XII (2024)" },
             { quote: "The teachers here treat every student like their own child. The balance of academics, sports, and cultural activities is truly unique.", name: "Seema Sharma", role: "Alumna, Batch of 2018" },
-            { quote: "I was selected for NCC camp and it changed my life. HGSS builds not just students — it builds leaders.", name: "Priya Kumari", role: "Student, Class XI" },
+            { quote: "My daughter has transformed here — she is confident, curious, and kind. HGSS has instilled values that no textbook can teach.", name: "Mr. Ramesh Kumar", role: "Parent, Class IX" },
           ].map((t, i) => (
             <div key={i} className="reveal" style={{ background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 14, padding: "28px 26px" }}>
-              <div style={{ color: "var(--gold)", fontSize: "2rem", marginBottom: 12, lineHeight: 1 }}>"</div>
-              <p style={{ color: "rgba(255,255,255,.85)", lineHeight: 1.75, marginBottom: 20, fontStyle: "italic" }}>{t.quote}</p>
-              <div style={{ borderTop: "1px solid rgba(255,255,255,.1)", paddingTop: 14 }}>
-                <p style={{ color: "#fff", fontWeight: 700, margin: 0 }}>{t.name}</p>
-                <p style={{ color: "var(--gold)", fontSize: ".82rem", margin: "3px 0 0" }}>{t.role}</p>
+              <p style={{ color: "rgba(255,255,255,.85)", lineHeight: 1.75, fontStyle: "italic", marginBottom: 20 }}>"{t.quote}"</p>
+              <div>
+                <p style={{ color: "var(--gold)", fontWeight: 700, margin: 0 }}>{t.name}</p>
+                <p style={{ color: "rgba(255,255,255,.45)", fontSize: ".82rem", margin: "3px 0 0" }}>{t.role}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── LOCATION & MAP ── */}
-      <section className="section alt">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, maxWidth: 1200, margin: "0 auto", alignItems: "center" }} className="map-grid">
-          <div className="reveal">
-            <div className="divider" style={{ margin: "0 0 18px" }}></div>
-            <span style={{ fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: "var(--gold-dk)" }}>Find Us</span>
-            <h2 style={{ marginTop: 10, marginBottom: 20 }}>Visit Our Campus</h2>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>📍</div>
-                <div>
-                  <p style={{ fontWeight: 700, marginBottom: 2 }}>Address</p>
-                  <p style={{ color: "var(--muted)" }}>Hindu Girls Senior Secondary School,<br />Ambala Road, Kaithal,<br />Haryana – 136 027</p>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>📞</div>
-                <div>
-                  <p style={{ fontWeight: 700, marginBottom: 2 }}>Phone</p>
-                  <p style={{ color: "var(--muted)" }}>+91 74600 00000</p>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>✉️</div>
-                <div>
-                  <p style={{ fontWeight: 700, marginBottom: 2 }}>Email</p>
-                  <p style={{ color: "var(--muted)" }}>info@hgsskaithal.edu.in</p>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>🕐</div>
-                <div>
-                  <p style={{ fontWeight: 700, marginBottom: 2 }}>School Hours</p>
-                  <p style={{ color: "var(--muted)" }}>Monday – Saturday: 7:30 AM – 2:45 PM<br />Office: 8:00 AM – 4:00 PM</p>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 28 }}>
-              <button className="btn btn-gold" onClick={() => navigate("contact")}>Contact Us</button>
-            </div>
-          </div>
-
-          <div className="reveal">
-            <div style={{ borderRadius: 16, overflow: "hidden", boxShadow: "var(--shadow-md)", border: "3px solid var(--gold)", aspectRatio: "4/3" }}>
-              <iframe
-                title="HGSS Location — Kaithal, Haryana"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=76.3900%2C29.7970%2C76.4100%2C29.8070&layer=mapnik&marker=29.8013%2C76.4004"
-                style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-                loading="lazy"
-                allowFullScreen
-              />
-            </div>
-            <p style={{ textAlign: "center", color: "var(--muted)", fontSize: ".8rem", marginTop: 10 }}>
-              Kaithal, Haryana · <a href="https://www.openstreetmap.org/?mlat=29.8013&mlon=76.4004#map=15/29.8013/76.4004" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-dk)", fontWeight: 600 }}>Open in Maps ↗</a>
-            </p>
-          </div>
+      {/* ── CTA ── */}
+      <section className="section" style={{ textAlign: "center" }}>
+        <div className="section-head reveal">
+          <div className="divider"></div>
+          <span className="eyebrow">Join HGSS</span>
+          <h2>Give Your Daughter the Education She Deserves</h2>
+          <p>Admissions are open for session 2025–26. Seats are limited — apply today and secure your daughter's future.</p>
+        </div>
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }} className="reveal">
+          <button className="btn btn-gold" onClick={openApply}>Apply for Admission</button>
+          <button className="btn btn-outline-dark" onClick={() => navigate("contact")}>Contact Us</button>
         </div>
       </section>
-
-      {/* ── ADMISSIONS CTA BAND ── */}
-      <section className="cta-band">
-        <h2>Admissions Open for 2025 – 26</h2>
-        <p>Limited seats across Pre-Primary, Primary, Middle and Senior Secondary classes. Apply early to secure your daughter's place at HGSS.</p>
-        <div className="hero-cta" style={{ justifyContent: "center" }}>
-          <button className="btn btn-gold" onClick={openApply}>Apply Now</button>
-          <button className="btn btn-outline" onClick={() => navigate("admissions")}>View Admission Details</button>
-        </div>
-      </section>
-
-      <style>{`
-        @media (max-width: 700px) {
-          .stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
-        }
-        @media (max-width: 480px) {
-          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-        }
-        @media (max-width: 800px) {
-          .notice-grid { grid-template-columns: 1fr !important; }
-          .map-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </>
   );
 }

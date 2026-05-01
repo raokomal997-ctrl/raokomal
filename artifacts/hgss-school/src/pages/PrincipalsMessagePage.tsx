@@ -1,3 +1,14 @@
+const UP = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+
+const IC: React.CSSProperties = {
+  width: 56, height: 56, objectFit: "cover",
+  borderRadius: 12, marginBottom: 12, display: "block",
+  margin: "0 auto 12px",
+};
+
+import React from "react";
+
 export default function PrincipalsMessagePage() {
   return (
     <>
@@ -38,13 +49,13 @@ export default function PrincipalsMessagePage() {
         </div>
         <div className="features-grid" style={{ maxWidth: 960, margin: "0 auto" }}>
           {[
-            { icon: "📚", title: "Academic Excellence", desc: "Rigorous, board-aligned curriculum delivered by passionate educators who go beyond textbooks." },
-            { icon: "🌱", title: "Holistic Development", desc: "Sports, arts, NCC, and community service are as important as classroom performance." },
-            { icon: "💡", title: "Critical Thinking", desc: "We encourage questions, debate, and independent reasoning from an early age." },
-            { icon: "🤝", title: "Inclusive Community", desc: "Every student, regardless of background, receives equal attention, care, and opportunity." },
+            { img: UP("1481627834876-b7833e8f5570"), title: "Academic Excellence",  desc: "Rigorous, board-aligned curriculum delivered by passionate educators who go beyond textbooks." },
+            { img: UP("1461896836934-ffe607ba8211"), title: "Holistic Development", desc: "Sports, arts, NCC, and community service are as important as classroom performance." },
+            { img: UP("1522202176988-66273c2fd55f"), title: "Critical Thinking",    desc: "We encourage questions, debate, and independent reasoning from an early age." },
+            { img: UP("1529156069898-49953e39b3ac"), title: "Inclusive Community",  desc: "Every student, regardless of background, receives equal attention, care, and opportunity." },
           ].map((b, i) => (
             <div key={i} className="feature-card reveal" style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>{b.icon}</div>
+              <img src={b.img} alt={b.title} style={IC} />
               <h4 style={{ marginBottom: 8 }}>{b.title}</h4>
               <p style={{ color: "var(--muted)", fontSize: ".93rem" }}>{b.desc}</p>
             </div>

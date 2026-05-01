@@ -1,38 +1,46 @@
+const UP = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+
+const IC: React.CSSProperties = {
+  width: 56, height: 56, objectFit: "cover",
+  borderRadius: 12, marginBottom: 12, display: "block",
+};
+
 export default function SportsPage() {
   const featured = [
     {
       name: "Athletics & Track Events",
       desc: "100m, 200m, 400m sprint, relay races, and long jump contested in inter-house meets and district championships. Our athletes have won gold in the District Athletics Championship.",
       img: "/photos/marching-uniform.jpeg",
-      icon: "🏃‍♀️",
+      iconImg: UP("1461896836934-ffe607ba8211"),
     },
     {
       name: "Volleyball & Team Sports",
       desc: "Our volleyball team has been District Volleyball Champions in 2022 and 2023. Students train under qualified coaches and compete regularly at state-level tournaments.",
       img: "/photos/ncc-cadets.jpeg",
-      icon: "🏐",
+      iconImg: UP("1541534741688-6078c787b4d5"),
     },
     {
       name: "Martial Arts & Combat Sports",
       desc: "Judo and other martial arts are offered as part of our physical education programme, producing district and state level medal winners year after year.",
       img: "/photos/judo-winner.jpeg",
-      icon: "🥋",
+      iconImg: UP("1568702846914-96b305d2aaeb"),
     },
     {
       name: "Weightlifting & Fitness",
       desc: "A dedicated fitness and weightlifting programme for senior students, producing state-level competitors and helping girls build strength, endurance, and confidence.",
       img: "/photos/sports-weightlifting.jpeg",
-      icon: "🏋️‍♀️",
+      iconImg: UP("1434608519773-b5a89e30aadb"),
     },
   ];
 
   const sports = [
-    { name: "Badminton",    desc: "Indoor courts; several state-level qualifiers in recent years.",       icon: "🏸" },
-    { name: "Kho-Kho",      desc: "District championship titles; state runners-up 2023.",                 icon: "🏅" },
-    { name: "Kabaddi",      desc: "District champions three times in the past five years.",               icon: "💪" },
-    { name: "Table Tennis", desc: "Professional tables; open to all classes as sports elective.",         icon: "🏓" },
-    { name: "Basketball",   desc: "Dedicated court; district-level participation.",                       icon: "🏀" },
-    { name: "Yoga & Aerobics", desc: "Daily yoga sessions promoting physical and mental well-being.",    icon: "🧘‍♀️" },
+    { name: "Badminton",       desc: "Indoor courts; several state-level qualifiers in recent years.",    img: UP("1461735206615-5a13d55aa250") },
+    { name: "Kho-Kho",         desc: "District championship titles; state runners-up 2023.",              img: UP("1461894228951-5e36d52059a1") },
+    { name: "Kabaddi",         desc: "District champions three times in the past five years.",            img: UP("1547347855-9efb2e1a1c1b") },
+    { name: "Table Tennis",    desc: "Professional tables; open to all classes as sports elective.",      img: UP("1551958425-0f84c0cb6fb1") },
+    { name: "Basketball",      desc: "Dedicated court; district-level participation.",                    img: UP("1574623347-8f0c37a9d9e0") },
+    { name: "Yoga & Aerobics", desc: "Daily yoga sessions promoting physical and mental well-being.",     img: UP("1506126613408-eca07ce68773") },
   ];
 
   const achievements = [
@@ -87,7 +95,7 @@ export default function SportsPage() {
                     <img src={s.img} alt={s.name} />
                   </div>
                   <div className="about-text">
-                    <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>{s.icon}</div>
+                    <img src={s.iconImg} alt={s.name} style={IC} />
                     <h2 style={{ fontSize: "1.8rem", marginBottom: 14 }}>{s.name}</h2>
                     <p style={{ fontSize: "1.02rem", color: "var(--muted)", lineHeight: 1.75 }}>{s.desc}</p>
                   </div>
@@ -95,7 +103,7 @@ export default function SportsPage() {
               ) : (
                 <>
                   <div className="about-text">
-                    <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>{s.icon}</div>
+                    <img src={s.iconImg} alt={s.name} style={IC} />
                     <h2 style={{ fontSize: "1.8rem", marginBottom: 14 }}>{s.name}</h2>
                     <p style={{ fontSize: "1.02rem", color: "var(--muted)", lineHeight: 1.75 }}>{s.desc}</p>
                   </div>
@@ -120,7 +128,8 @@ export default function SportsPage() {
           {sports.map((s, i) => (
             <div key={i} className="feature-card reveal" style={{ textAlign: "center", cursor: "default" }}>
               <div style={{ padding: "28px 22px 0" }}>
-                <div style={{ fontSize: "2.4rem", marginBottom: 12 }}>{s.icon}</div>
+                <img src={s.img} alt={s.name}
+                  style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 12, marginBottom: 12, display: "block", margin: "0 auto 12px" }} />
                 <h4 style={{ marginBottom: 8 }}>{s.name}</h4>
                 <p style={{ color: "var(--muted)", fontSize: ".88rem", lineHeight: 1.6, paddingBottom: 22 }}>{s.desc}</p>
               </div>
@@ -151,7 +160,7 @@ export default function SportsPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
               {achievements.map((a, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)", fontSize: "1.1rem" }}>🏆</span>
+                  <span style={{ color: "var(--gold)", fontSize: "1.1rem" }}>★</span>
                   <span style={{ color: "var(--ink)", fontWeight: 500 }}>{a}</span>
                 </div>
               ))}

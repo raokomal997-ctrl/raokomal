@@ -1,23 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Route } from "../App";
 
 type Props = { navigate: (r: Route) => void; openApply: () => void };
 
 function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const [n, setN] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); obs.disconnect(); } },
+      { threshold: 0.5 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
     let raf = 0;
     const start = performance.now();
-    const dur = 1600;
+    const dur = 1800;
     const tick = (now: number) => {
       const p = Math.min((now - start) / dur, 1);
-      setN(Math.floor(p * end));
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.floor(eased * end));
       if (p < 1) raf = requestAnimationFrame(tick);
+      else setN(end);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [end]);
-  return <>{n}{suffix}</>;
+  }, [started, end]);
+
+  return <span ref={ref}>{n}{suffix}</span>;
 }
 
 const KB_SLIDES = [

@@ -1,11 +1,11 @@
 import React from "react";
 
-const UP = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?w=72&h=72&fit=crop&q=80`;
+const UP = (id: string, w = 320, h = 320) =>
+  `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&crop=faces&q=85`;
 
 const IC: React.CSSProperties = {
   width: 56, height: 56, objectFit: "cover",
-  borderRadius: 12, marginBottom: 12, display: "block",
+  borderRadius: 12, display: "block",
   margin: "0 auto 12px",
 };
 
@@ -21,13 +21,27 @@ export default function PrincipalsMessagePage() {
       <section className="section">
         <div className="about-grid" style={{ alignItems: "flex-start" }}>
           <div className="about-image reveal" style={{ textAlign: "center" }}>
-            <img src="/photos/school-logo.jpeg" alt="Principal" style={{ borderRadius: "50%", width: 240, height: 240, objectFit: "cover", border: "4px solid var(--gold)", margin: "0 auto", boxShadow: "0 10px 32px rgba(0,0,0,.15)" }} />
+            <img
+              src={UP("1573496359142-b8d87734a5a2", 480, 480)}
+              alt="Mrs. Sunita Sharma — Principal"
+              style={{
+                borderRadius: "50%",
+                width: 240, height: 240,
+                objectFit: "cover",
+                objectPosition: "center top",
+                border: "4px solid var(--gold)",
+                margin: "0 auto",
+                display: "block",
+                boxShadow: "0 10px 32px rgba(0,0,0,.18)",
+              }}
+            />
             <div style={{ marginTop: 20 }}>
               <h3 style={{ fontSize: "1.2rem" }}>Mrs. Sunita Sharma</h3>
               <p style={{ color: "var(--muted)", fontSize: ".9rem", marginTop: 4 }}>M.A., B.Ed. — Principal, HGSS Kaithal</p>
-              <p style={{ color: "var(--gold-dk)", fontSize: ".85rem", marginTop: 4 }}>25+ Years in Education</p>
+              <p style={{ color: "var(--gold-dk)", fontSize: ".85rem", marginTop: 4 }}>32+ Years in Education</p>
             </div>
           </div>
+
           <div className="about-text reveal">
             <span className="eyebrow" style={{ color: "var(--gold-dk)", fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700 }}>Principal's Message</span>
             <h2>Dear Students, Parents & Well-Wishers,</h2>

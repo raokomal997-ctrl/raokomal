@@ -15,7 +15,7 @@ export default function EventsActivitiesPage() {
     {
       name: "NCC & Patriotic Events",
       desc: "Independence Day, Republic Day, and Kargil Vijay Diwas are marked with flag-hoisting, NCC cadet parades, patriotic songs, and special assemblies.",
-      img: "/photos/ncc-cadets.jpeg",
+      img: "/photos/ncc-parade.png",
       month: "Jan / Aug",
     },
     {

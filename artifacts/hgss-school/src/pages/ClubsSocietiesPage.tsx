@@ -1,69 +1,37 @@
 export default function ClubsSocietiesPage() {
-  const clubs = [
+  const featured = [
+    {
+      name: "NCC — Girls Battalion",
+      tagline: "Unity, Discipline, and National Pride",
+      desc: "Our NCC Girls Battalion is one of the most active in Kaithal district. Students undergo rigorous drill, parade, and leadership training that shapes them into confident, disciplined young women. Past cadets have represented Haryana at the Republic Day parade in New Delhi.",
+      img: "/photos/ncc-parade.png",
+      color: "#2C3E50",
+      activities: ["Drill and parade training", "Annual NCC camp", "Republic Day parade march", "Social service activities", "Shooting & trekking camps"],
+    },
     {
       name: "Science Club",
       tagline: "Explore. Experiment. Discover.",
-      desc: "Weekly experiments, STEM challenges, science quizzes, and preparation for Science Olympiads. Open to Classes VI–XII.",
-      icon: "🔬",
+      desc: "Weekly experiments, STEM challenges, and Science Olympiad training make the Science Club one of the most popular at HGSS. Students collaborate on innovative projects displayed at our Annual Science Exhibition every May.",
+      img: "/photos/science-lab.png",
       color: "#3498DB",
-      activities: ["Monthly science fairs", "Olympiad training", "Field visits to research institutes", "Guest lectures by scientists"],
+      activities: ["Monthly science fairs", "Science Olympiad training", "Field visits to institutes", "Guest lectures by scientists", "Annual Science Exhibition"],
     },
     {
       name: "Literary Club",
       tagline: "Words that move the world.",
-      desc: "Book discussions, creative writing workshops, poetry sessions, and editorial team for the school magazine.",
-      icon: "📚",
+      desc: "From creative writing to school magazine 'Kiran', our Literary Club is the heart of HGSS's intellectual life. Members debate, write poetry, and participate in elocution and essay competitions at district and state level.",
+      img: "/photos/school-library.png",
       color: "#E67E22",
-      activities: ["School magazine 'Kiran'", "Story-writing contests", "Poetry recitation", "Book club meetings"],
+      activities: ["School magazine 'Kiran'", "Story-writing contests", "Poetry recitation evenings", "Book club meetings", "State-level essay competitions"],
     },
-    {
-      name: "Eco Club",
-      tagline: "Green campus, green future.",
-      desc: "Environmental awareness campaigns, tree-plantation drives, waste management, and nature walks.",
-      icon: "🌿",
-      color: "#2ECC71",
-      activities: ["Tree plantation drives", "Plastic-free campaigns", "Nature photography", "Clean school initiatives"],
-    },
-    {
-      name: "NCC — Girls Battalion",
-      tagline: "Unity and Discipline.",
-      desc: "National Cadet Corps unit providing military training, leadership, and national service opportunities to Class IX–XII girls.",
-      icon: "🪖",
-      color: "#2C3E50",
-      activities: ["Drill and parade training", "Annual NCC camp", "Republic Day parade", "Social service activities"],
-    },
-    {
-      name: "Cultural & Fine Arts Club",
-      tagline: "Creativity in every form.",
-      desc: "Dance, drama, music, painting, and craft — this club prepares students for all cultural competitions and events.",
-      icon: "🎨",
-      color: "#9B59B6",
-      activities: ["Dance & drama rehearsals", "Rangoli competitions", "Inter-school art contests", "Annual cultural fest 'Utsav'"],
-    },
-    {
-      name: "Health & Wellness Club",
-      tagline: "Mind, body, spirit.",
-      desc: "Yoga, meditation, menstrual health awareness, nutrition workshops, and first-aid training for senior students.",
-      icon: "🧘‍♀️",
-      color: "#E74C3C",
-      activities: ["Daily yoga sessions", "Nutrition & health talks", "First-aid certification", "Mental wellness workshops"],
-    },
-    {
-      name: "Mathematics Club",
-      tagline: "Numbers are fun.",
-      desc: "Math puzzles, problem-solving challenges, and preparation for Mathematics Olympiad and inter-school competitions.",
-      icon: "📐",
-      color: "#F39C12",
-      activities: ["Weekly Math challenges", "Olympiad preparation", "Logic and puzzle sessions", "Math quiz competitions"],
-    },
-    {
-      name: "Community Service Society",
-      tagline: "Serve. Uplift. Inspire.",
-      desc: "Regular visits to orphanages, old-age homes, and literacy drives in the community — building compassion and responsibility.",
-      icon: "🤝",
-      color: "#1ABC9C",
-      activities: ["Literacy drives", "Village outreach visits", "Donation campaigns", "Environmental service"],
-    },
+  ];
+
+  const clubs = [
+    { name: "Eco Club",               tagline: "Green campus, green future.",   icon: "🌿", color: "#2ECC71", desc: "Environmental campaigns, tree-plantation drives, waste management, and nature walks around Kaithal." },
+    { name: "Cultural & Fine Arts",   tagline: "Creativity in every form.",      icon: "🎨", color: "#9B59B6", desc: "Dance, drama, music, painting — preparing students for all cultural competitions and the annual 'Utsav' fest." },
+    { name: "Health & Wellness Club", tagline: "Mind, body, spirit.",            icon: "🧘‍♀️", color: "#E74C3C", desc: "Yoga, meditation, nutrition workshops, and first-aid training for senior students." },
+    { name: "Mathematics Club",       tagline: "Numbers are fun.",               icon: "📐", color: "#F39C12", desc: "Math puzzles, problem-solving challenges, and preparation for Math Olympiad and inter-school competitions." },
+    { name: "Community Service",      tagline: "Serve. Uplift. Inspire.",        icon: "🤝", color: "#1ABC9C", desc: "Orphanage visits, literacy drives, and village outreach — building compassion and responsibility." },
   ];
 
   return (
@@ -74,15 +42,60 @@ export default function ClubsSocietiesPage() {
         <p>At HGSS, learning extends well beyond the classroom. Our clubs and societies are where passions are discovered and leaders are made.</p>
       </section>
 
+      {/* Featured clubs with alternating image/text */}
       <section className="section">
         <div className="section-head reveal">
           <div className="divider"></div>
-          <span className="eyebrow">Co-Curricular Life</span>
-          <h2>Find Your Passion</h2>
-          <p>Every student from Class VI onwards is encouraged to join at least one club and take an active role in its activities.</p>
+          <span className="eyebrow">Flagship Clubs</span>
+          <h2>Our Most Active Societies</h2>
+          <p>These three clubs represent the pillars of co-curricular life at HGSS — discipline, discovery, and expression.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24, maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexDirection: "column", gap: 60 }}>
+          {featured.map((c, i) => (
+            <div key={i} className="about-grid reveal" style={{ alignItems: "center" }}>
+              {i % 2 === 0 ? (
+                <>
+                  <div className="about-image">
+                    <img src={c.img} alt={c.name} />
+                  </div>
+                  <div className="about-text">
+                    <span style={{ fontSize: ".72rem", letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, color: "var(--gold-dk)" }}>{c.tagline}</span>
+                    <h2 style={{ fontSize: "1.7rem", marginTop: 8, marginBottom: 14 }}>{c.name}</h2>
+                    <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.75 }}>{c.desc}</p>
+                    <ul style={{ marginTop: 16, paddingLeft: 18, color: "var(--muted)", lineHeight: 2, fontSize: ".92rem" }}>
+                      {c.activities.map((a, j) => <li key={j}>{a}</li>)}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="about-text">
+                    <span style={{ fontSize: ".72rem", letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, color: "var(--gold-dk)" }}>{c.tagline}</span>
+                    <h2 style={{ fontSize: "1.7rem", marginTop: 8, marginBottom: 14 }}>{c.name}</h2>
+                    <p style={{ fontSize: "1rem", color: "var(--muted)", lineHeight: 1.75 }}>{c.desc}</p>
+                    <ul style={{ marginTop: 16, paddingLeft: 18, color: "var(--muted)", lineHeight: 2, fontSize: ".92rem" }}>
+                      {c.activities.map((a, j) => <li key={j}>{a}</li>)}
+                    </ul>
+                  </div>
+                  <div className="about-image">
+                    <img src={c.img} alt={c.name} />
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Remaining clubs as cards */}
+      <section className="section alt">
+        <div className="section-head reveal">
+          <div className="divider"></div>
+          <span className="eyebrow">More Clubs</span>
+          <h2>More Ways to Get Involved</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
           {clubs.map((c, i) => (
             <div key={i} className="reveal" style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "var(--shadow-sm)", border: "1px solid var(--border)" }}>
               <div style={{ background: c.color, padding: "20px 24px", display: "flex", gap: 14, alignItems: "center" }}>
@@ -93,26 +106,26 @@ export default function ClubsSocietiesPage() {
                 </div>
               </div>
               <div style={{ padding: "18px 24px" }}>
-                <p style={{ color: "var(--muted)", fontSize: ".88rem", lineHeight: 1.65, marginBottom: 14 }}>{c.desc}</p>
-                <p style={{ fontSize: ".72rem", letterSpacing: ".13em", textTransform: "uppercase", color: c.color, fontWeight: 700, marginBottom: 8 }}>Key Activities</p>
-                <ul style={{ paddingLeft: 18, margin: 0 }}>
-                  {c.activities.map((a, j) => (
-                    <li key={j} style={{ color: "var(--ink)", fontSize: ".86rem", marginBottom: 4 }}>{a}</li>
-                  ))}
-                </ul>
+                <p style={{ color: "var(--muted)", fontSize: ".88rem", lineHeight: 1.65 }}>{c.desc}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="section alt">
-        <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }} className="reveal">
-          <div className="divider" style={{ margin: "0 auto 16px" }}></div>
-          <span className="eyebrow" style={{ color: "var(--gold-dk)" }}>How to Join</span>
-          <h2>Become a Member</h2>
-          <p style={{ color: "var(--muted)", lineHeight: 1.8 }}>Club enrolment opens at the start of each academic year in April. Students fill in their preference forms during the orientation week, and club rosters are announced by mid-April. Each club meets once a week during the dedicated activity period on Saturdays.</p>
-          <p style={{ marginTop: 16, color: "var(--muted)", lineHeight: 1.8 }}>For more details, contact the school office or speak to your class teacher.</p>
+      {/* How to join */}
+      <section className="section">
+        <div className="about-grid" style={{ alignItems: "center" }}>
+          <div className="about-image reveal">
+            <img src="/photos/students-happy.png" alt="HGSS students" />
+          </div>
+          <div className="about-text reveal">
+            <span className="eyebrow" style={{ color: "var(--gold-dk)", fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700 }}>Join a Club</span>
+            <h2>How to Become a Member</h2>
+            <p>Club enrolment opens at the start of each academic year in April. Students fill in preference forms during orientation week, and club rosters are announced by mid-April.</p>
+            <p style={{ marginTop: 14 }}>Each club meets <strong>once a week</strong> during the dedicated activity period on Saturdays. NCC training follows a separate weekly schedule.</p>
+            <p style={{ marginTop: 14, color: "var(--muted)" }}>For details, contact the school office or speak to your class teacher.</p>
+          </div>
         </div>
       </section>
     </>

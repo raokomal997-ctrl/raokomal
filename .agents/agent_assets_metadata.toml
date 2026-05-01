@@ -36,3 +36,39 @@ id = "rP66to7mplPV5Jqx95eAX"
 uri = "file://artifacts/hgss-school/src/assets/images/gallery-science-lab.png"
 type = "image"
 title = "Science laboratory"
+
+[[generated]]
+id = "OWP_30zNgPEI1STSCex1l"
+uri = "file://artifacts/hgss-school/public/photos/classroom-exam.png"
+type = "image"
+title = "classroom exam india"
+
+[[generated]]
+id = "auwvMN-dyAUCWD7LZRGA8"
+uri = "file://artifacts/hgss-school/public/photos/science-lab.png"
+type = "image"
+title = "science lab india school"
+
+[[generated]]
+id = "1v71ibktbw8IGdyt-FrtC"
+uri = "file://artifacts/hgss-school/public/photos/school-library.png"
+type = "image"
+title = "school library interior"
+
+[[generated]]
+id = "rUhJ6jmvXyKGD2PtQTPkh"
+uri = "file://artifacts/hgss-school/public/photos/ncc-parade.png"
+type = "image"
+title = "ncc girls parade india"
+
+[[generated]]
+id = "sCxG34yi8J4pcvGdJ0-Yp"
+uri = "file://artifacts/hgss-school/public/photos/students-happy.png"
+type = "image"
+title = "happy indian school girls"
+
+[[generated]]
+id = "a53wtJBzVoCIcVmXJ-UJM"
+uri = "file://artifacts/hgss-school/public/photos/smartboard-classroom.png"
+type = "image"
+title = "smartboard classroom india"

@@ -4,7 +4,7 @@ export default function ClubsSocietiesPage() {
       name: "NCC — Girls Battalion",
       tagline: "Unity, Discipline, and National Pride",
       desc: "Our NCC Girls Battalion is one of the most active in Kaithal district. Students undergo rigorous drill, parade, and leadership training that shapes them into confident, disciplined young women. Past cadets have represented Haryana at the Republic Day parade in New Delhi.",
-      img: "/photos/ncc-parade.png",
+      img: "/photos/ncc-cadets.jpeg",
       color: "#2C3E50",
       activities: ["Drill and parade training", "Annual NCC camp", "Republic Day parade march", "Social service activities", "Shooting & trekking camps"],
     },
@@ -12,7 +12,7 @@ export default function ClubsSocietiesPage() {
       name: "Science Club",
       tagline: "Explore. Experiment. Discover.",
       desc: "Weekly experiments, STEM challenges, and Science Olympiad training make the Science Club one of the most popular at HGSS. Students collaborate on innovative projects displayed at our Annual Science Exhibition every May.",
-      img: "/photos/science-lab.png",
+      img: "/photos/art-class.jpeg",
       color: "#3498DB",
       activities: ["Monthly science fairs", "Science Olympiad training", "Field visits to institutes", "Guest lectures by scientists", "Annual Science Exhibition"],
     },
@@ -20,7 +20,7 @@ export default function ClubsSocietiesPage() {
       name: "Literary Club",
       tagline: "Words that move the world.",
       desc: "From creative writing to school magazine 'Kiran', our Literary Club is the heart of HGSS's intellectual life. Members debate, write poetry, and participate in elocution and essay competitions at district and state level.",
-      img: "/photos/school-library.png",
+      img: "/photos/hindi-exhibition.jpeg",
       color: "#E67E22",
       activities: ["School magazine 'Kiran'", "Story-writing contests", "Poetry recitation evenings", "Book club meetings", "State-level essay competitions"],
     },
@@ -117,7 +117,7 @@ export default function ClubsSocietiesPage() {
       <section className="section">
         <div className="about-grid" style={{ alignItems: "center" }}>
           <div className="about-image reveal">
-            <img src="/photos/students-happy.png" alt="HGSS students" />
+            <img src="/photos/students-traditional.jpeg" alt="HGSS students" />
           </div>
           <div className="about-text reveal">
             <span className="eyebrow" style={{ color: "var(--gold-dk)", fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700 }}>Join a Club</span>

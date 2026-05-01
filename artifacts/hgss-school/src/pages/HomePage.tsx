@@ -39,11 +39,10 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
 }
 
 const KB_SLIDES = [
-  { src: "/photos/students-happy.png",      dir: "kb-in"  },
-  { src: "/photos/assembly-building.jpeg",  dir: "kb-out" },
-  { src: "/photos/ncc-parade.png",          dir: "kb-in"  },
-  { src: "/photos/folk-dance-group.jpeg",   dir: "kb-out" },
-  { src: "/photos/smartboard-classroom.png",dir: "kb-in"  },
+  { src: "/photos/marching-uniform.jpeg",  dir: "kb-in"  },
+  { src: "/photos/assembly-building.jpeg", dir: "kb-out" },
+  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-in"  },
+  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-out" },
 ];
 
 const NOTICES = [
@@ -54,12 +53,12 @@ const NOTICES = [
 ];
 
 const GALLERY_PHOTOS = [
-  { src: "/photos/classroom-exam.png",       alt: "Students in Exam" },
-  { src: "/photos/science-lab.png",          alt: "Science Lab" },
-  { src: "/photos/ncc-parade.png",           alt: "NCC Parade" },
   { src: "/photos/folk-dance-group.jpeg",    alt: "Folk Dance Group" },
+  { src: "/photos/ncc-cadets.jpeg",          alt: "NCC Cadets" },
+  { src: "/photos/havan-ceremony.jpeg",      alt: "Havan Ceremony" },
+  { src: "/photos/cultural-bhangra.jpeg",    alt: "Bhangra Performance" },
   { src: "/photos/sports-weightlifting.jpeg",alt: "Sports" },
-  { src: "/photos/school-library.png",       alt: "School Library" },
+  { src: "/photos/patriotic-dance.jpeg",     alt: "Patriotic Dance" },
 ];
 
 export default function HomePage({ navigate, openApply }: Props) {
@@ -241,7 +240,7 @@ export default function HomePage({ navigate, openApply }: Props) {
             </div>
           </div>
           <div className="feature-card reveal" onClick={() => navigate("clubs-societies")}>
-            <div className="img"><img src="/photos/ncc-parade.png" alt="NCC Cadets" /></div>
+            <div className="img"><img src="/photos/ncc-cadets.jpeg" alt="NCC Cadets" /></div>
             <div className="body">
               <span className="tag">Clubs & NCC</span>
               <h3>8 Clubs & NCC Unit</h3>
@@ -357,7 +356,7 @@ export default function HomePage({ navigate, openApply }: Props) {
             </div>
           </div>
           <div className="about-image reveal">
-            <img src="/photos/award-ceremony.jpg" alt="Award ceremony" />
+            <img src="/photos/annual-day-toppers.jpeg" alt="Annual day toppers" />
           </div>
         </div>
       </section>

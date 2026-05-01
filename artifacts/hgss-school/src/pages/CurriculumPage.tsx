@@ -34,25 +34,25 @@ export default function CurriculumPage() {
 
   const facilities = [
     {
-      img: "/photos/science-lab.png",
+      img: "/photos/art-class.jpeg",
       title: "State-of-the-Art Science Labs",
       desc: "Fully equipped Physics, Chemistry, and Biology laboratories where students perform hands-on experiments, reinforcing every concept taught in the classroom. Lab sessions are scheduled for all classes from VI onwards.",
       tag: "Laboratories",
     },
     {
-      img: "/photos/school-library.png",
+      img: "/photos/hindi-exhibition.jpeg",
       title: "Library — 8,000+ Books & Digital Resources",
       desc: "Our spacious library houses over 8,000 books, encyclopaedias, periodicals, and digital learning resources. Students are encouraged to read widely beyond their syllabus, and library periods are a regular part of the weekly schedule.",
       tag: "Library",
     },
     {
-      img: "/photos/smartboard-classroom.png",
+      img: "/photos/assembly-building.jpeg",
       title: "Smart Classrooms & Digital Learning",
       desc: "Every classroom is equipped with a digital smart board and e-learning platform access, enabling multimedia instruction, interactive lessons, and seamless transition between physical and digital content.",
       tag: "Technology",
     },
     {
-      img: "/photos/classroom-exam.png",
+      img: "/photos/students-traditional.jpeg",
       title: "Structured Assessment & Exam Preparation",
       desc: "Regular unit tests, half-yearly exams, pre-boards, and board mock papers ensure students are always well-prepared. Our exam system mirrors the exact CISCE format so there are no surprises on the day.",
       tag: "Assessment",
@@ -139,7 +139,7 @@ export default function CurriculumPage() {
       <section className="section">
         <div className="about-grid" style={{ alignItems: "center" }}>
           <div className="about-image reveal">
-            <img src="/photos/students-happy.png" alt="Happy HGSS students" />
+            <img src="/photos/marching-uniform.jpeg" alt="HGSS students" />
           </div>
           <div className="about-text reveal">
             <span className="eyebrow" style={{ color: "var(--gold-dk)", fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700 }}>Our Philosophy</span>

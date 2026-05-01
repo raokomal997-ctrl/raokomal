@@ -444,7 +444,7 @@ main { flex: 1; padding-top: 88px; }
 .navbar.scrolled .nav-link:hover,
 .navbar.scrolled .nav-link.active { color: var(--gold); }
 
-/* ── Hover-based dropdown ── */
+/* ── Hover + Click dropdown ── */
 .nav-links > li.has-dropdown { position: relative; }
 
 .nav-links > li.has-dropdown .dropdown {
@@ -473,8 +473,16 @@ main { flex: 1; padding-top: 88px; }
   transform: translateY(0);
 }
 
-/* Rotate arrow when hovering parent li */
-.nav-links > li.has-dropdown:hover .nav-link .arrow {
+/* Show on click (dropdown-open class) */
+.nav-links > li.has-dropdown.dropdown-open .dropdown {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* Rotate arrow when hovering or open */
+.nav-links > li.has-dropdown:hover .nav-link .arrow,
+.nav-links > li.has-dropdown.dropdown-open .nav-link .arrow {
   transform: rotate(180deg);
 }
 

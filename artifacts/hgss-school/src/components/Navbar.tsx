@@ -7,21 +7,22 @@ type Props = {
   openApply: () => void;
 };
 
-type MobileGroup = "about" | "academics" | "campus" | null;
+type Group = "about" | "academics" | "campus";
+type MobileGroup = Group | null;
 
 const aboutItems: { label: string; route: Route }[] = [
-  { label: "Our History",        route: "our-history" },
-  { label: "Principal's Message",route: "principals-message" },
-  { label: "Mission & Vision",   route: "mission-vision" },
-  { label: "Faculty & Staff",    route: "faculty-staff" },
+  { label: "Our History",         route: "our-history" },
+  { label: "Principal's Message", route: "principals-message" },
+  { label: "Mission & Vision",    route: "mission-vision" },
+  { label: "Faculty & Staff",     route: "faculty-staff" },
 ];
 
 const academicsItems: { label: string; route: Route }[] = [
-  { label: "Curriculum",        route: "curriculum" },
-  { label: "Subjects Offered",  route: "subjects-offered" },
-  { label: "Timetable",         route: "timetable" },
-  { label: "Exam Results",      route: "exam-results" },
-  { label: "Achievements",      route: "achievements" },
+  { label: "Curriculum",       route: "curriculum" },
+  { label: "Subjects Offered", route: "subjects-offered" },
+  { label: "Timetable",        route: "timetable" },
+  { label: "Exam Results",     route: "exam-results" },
+  { label: "Achievements",     route: "achievements" },
 ];
 
 const campusItems: { label: string; route: Route }[] = [
@@ -33,9 +34,10 @@ const campusItems: { label: string; route: Route }[] = [
 ];
 
 export default function Navbar({ route, navigate, openApply }: Props) {
-  const [scrolled, setScrolled]     = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileGroup, setMobileGroup] = useState<MobileGroup>(null);
+  const [scrolled, setScrolled]         = useState(false);
+  const [mobileOpen, setMobileOpen]     = useState(false);
+  const [mobileGroup, setMobileGroup]   = useState<MobileGroup>(null);
+  const [openDropdown, setOpenDropdown] = useState<Group | null>(null);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -50,13 +52,32 @@ export default function Navbar({ route, navigate, openApply }: Props) {
     setMobileGroup(null);
   }, [route]);
 
-  const go = (to: Route) => { setMobileOpen(false); navigate(to); };
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const go = (to: Route) => {
+    setMobileOpen(false);
+    setOpenDropdown(null);
+    navigate(to);
+  };
+
+  const clickGroup = (group: Group, firstRoute: Route) => {
+    setOpenDropdown(prev => (prev === group ? null : group));
+    navigate(firstRoute);
+  };
 
   const isAbout     = aboutItems.some(i => i.route === route);
   const isAcademics = academicsItems.some(i => i.route === route);
   const isCampus    = campusItems.some(i => i.route === route);
 
-  const toggleMobileGroup = (g: MobileGroup) =>
+  const toggleMobileGroup = (g: Group) =>
     setMobileGroup(prev => (prev === g ? null : g));
 
   return (
@@ -81,9 +102,14 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </button>
           </li>
 
-          {/* About dropdown — hover-based */}
-          <li className="has-dropdown">
-            <button className={`nav-link ${isAbout ? "active" : ""}`} aria-haspopup="true">
+          {/* About — click to navigate + toggle dropdown */}
+          <li className={`has-dropdown${openDropdown === "about" || isAbout ? " dropdown-open" : ""}`}>
+            <button
+              className={`nav-link ${isAbout ? "active" : ""}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === "about" || isAbout}
+              onClick={() => clickGroup("about", "our-history")}
+            >
               About <span className="arrow">▼</span>
             </button>
             <div className="dropdown">
@@ -96,9 +122,14 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </div>
           </li>
 
-          {/* Academics dropdown — hover-based */}
-          <li className="has-dropdown">
-            <button className={`nav-link ${isAcademics ? "active" : ""}`} aria-haspopup="true">
+          {/* Academics — click to navigate + toggle dropdown */}
+          <li className={`has-dropdown${openDropdown === "academics" || isAcademics ? " dropdown-open" : ""}`}>
+            <button
+              className={`nav-link ${isAcademics ? "active" : ""}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === "academics" || isAcademics}
+              onClick={() => clickGroup("academics", "curriculum")}
+            >
               Academics <span className="arrow">▼</span>
             </button>
             <div className="dropdown">
@@ -111,9 +142,14 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </div>
           </li>
 
-          {/* Campus Life dropdown — hover-based */}
-          <li className="has-dropdown">
-            <button className={`nav-link ${isCampus ? "active" : ""}`} aria-haspopup="true">
+          {/* Campus Life — click to navigate + toggle dropdown */}
+          <li className={`has-dropdown${openDropdown === "campus" || isCampus ? " dropdown-open" : ""}`}>
+            <button
+              className={`nav-link ${isCampus ? "active" : ""}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === "campus" || isCampus}
+              onClick={() => clickGroup("campus", "events-activities")}
+            >
               Campus Life <span className="arrow">▼</span>
             </button>
             <div className="dropdown">
@@ -153,8 +189,10 @@ export default function Navbar({ route, navigate, openApply }: Props) {
         </button>
 
         {/* About accordion */}
-        <button className={`mob-group-btn ${isAbout ? "active" : ""} ${mobileGroup === "about" ? "expanded" : ""}`}
-          onClick={() => toggleMobileGroup("about")}>
+        <button
+          className={`mob-group-btn ${isAbout ? "active" : ""} ${mobileGroup === "about" ? "expanded" : ""}`}
+          onClick={() => { toggleMobileGroup("about"); navigate("our-history"); }}
+        >
           About <span className="mob-arrow">{mobileGroup === "about" ? "▲" : "▼"}</span>
         </button>
         {mobileGroup === "about" && (
@@ -168,8 +206,10 @@ export default function Navbar({ route, navigate, openApply }: Props) {
         )}
 
         {/* Academics accordion */}
-        <button className={`mob-group-btn ${isAcademics ? "active" : ""} ${mobileGroup === "academics" ? "expanded" : ""}`}
-          onClick={() => toggleMobileGroup("academics")}>
+        <button
+          className={`mob-group-btn ${isAcademics ? "active" : ""} ${mobileGroup === "academics" ? "expanded" : ""}`}
+          onClick={() => { toggleMobileGroup("academics"); navigate("curriculum"); }}
+        >
           Academics <span className="mob-arrow">{mobileGroup === "academics" ? "▲" : "▼"}</span>
         </button>
         {mobileGroup === "academics" && (
@@ -183,8 +223,10 @@ export default function Navbar({ route, navigate, openApply }: Props) {
         )}
 
         {/* Campus Life accordion */}
-        <button className={`mob-group-btn ${isCampus ? "active" : ""} ${mobileGroup === "campus" ? "expanded" : ""}`}
-          onClick={() => toggleMobileGroup("campus")}>
+        <button
+          className={`mob-group-btn ${isCampus ? "active" : ""} ${mobileGroup === "campus" ? "expanded" : ""}`}
+          onClick={() => { toggleMobileGroup("campus"); navigate("events-activities"); }}
+        >
           Campus Life <span className="mob-arrow">{mobileGroup === "campus" ? "▲" : "▼"}</span>
         </button>
         {mobileGroup === "campus" && (

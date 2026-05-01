@@ -74,6 +74,15 @@ export default function ContactPage() {
                 <span>Mon – Sat · 8:30 am – 2:30 pm<br/>Sunday & Public Holidays — Closed</span>
               </div>
             </div>
+
+            <a
+              className="btn btn-gold contact-maps-btn"
+              href="https://www.google.com/maps/search/Hindu+Girls+Senior+Secondary+School+Ambala+Road+Kaithal+Haryana"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>📍</span> View on Google Maps
+            </a>
           </div>
 
           <div className="reveal">
@@ -125,6 +134,35 @@ export default function ContactPage() {
               </form>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* GOOGLE MAPS EMBED */}
+      <section className="maps-section">
+        <div className="maps-header">
+          <span className="maps-eyebrow">📍 Find Us</span>
+          <h2>Our Location</h2>
+          <p>Hindu Girls Sr. Sec. School, Ambala Road, Model Town, Kaithal – 136027, Haryana</p>
+        </div>
+        <div className="maps-frame-wrap">
+          <iframe
+            title="HGSS Kaithal Location"
+            src="https://maps.google.com/maps?q=Hindu+Girls+Senior+Secondary+School+Kaithal+Haryana&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            className="maps-frame"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+        <div className="maps-footer-btn">
+          <a
+            className="btn btn-gold"
+            href="https://www.google.com/maps/search/Hindu+Girls+Senior+Secondary+School+Ambala+Road+Kaithal+Haryana"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📍 Open in Google Maps
+          </a>
         </div>
       </section>
     </>

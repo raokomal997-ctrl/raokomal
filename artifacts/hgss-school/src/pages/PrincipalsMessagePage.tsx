@@ -22,7 +22,7 @@ export default function PrincipalsMessagePage() {
         <div className="about-grid" style={{ alignItems: "flex-start" }}>
           <div className="about-image reveal" style={{ textAlign: "center" }}>
             <img
-              src={UP("1573496359142-b8d87734a5a2", 480, 480)}
+              src="/photos/principal.png"
               alt="Mrs. Sunita Sharma — Principal"
               style={{
                 borderRadius: "50%",

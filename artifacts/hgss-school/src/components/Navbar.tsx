@@ -102,13 +102,17 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </button>
           </li>
 
-          {/* About — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "about" ? " dropdown-open" : ""}`}>
+          {/* About — hover to open, leave to close */}
+          <li
+            className={`has-dropdown${openDropdown === "about" ? " dropdown-open" : ""}`}
+            onMouseEnter={() => setOpenDropdown("about")}
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
             <button
               className={`nav-link ${isAbout ? "active" : ""}`}
               aria-haspopup="true"
               aria-expanded={openDropdown === "about"}
-              onClick={() => clickGroup("about", "our-history")}
+              onClick={() => go("our-history")}
             >
               About <span className="arrow">▼</span>
             </button>
@@ -122,13 +126,17 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </div>
           </li>
 
-          {/* Academics — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "academics" ? " dropdown-open" : ""}`}>
+          {/* Academics — hover to open, leave to close */}
+          <li
+            className={`has-dropdown${openDropdown === "academics" ? " dropdown-open" : ""}`}
+            onMouseEnter={() => setOpenDropdown("academics")}
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
             <button
               className={`nav-link ${isAcademics ? "active" : ""}`}
               aria-haspopup="true"
               aria-expanded={openDropdown === "academics"}
-              onClick={() => clickGroup("academics", "curriculum")}
+              onClick={() => go("curriculum")}
             >
               Academics <span className="arrow">▼</span>
             </button>
@@ -142,13 +150,17 @@ export default function Navbar({ route, navigate, openApply }: Props) {
             </div>
           </li>
 
-          {/* Campus Life — click to navigate + toggle dropdown */}
-          <li className={`has-dropdown${openDropdown === "campus" ? " dropdown-open" : ""}`}>
+          {/* Campus Life — hover to open, leave to close */}
+          <li
+            className={`has-dropdown${openDropdown === "campus" ? " dropdown-open" : ""}`}
+            onMouseEnter={() => setOpenDropdown("campus")}
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
             <button
               className={`nav-link ${isCampus ? "active" : ""}`}
               aria-haspopup="true"
               aria-expanded={openDropdown === "campus"}
-              onClick={() => clickGroup("campus", "events-activities")}
+              onClick={() => go("events-activities")}
             >
               Campus Life <span className="arrow">▼</span>
             </button>

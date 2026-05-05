@@ -168,7 +168,7 @@ export default function AdmissionsPage({ openApply }: Props) {
 
         {/* Cards View */}
         {view === "cards" && (
-          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20, maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20, maxWidth: 1200, margin: "0 auto" }}>
             {fees.map((f) => (
               <div key={f.level} style={{
                 background: "var(--bg-card)",
@@ -215,7 +215,7 @@ export default function AdmissionsPage({ openApply }: Props) {
 
         {/* Table View */}
         {view === "table" && (
-          <div className="reveal" style={{ maxWidth: 1000, margin: "0 auto", background: "var(--bg-card)", borderRadius: 16, overflow: "hidden", boxShadow: "var(--shadow-md)", border: "1px solid var(--border)" }}>
+          <div style={{ maxWidth: 1000, margin: "0 auto", background: "var(--bg-card)", borderRadius: 16, overflow: "hidden", boxShadow: "var(--shadow-md)", border: "1px solid var(--border)" }}>
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 620 }}>
                 <thead>

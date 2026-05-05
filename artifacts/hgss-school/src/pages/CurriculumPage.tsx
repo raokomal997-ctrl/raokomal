@@ -9,27 +9,36 @@ export default function CurriculumPage() {
     {
       level: "Primary (Classes I – V)",
       color: "#3498DB",
-      focus: "Building strong foundations in core subjects through activity-based and inquiry-led methods.",
+      focus: "Building strong foundations in core subjects through activity-based and inquiry-led methods, aligned with SCERT/NCERT textbooks.",
       areas: ["English Language & Literature", "Hindi", "Mathematics", "Environmental Studies", "General Knowledge", "Art & Craft", "Physical Education"],
     },
     {
       level: "Middle School (Classes VI – VIII)",
       color: "#2ECC71",
-      focus: "Developing analytical thinking, subject depth, and co-curricular participation.",
+      focus: "Developing analytical thinking, subject depth, and co-curricular participation following the NCERT framework.",
       areas: ["English", "Hindi", "Mathematics", "Science", "Social Studies", "Sanskrit / Computer Science", "Art & Music", "Physical Education"],
     },
     {
       level: "Secondary (Classes IX – X)",
       color: "#E67E22",
-      focus: "Board-oriented rigorous preparation following the CISCE curriculum for Class X ICSE.",
-      areas: ["English Language & Literature", "Second Language (Hindi/Sanskrit)", "History & Civics", "Geography", "Mathematics", "Science (Physics, Chemistry, Biology)", "Computer Applications"],
+      focus: "Rigorous board-oriented preparation following the HBSE curriculum for Class X Board Examinations.",
+      areas: ["English Language & Literature", "Hindi", "Mathematics", "Science (Physics, Chemistry, Biology)", "Social Science", "Computer Science"],
     },
     {
       level: "Senior Secondary (Classes XI – XII)",
       color: "#9B59B6",
-      focus: "Specialised stream education with ISC board preparation and career readiness.",
-      areas: ["Science Stream: Physics, Chemistry, Biology/Math", "Commerce Stream: Accounts, Business Studies, Economics", "Humanities: History, Political Science, Sociology", "English (compulsory)", "Physical Education (optional)"],
+      focus: "Specialised stream education with HBSE board preparation, career readiness, and CCE-based assessment.",
+      areas: ["Arts Stream: History, Political Science, Geography, Economics, Sociology", "Commerce Stream: Accounts, Business Studies, Economics", "English (compulsory)", "Physical Education (optional)"],
     },
+  ];
+
+  const affiliationDetails = [
+    { label: "Board Name", value: "Haryana Board of School Education (HBSE / BSEH), Bhiwani" },
+    { label: "Affiliation Type", value: "Senior Secondary (Class 1st to 12th)" },
+    { label: "School UDISE Code", value: "06050205674" },
+    { label: "Curriculum", value: "SCERT / NCERT Prescribed Textbooks" },
+    { label: "Evaluation System", value: "Continuous and Comprehensive Evaluation (CCE)" },
+    { label: "Streams Offered (XI–XII)", value: "Arts & Commerce" },
   ];
 
   const facilities = [
@@ -54,7 +63,7 @@ export default function CurriculumPage() {
     {
       img: "/photos/students-traditional.jpeg",
       title: "Structured Assessment & Exam Preparation",
-      desc: "Regular unit tests, half-yearly exams, pre-boards, and board mock papers ensure students are always well-prepared. Our exam system mirrors the exact CISCE format so there are no surprises on the day.",
+      desc: "Regular unit tests, half-yearly exams, pre-boards, and board mock papers ensure students are always well-prepared. Our exam system mirrors the exact HBSE format so there are no surprises on the day.",
       tag: "Assessment",
     },
   ];
@@ -63,17 +72,75 @@ export default function CurriculumPage() {
     <>
       <section className="page-banner">
         <div className="crumb">Academics · Curriculum</div>
-        <h1>Our Curriculum</h1>
-        <p>A comprehensive, CISCE-aligned curriculum designed to develop the whole child — from Pre-Primary through to Class XII.</p>
+        <h1>Board Affiliation & Academic Overview</h1>
+        <p>Officially affiliated with the Board of School Education Haryana (BSEH), Bhiwani — delivering quality education from Class I to XII.</p>
+      </section>
+
+      {/* Board Affiliation Details */}
+      <section className="section">
+        <div className="section-head reveal">
+          <div className="divider"></div>
+          <span className="eyebrow">HBSE / BSEH Affiliation</span>
+          <h2>Our Board Affiliation</h2>
+          <p>Hindu Girls Senior Secondary School, Ambala Road, Kaithal is officially affiliated with the Board of School Education Haryana (BSEH), Bhiwani — a recognized institution under the State Board committed to high-quality, standards-aligned education.</p>
+        </div>
+
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <div className="reveal" style={{ background: "#fff", borderRadius: 16, boxShadow: "var(--shadow-sm)", border: "1px solid var(--border)", overflow: "hidden" }}>
+            <div style={{ background: "var(--maroon, #8B0000)", padding: "20px 32px" }}>
+              <h3 style={{ color: "#fff", margin: 0, fontSize: "1.15rem", fontWeight: 700, letterSpacing: ".02em" }}>Affiliation Details</h3>
+            </div>
+            <div style={{ padding: "8px 0" }}>
+              {affiliationDetails.map((item, i) => (
+                <div key={i} style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 16,
+                  padding: "16px 32px",
+                  borderBottom: i < affiliationDetails.length - 1 ? "1px solid var(--border)" : "none",
+                  background: i % 2 === 0 ? "var(--cream, #fdf8f0)" : "#fff",
+                }}>
+                  <span style={{ fontWeight: 700, color: "var(--gold-dk, #9a6e00)", minWidth: 220, fontSize: ".95rem" }}>{item.label}</span>
+                  <span style={{ color: "var(--ink)", fontSize: ".95rem", lineHeight: 1.6 }}>{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why HBSE Curriculum */}
+      <section className="section alt">
+        <div className="section-head reveal">
+          <div className="divider"></div>
+          <span className="eyebrow">Why Our Curriculum</span>
+          <h2>Why Choose Our HBSE Curriculum?</h2>
+          <p>Our HBSE-aligned curriculum is designed to foster critical thinking, moral values, and practical knowledge — preparing students for board examinations and beyond.</p>
+        </div>
+
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+          {[
+            { icon: "📋", title: "Standardized Assessment", desc: "Regular unit tests and mock exams to prepare students for the final HBSE Board Examinations with confidence." },
+            { icon: "🌱", title: "Inclusive Education", desc: "A curriculum fostering critical thinking, moral values, and practical knowledge for holistic student development." },
+            { icon: "📚", title: "SCERT/NCERT Aligned", desc: "Strictly following prescribed textbooks and syllabi to ensure readiness for competitive exams and higher education." },
+            { icon: "🏆", title: "Results-Driven", desc: "A consistent track record of high pass percentages and merit positions in Haryana Board results, year after year." },
+          ].map((item, i) => (
+            <div key={i} className="reveal" style={{ background: "#fff", borderRadius: 14, padding: "28px 24px", boxShadow: "var(--shadow-sm)", border: "1px solid var(--border)", textAlign: "center" }}>
+              <div style={{ fontSize: "2.2rem", marginBottom: 14 }}>{item.icon}</div>
+              <h3 style={{ fontSize: "1.05rem", fontWeight: 700, marginBottom: 10, color: "var(--ink)" }}>{item.title}</h3>
+              <p style={{ color: "var(--muted)", fontSize: ".93rem", lineHeight: 1.7, margin: 0 }}>{item.desc}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Curriculum levels */}
       <section className="section">
         <div className="section-head reveal">
           <div className="divider"></div>
-          <span className="eyebrow">CISCE Board</span>
+          <span className="eyebrow">HBSE Board</span>
           <h2>Curriculum Overview</h2>
-          <p>We follow the Council for the Indian School Certificate Examinations (CISCE) framework, combining rigorous academics with co-curricular breadth.</p>
+          <p>We follow the Haryana Board of School Education (HBSE) framework with SCERT/NCERT curriculum, combining rigorous academics with co-curricular breadth from Class I to XII.</p>
         </div>
 
         <div style={{ maxWidth: 880, margin: "0 auto", display: "flex", flexDirection: "column", gap: 24 }}>

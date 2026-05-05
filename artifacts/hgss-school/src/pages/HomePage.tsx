@@ -47,10 +47,11 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
 }
 
 const KB_SLIDES = [
-  { src: "/photos/marching-uniform.jpeg",  dir: "kb-in"  },
-  { src: "/photos/assembly-building.jpeg", dir: "kb-out" },
-  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-in"  },
-  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-out" },
+  { src: "/photos/school-building.png",    dir: "kb-in"  },
+  { src: "/photos/marching-uniform.jpeg",  dir: "kb-out" },
+  { src: "/photos/assembly-building.jpeg", dir: "kb-in"  },
+  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-out" },
+  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-in"  },
 ];
 
 const NOTICES = [
@@ -93,7 +94,7 @@ export default function HomePage({ navigate, openApply }: Props) {
         <div className="hero-overlay" />
         <div className="hero-grid">
           <div className="hero-text">
-            <span className="eyebrow">CISCE Affiliated · Estd. 1974 · Kaithal, Haryana</span>
+            <span className="eyebrow">HBSE Affiliated · Estd. 1974 · Kaithal, Haryana</span>
             <h1>
               Empowering Girls Through <em>Education, Values & Excellence</em>.
             </h1>

@@ -1520,6 +1520,162 @@ main { flex: 1; padding-top: 88px; }
 }
 .modal-body { padding: 28px; }
 
+/* ===================== MODAL WIDE + TABS ===================== */
+.modal-card--wide { max-width: 800px; }
+
+.modal-tabs {
+  display: flex;
+  background: var(--cream);
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.modal-tabs::-webkit-scrollbar { display: none; }
+[data-theme="dark"] .modal-tabs { background: #1a2333; }
+
+.modal-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 13px 20px;
+  border: none; background: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 600;
+  color: var(--muted); white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+.modal-tab:hover { color: var(--ink); background: rgba(0,0,0,.04); }
+.modal-tab.active { color: var(--ink); border-bottom-color: var(--gold); background: #fff; }
+[data-theme="dark"] .modal-tab.active { background: var(--bg-card); color: #fff; }
+[data-theme="dark"] .modal-tab:hover { color: #fff; }
+.tab-icon { font-size: 1rem; }
+.tab-label { }
+
+/* Tab content */
+.tab-content { display: flex; flex-direction: column; gap: 20px; }
+.tab-intro h4 { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.tab-intro p  { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+.tab-cta { text-align: center; padding-top: 8px; }
+
+/* Form section label */
+.form-section-label {
+  font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--gold-dk); margin: 12px 0 4px;
+}
+
+/* Modal tip box */
+.modal-tip {
+  background: var(--cream); border-left: 4px solid var(--gold);
+  padding: 12px 16px; border-radius: 0 8px 8px 0;
+  font-size: .88rem; color: var(--text); line-height: 1.6;
+}
+[data-theme="dark"] .modal-tip { background: #1a2333; }
+
+/* ── Process Steps ── */
+.process-steps { display: flex; flex-direction: column; gap: 0; }
+.process-step {
+  display: flex; align-items: flex-start; gap: 16px; position: relative;
+}
+.step-bubble {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 52px; flex-shrink: 0; padding-top: 4px;
+}
+.step-icon { font-size: 1.4rem; }
+.step-num { font-size: .7rem; font-weight: 800; color: var(--gold-dk); letter-spacing: .06em; }
+.step-line {
+  width: 2px; background: var(--border); min-height: 32px; margin: 4px auto 0;
+  align-self: stretch; flex: 1;
+}
+.step-body {
+  padding: 6px 0 24px;
+}
+.step-title { font-weight: 700; color: var(--ink); font-size: .97rem; margin-bottom: 4px; }
+.step-desc  { color: var(--muted); font-size: .88rem; line-height: 1.6; }
+
+/* ── Documents ── */
+.doc-section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.doc-section-head {
+  font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink); padding: 8px 14px; background: var(--cream); border-radius: 8px;
+  margin-bottom: 4px;
+}
+[data-theme="dark"] .doc-section-head { background: #1a2333; }
+.doc-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: .9rem; color: var(--text); line-height: 1.5; padding: 4px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.doc-item:last-child { border-bottom: none; }
+.doc-check { color: #2ECC71; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Payment ── */
+.payment-modes { display: flex; flex-direction: column; gap: 12px; }
+.payment-mode {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--cream); border-radius: 10px; padding: 14px 16px;
+}
+[data-theme="dark"] .payment-mode { background: #1a2333; }
+.payment-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+.payment-method { font-weight: 700; color: var(--ink); font-size: .95rem; margin-bottom: 3px; }
+.payment-desc   { color: var(--muted); font-size: .87rem; line-height: 1.5; }
+
+.bank-box {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; margin-top: 4px;
+}
+.bank-box-head {
+  font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--gold-dk); margin-bottom: 14px;
+}
+.bank-details { display: flex; flex-direction: column; gap: 8px; }
+.bank-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border); font-size: .9rem;
+}
+.bank-row:last-child { border-bottom: none; padding-bottom: 0; }
+.bank-label { color: var(--muted); }
+.bank-value { font-weight: 700; color: var(--ink); font-family: monospace; }
+
+.payment-schedule {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; margin-top: 4px;
+}
+.schedule-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; padding: 8px 0; border-bottom: 1px dashed var(--border);
+  font-size: .88rem;
+}
+.schedule-row:last-child { border-bottom: none; }
+.schedule-label { font-weight: 700; color: var(--ink); flex-shrink: 0; }
+.schedule-note  { color: var(--muted); text-align: right; }
+
+/* ── Contact Cards ── */
+.contact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.contact-card {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--cream); border-radius: 12px; padding: 18px 16px;
+}
+[data-theme="dark"] .contact-card { background: #1a2333; }
+.contact-card-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.contact-card-label {
+  font-size: .74rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--gold-dk); margin-bottom: 4px;
+}
+.contact-card-value { color: var(--ink); font-size: .92rem; font-weight: 600; line-height: 1.6; }
+.contact-card-link  { color: var(--gold-dk); font-size: .82rem; font-weight: 700; text-decoration: none; display: inline-block; margin-top: 6px; }
+.contact-card-link:hover { text-decoration: underline; }
+.contact-quick {
+  display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .modal-card--wide { max-width: 100%; }
+  .contact-cards { grid-template-columns: 1fr; }
+  .modal-tab { padding: 11px 12px; font-size: .8rem; }
+  .tab-label { display: none; }
+  .tab-icon { font-size: 1.2rem; }
+  .schedule-row { flex-direction: column; gap: 4px; }
+  .schedule-note { text-align: left; }
+}
+
 /* ===================== NOTICE BOARD ===================== */
 .notice-list { max-width: 820px; margin: 0 auto; }
 .notice-card {

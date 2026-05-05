@@ -45,7 +45,6 @@
   background: #131C2B;
   color: var(--text);
 }
-[data-theme="dark"] .section.alt        { background: var(--cream); }
 [data-theme="dark"] .feature-card       { background: var(--bg-card); border-color: var(--border); }
 [data-theme="dark"] .about-card         { background: var(--bg-card); }
 [data-theme="dark"] .notice-card        { background: var(--bg-card); border-color: var(--border); }
@@ -66,6 +65,9 @@
 [data-theme="dark"] input,
 [data-theme="dark"] select,
 [data-theme="dark"] textarea            { background: var(--cream); color: var(--text); border-color: var(--border); }
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .form-field select,
+[data-theme="dark"] .form-field textarea { background: var(--cream); color: var(--text); border-color: var(--border); }
 [data-theme="dark"] .page-banner        { background: linear-gradient(135deg, #0d1624 0%, #1a2a3e 100%); }
 [data-theme="dark"] .notification-ticker { background: #0d1624; }
 [data-theme="dark"] .navbar:not(.scrolled) { background: rgba(13,22,36,.82); }
@@ -73,6 +75,26 @@
 [data-theme="dark"] .nav-brand .name   { color: #fff; }
 [data-theme="dark"] .nav-link          { color: rgba(255,255,255,.82); }
 [data-theme="dark"] .hamburger span    { background: #fff; }
+
+/* ── Cards & surfaces ── */
+[data-theme="dark"] .value-card        { background: var(--bg-card); border-color: var(--border); }
+[data-theme="dark"] .award-item        { background: var(--bg-card); }
+[data-theme="dark"] .fac-card          { background: var(--bg-card); }
+[data-theme="dark"] .team-card         { background: var(--bg-card); border-color: var(--border); }
+[data-theme="dark"] .program-card      { background: var(--bg-card); }
+
+/* ── Forms & modals ── */
+[data-theme="dark"] .form-card         { background: var(--bg-card); }
+[data-theme="dark"] .form-success      { background: var(--bg-card); }
+[data-theme="dark"] .modal-card        { background: var(--bg-card); }
+[data-theme="dark"] .modal-body        { background: var(--bg-card); }
+[data-theme="dark"] .policy-modal      { background: var(--bg-card); }
+[data-theme="dark"] .policy-body       { background: var(--bg-card); }
+[data-theme="dark"] .form-card-head    { background: var(--bg-card); }
+
+/* ── Section backgrounds ── */
+[data-theme="dark"] .section           { background: var(--bg-body); }
+[data-theme="dark"] .section.alt       { background: var(--cream); }
 
 /* ===================== LOADING SCREEN ===================== */
 @keyframes ls-logo-pop {

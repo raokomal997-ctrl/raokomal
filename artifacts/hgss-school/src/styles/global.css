@@ -18,7 +18,61 @@
   --shadow-sm: 0 4px 12px rgba(19,28,38,.08);
   --shadow-md: 0 10px 32px rgba(19,28,38,.12);
   --shadow-lg: 0 24px 60px rgba(19,28,38,.28);
+  --bg-card:  #ffffff;
+  --bg-body:  #FAF7F2;
 }
+
+/* ===================== DARK THEME ===================== */
+[data-theme="dark"] {
+  --ink:      #E2EAF4;
+  --navy:     #B8CAD8;
+  --navy-dk:  #8FAABB;
+  --gold:     #F4D03F;
+  --gold-dk:  #D4B026;
+  --cream:    #1A2435;
+  --cream2:   #131C2B;
+  --text:     #C6D4E2;
+  --muted:    #7A95AC;
+  --border:   #263348;
+  --danger:   #E05C4B;
+  --shadow-sm: 0 4px 12px rgba(0,0,0,.35);
+  --shadow-md: 0 10px 32px rgba(0,0,0,.45);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.6);
+  --bg-card:  #1E2D42;
+  --bg-body:  #131C2B;
+}
+[data-theme="dark"] body {
+  background: #131C2B;
+  color: var(--text);
+}
+[data-theme="dark"] .section.alt        { background: var(--cream); }
+[data-theme="dark"] .feature-card       { background: var(--bg-card); border-color: var(--border); }
+[data-theme="dark"] .about-card         { background: var(--bg-card); }
+[data-theme="dark"] .notice-card        { background: var(--bg-card); border-color: var(--border); }
+[data-theme="dark"] .gal-item           { background: var(--bg-card); }
+[data-theme="dark"] .program-card       { background: var(--bg-card); }
+[data-theme="dark"] .program-row        { border-color: var(--border); }
+[data-theme="dark"] .program-row:hover  { background: var(--cream); }
+[data-theme="dark"] .gallery-tabs       { background: var(--cream); border-color: var(--border); }
+[data-theme="dark"] .gal-tab            { color: var(--text); }
+[data-theme="dark"] .gal-tab.active     { background: var(--ink); color: var(--bg-body); }
+[data-theme="dark"] .dropdown           { background: var(--bg-card); border-color: var(--border); }
+[data-theme="dark"] .dropdown button    { color: var(--text); }
+[data-theme="dark"] .dropdown button:hover { background: var(--cream); color: var(--gold); }
+[data-theme="dark"] .mobile-menu        { background: #131C2B; border-color: var(--border); }
+[data-theme="dark"] .mobile-menu button { color: var(--text); }
+[data-theme="dark"] .admission-modal-backdrop { background: rgba(0,0,0,.75); }
+[data-theme="dark"] .admission-modal    { background: var(--bg-card); }
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea            { background: var(--cream); color: var(--text); border-color: var(--border); }
+[data-theme="dark"] .page-banner        { background: linear-gradient(135deg, #0d1624 0%, #1a2a3e 100%); }
+[data-theme="dark"] .notification-ticker { background: #0d1624; }
+[data-theme="dark"] .navbar:not(.scrolled) { background: rgba(13,22,36,.82); }
+[data-theme="dark"] .navbar.scrolled    { background: rgba(19,28,43,.97); }
+[data-theme="dark"] .nav-brand .name   { color: #fff; }
+[data-theme="dark"] .nav-link          { color: rgba(255,255,255,.82); }
+[data-theme="dark"] .hamburger span    { background: #fff; }
 
 /* ===================== LOADING SCREEN ===================== */
 @keyframes ls-logo-pop {
@@ -546,6 +600,47 @@ main { flex: 1; padding-top: 88px; }
 .hamburger.ham-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger.ham-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburger.ham-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.28);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .22s ease, border-color .22s ease, transform .3s ease, color .22s;
+}
+.theme-toggle:hover {
+  background: rgba(244,208,63,.22);
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: rotate(22deg) scale(1.08);
+}
+@media (max-width: 960px) { .theme-toggle { display: none; } }
+
+.mobile-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(244,208,63,.08);
+  border: 1px solid rgba(244,208,63,.2);
+  border-radius: 8px;
+  color: rgba(255,255,255,.85);
+  padding: 10px 16px;
+  font-size: .9rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  width: 100%;
+  text-align: left;
+  margin-top: 4px;
+}
+.mobile-theme-toggle:hover { background: rgba(244,208,63,.18); color: var(--gold); }
 
 .mobile-menu {
   position: fixed;

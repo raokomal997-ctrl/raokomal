@@ -76,6 +76,18 @@ export default function App() {
   const [showApply, setShowApply] = useState(false);
   const handleLoadDone = useCallback(() => setLoading(false), []);
 
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const saved = localStorage.getItem("hgss-theme");
+    return (saved === "dark" || saved === "light") ? saved : "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("hgss-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(t => t === "light" ? "dark" : "light");
+
   useEffect(() => {
     const fromHash = (): Route => {
       const h = window.location.hash.replace("#", "") as Route;
@@ -133,7 +145,7 @@ export default function App() {
       {loading && <LoadingScreen onDone={handleLoadDone} />}
       <NotificationTicker visible={tickerVisible} onClose={() => setTickerVisible(false)} />
       <SocialSidebar />
-      <Navbar route={route} navigate={navigate} openApply={openApply} />
+      <Navbar route={route} navigate={navigate} openApply={openApply} theme={theme} toggleTheme={toggleTheme} />
       <main className="page-fade" key={route}>
         {route === "home"              && <HomePage navigate={navigate} openApply={openApply} />}
         {/* About */}

@@ -20,6 +20,10 @@ const photos: { src: string; cap: string; cat: Exclude<Cat, "all">; wide?: boole
   { src: "/photos/patriotic-dance.jpeg",    cap: "Patriotic Dance",            cat: "culture" },
   { src: "/photos/assembly-building.jpeg",  cap: "Morning Assembly",           cat: "events", wide: true },
   { src: "/photos/school-entrance.jpeg",    cap: "School Entrance",            cat: "events" },
+  { src: "/photos/gallery-assembly.png",    cap: "School Assembly",            cat: "events", wide: true },
+  { src: "/photos/gallery-punjabi-dance.png", cap: "Punjabi Dance Performance", cat: "culture" },
+  { src: "/photos/gallery-school-gate.png", cap: "School Gate",               cat: "events" },
+  { src: "/photos/gallery-classroom.png",   cap: "Art Class in Progress",     cat: "academics" },
 ];
 
 const tabs: { key: Cat; label: string }[] = [

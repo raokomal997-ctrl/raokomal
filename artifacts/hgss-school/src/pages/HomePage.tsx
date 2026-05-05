@@ -47,11 +47,10 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
 }
 
 const KB_SLIDES = [
-  { src: "/photos/school-building.png",    dir: "kb-in"  },
-  { src: "/photos/marching-uniform.jpeg",  dir: "kb-out" },
-  { src: "/photos/assembly-building.jpeg", dir: "kb-in"  },
-  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-out" },
-  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-in"  },
+  { src: "/photos/marching-uniform.jpeg",  dir: "kb-in"  },
+  { src: "/photos/assembly-building.jpeg", dir: "kb-out" },
+  { src: "/photos/folk-dance-group.jpeg",  dir: "kb-in"  },
+  { src: "/photos/ncc-cadets.jpeg",        dir: "kb-out" },
 ];
 
 const NOTICES = [

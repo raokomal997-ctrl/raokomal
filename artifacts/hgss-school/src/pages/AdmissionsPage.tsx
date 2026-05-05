@@ -263,7 +263,7 @@ export default function AdmissionsPage({ openApply }: Props) {
           <h2>What's Covered in Your Fee</h2>
         </div>
 
-        <div className="reveal" style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div className="reveal fee-inclusions-grid">
           <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 16, padding: "28px 26px", boxShadow: "var(--shadow-sm)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
               <span style={{ fontSize: "1.4rem" }}>✅</span>
@@ -324,7 +324,7 @@ export default function AdmissionsPage({ openApply }: Props) {
           <h2>Fee Payment Guidelines</h2>
         </div>
 
-        <div className="reveal" style={{ maxWidth: 760, margin: "0 auto", background: "var(--bg-card)", borderRadius: 16, padding: "32px 36px", boxShadow: "var(--shadow-sm)", border: "1px solid var(--border)" }}>
+        <div className="reveal fee-payment-box">
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
               { icon: "🏦", text: "Fees can be paid via Cash, Demand Draft, or online bank transfer to the school account." },

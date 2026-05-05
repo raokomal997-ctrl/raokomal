@@ -36,7 +36,7 @@ export default function PrincipalsMessagePage() {
               }}
             />
             <div style={{ marginTop: 20 }}>
-              <h3 style={{ fontSize: "1.2rem" }}>Mrs. Sunita Sharma</h3>
+              <h3 style={{ fontSize: "1.2rem" }}>Mrs. Mamta Kaushik</h3>
               <p style={{ color: "var(--muted)", fontSize: ".9rem", marginTop: 4 }}>M.A., B.Ed. — Principal, HGSS Kaithal</p>
               <p style={{ color: "var(--gold-dk)", fontSize: ".85rem", marginTop: 4 }}>32+ Years in Education</p>
             </div>
@@ -50,7 +50,7 @@ export default function PrincipalsMessagePage() {
             <p style={{ marginTop: 16 }}>Our dedicated faculty, modern infrastructure, and holistic curriculum ensure that students are prepared not just for board examinations, but for the challenges and opportunities of a rapidly changing world.</p>
             <p style={{ marginTop: 16 }}>We believe that when you educate a girl, you educate a generation. This conviction drives everything we do here — from the classroom to the sports ground, from the science laboratory to the cultural stage.</p>
             <p style={{ marginTop: 16 }}>I invite you to partner with us in this journey. To our students: dare to dream, strive with sincerity, and never stop learning. The world is yours to shape.</p>
-            <p style={{ marginTop: 24, fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "var(--ink)", fontStyle: "italic" }}>— With warm regards,<br /><strong>Mrs. Sunita Sharma</strong></p>
+            <p style={{ marginTop: 24, fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "var(--ink)", fontStyle: "italic" }}>— With warm regards,<br /><strong>Mrs. Mamta Kaushik</strong></p>
           </div>
         </div>
       </section>

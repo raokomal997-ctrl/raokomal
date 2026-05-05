@@ -685,13 +685,17 @@ main { flex: 1; padding-top: 88px; }
 .btn-wa:hover { background: #1da851; border-color: #1da851; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,211,102,.35); }
 
 /* ===================== HERO (Home) ===================== */
-@keyframes kenburns-in {
-  from { transform: scale(1)    translateZ(0); }
-  to   { transform: scale(1.18) translateZ(0); }
+@keyframes hero-zoom-in {
+  0%   { transform: scale(1.0) translateZ(0); filter: brightness(0.92); }
+  100% { transform: scale(1.06) translateZ(0); filter: brightness(1.04); }
 }
-@keyframes kenburns-out {
-  from { transform: scale(1.18) translateZ(0); }
-  to   { transform: scale(1)    translateZ(0); }
+@keyframes hero-zoom-out {
+  0%   { transform: scale(1.06) translateZ(0); filter: brightness(1.04); }
+  100% { transform: scale(1.0) translateZ(0); filter: brightness(0.92); }
+}
+@keyframes hero-slide-fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .hero {
@@ -701,7 +705,7 @@ main { flex: 1; padding-top: 88px; }
   align-items: center;
   color: #fff;
   overflow: hidden;
-  background: var(--ink);
+  background: #0a0f18;
 }
 
 .hero-bg {
@@ -714,11 +718,13 @@ main { flex: 1; padding-top: 88px; }
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+  background-repeat: no-repeat;
   opacity: 0;
-  transition: opacity 1.6s ease-in-out;
+  transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity, transform;
   animation: none;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .hero-bg-slide.kb-active {
@@ -726,21 +732,21 @@ main { flex: 1; padding-top: 88px; }
 }
 
 .hero-bg-slide.kb-active.kb-in {
-  animation: kenburns-in 6s ease-in-out forwards;
+  animation: hero-zoom-in 8s ease-in-out forwards;
 }
 
 .hero-bg-slide.kb-active.kb-out {
-  animation: kenburns-out 6s ease-in-out forwards;
+  animation: hero-zoom-out 8s ease-in-out forwards;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    105deg,
-    rgba(10,16,24,.88) 0%,
-    rgba(10,16,24,.72) 45%,
-    rgba(10,16,24,.18) 100%
+    110deg,
+    rgba(10,16,24,.82) 0%,
+    rgba(10,16,24,.58) 40%,
+    rgba(10,16,24,.10) 100%
   );
   z-index: 1;
 }

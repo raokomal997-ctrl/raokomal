@@ -74,7 +74,7 @@ export default function HomePage({ navigate, openApply }: Props) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setCurrent(c => (c + 1) % KB_SLIDES.length), 5000);
+    const id = setInterval(() => setCurrent(c => (c + 1) % KB_SLIDES.length), 7000);
     return () => clearInterval(id);
   }, []);
 

@@ -10,32 +10,44 @@ type TourStep = {
 
 const TOUR_STEPS: TourStep[] = [
   {
-    title: "Welcome to HGSS Kaithal! 🎓",
-    text: "Namaste! I'm Gyaan, your school guide. We've been nurturing girls' education since 1974. Let me show you around!",
+    title: "Welcome to HGSS Kaithal",
+    text: "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Aap school ke baare mein kuch bhi pooch sakti hain, ya main aapko school ka ek special tour karwa sakti hoon. Batayein — main aapki kaise madad kar sakti hoon?",
   },
   {
-    title: "Our Rich History 📖",
-    text: "Founded in 1974 and affiliated with CISCE, HGSS Kaithal has over 50 years of academic excellence. Explore our story!",
+    title: "About Our School",
+    text: "Hindu Girls Sr. Sec. School, Kaithal — ek CISCE affiliated school with 50+ years of excellence in girls education. Hamare mission hai: 'Empowering girls through Education, Values and Excellence.' School Code: 10365, Kaithal, Haryana — 136027.",
     action: "Our History",
     route: "our-history",
   },
   {
-    title: "World-Class Academics 🏆",
-    text: "From Primary to Senior Secondary, we offer a comprehensive curriculum with top faculty and outstanding results.",
+    title: "Academics",
+    text: "Nursery se lekar Class 12 tak — ICSE (Class 10) aur ISC (Class 12). Class 11-12 mein Arts, Commerce aur Science streams available hain. English medium, CISCE curriculum with focus on conceptual learning and overall development.",
     action: "Explore Academics",
     route: "curriculum",
   },
   {
-    title: "Campus Life 🌟",
-    text: "Sports, cultural programs, clubs — student life at HGSS is vibrant and full of opportunities to grow!",
-    action: "See Campus Life",
-    route: "events-activities",
-  },
-  {
-    title: "Join Our Family 💛",
-    text: "Admissions are open! Be part of a legacy of excellence. Click below to apply or explore more on your own.",
+    title: "Admissions",
+    text: "Admissions open hain Nursery se Class 11 tak. Documents chahiye: Birth Certificate, Marksheet, TC, Photographs, Aadhar Card aur Residence Proof. Process: School office visit karein, form bharein, verification ke baad admission confirm hoga.",
     action: "Apply Now",
     route: "apply",
+  },
+  {
+    title: "Facilities",
+    text: "Hamare paas hain: well-equipped Science Labs, Computer Lab, Library, Sports Ground aur safe girls-only campus. Experienced aur qualified teachers ke saath ek nurturing environment jahan har beti grow kar sake.",
+    action: "View Facilities",
+    route: "facilities",
+  },
+  {
+    title: "Achievements",
+    text: "Consistently excellent results in ICSE aur ISC board exams. Students national aur state level mein sports, cultural aur academic achievements kar rahi hain. Annual Sports Day, cultural events, science fairs aur educational trips bhi hote hain.",
+    action: "View Achievements",
+    route: "achievements",
+  },
+  {
+    title: "Contact Us",
+    text: "Address: Ambala Road, Kaithal, Haryana — 136027. School Monday to Saturday (Morning) open rehti hai. Koi bhi sawaal ho toh school office mein directly contact karein — hum aapka swagat karenge.",
+    action: "Contact School",
+    route: "contact",
   },
 ];
 
@@ -55,7 +67,6 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const current = TOUR_STEPS[step];
 
-  // Show robot after page loads
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
@@ -64,7 +75,6 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Typewriter effect
   useEffect(() => {
     if (!bubbleVisible) return;
     setTyping(true);
@@ -79,19 +89,15 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         setTyping(false);
         clearInterval(interval);
       }
-    }, 22);
+    }, 20);
     return () => clearInterval(interval);
   }, [step, bubbleVisible, current.text]);
 
-  // "No Thanks" or tour finish — just minimize, robot stays on screen
   const handleDismiss = () => {
     setBubbleVisible(false);
-    setTimeout(() => {
-      setIsMinimized(true);
-    }, 350);
+    setTimeout(() => setIsMinimized(true), 350);
   };
 
-  // Click on minimized robot — restart tour from beginning
   const handleRobotClick = () => {
     if (isMinimized) {
       setStep(0);
@@ -99,7 +105,6 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       setIsMinimized(false);
       setTimeout(() => setBubbleVisible(true), 300);
     } else {
-      // Minimize if bubble is open
       handleDismiss();
     }
   };
@@ -143,11 +148,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       {!isMinimized && (
         <div className={`ai-bubble${bubbleVisible ? " ai-bubble-in" : ""}`}>
           <div className="ai-bubble-header">
-            <span className="ai-bubble-name">✨ Gyaan — HGSS Guide</span>
+            <span className="ai-bubble-name">Diyana — HGSS Guide</span>
             <div className="ai-bubble-controls">
               {inTour && (
                 <span className="ai-step-counter">
-                  {step}/{TOUR_STEPS.length - 1}
+                  {step} / {TOUR_STEPS.length - 1}
                 </span>
               )}
               <button className="ai-minimize-btn" onClick={handleDismiss} title="Minimize">
@@ -166,7 +171,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
             {!inTour ? (
               <>
                 <button className="ai-btn ai-btn-primary" onClick={handleStartTour}>
-                  🚀 Start Tour
+                  Start Tour
                 </button>
                 <button className="ai-btn ai-btn-ghost" onClick={handleDismiss}>
                   No Thanks
@@ -180,7 +185,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                   </button>
                 )}
                 <button className="ai-btn ai-btn-secondary" onClick={handleNext}>
-                  {step < TOUR_STEPS.length - 1 ? "Next →" : "Finish ✓"}
+                  {step < TOUR_STEPS.length - 1 ? "Next" : "Finish"}
                 </button>
               </>
             )}
@@ -193,8 +198,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         onClick={handleRobotClick}
         title={isMinimized ? "Click to restart tour" : "Minimize"}
       >
-        <img src="/ai-robot.png" alt="AI Guide Gyaan" className="ai-robot-img" />
-        {isMinimized && <span className="ai-robot-badge">👋</span>}
+        <img src="/ai-robot.png" alt="HGSS Guide" className="ai-robot-img" />
+        {isMinimized && <span className="ai-robot-badge-pro">Guide</span>}
         <span className="ai-robot-glow" />
       </button>
     </div>

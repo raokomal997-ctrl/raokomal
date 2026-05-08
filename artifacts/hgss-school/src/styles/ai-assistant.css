@@ -46,12 +46,21 @@
   animation: ai-glow-pulse 2.4s ease-in-out infinite;
   pointer-events: none;
 }
-.ai-robot-badge {
+.ai-robot-badge-pro {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  font-size: 22px;
-  animation: ai-wave 1.2s ease-in-out infinite;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #2C3E50 0%, #1B2735 100%);
+  color: #F4D03F;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(19,28,38,0.3);
 }
 
 /* ── Speech Bubble ── */

@@ -46,19 +46,17 @@ type Props = {
 
 export default function AiAssistant({ navigate, openApply }: Props) {
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [step, setStep] = useState(0);
   const [inTour, setInTour] = useState(false);
   const [typing, setTyping] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [bubbleVisible, setBubbleVisible] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
 
   const current = TOUR_STEPS[step];
 
+  // Show robot after page loads
   useEffect(() => {
-    const dismissed = sessionStorage.getItem("hgss-ai-dismissed");
-    if (dismissed) return;
     const timer = setTimeout(() => {
       setVisible(true);
       setTimeout(() => setBubbleVisible(true), 400);
@@ -66,6 +64,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Typewriter effect
   useEffect(() => {
     if (!bubbleVisible) return;
     setTyping(true);
@@ -82,20 +81,36 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       }
     }, 22);
     return () => clearInterval(interval);
-  }, [step, bubbleVisible]);
+  }, [step, bubbleVisible, current.text]);
 
-  const handleNoThanks = () => {
+  // "No Thanks" or tour finish — just minimize, robot stays on screen
+  const handleDismiss = () => {
     setBubbleVisible(false);
     setTimeout(() => {
-      setDismissed(true);
-      setVisible(false);
-      sessionStorage.setItem("hgss-ai-dismissed", "1");
-    }, 400);
+      setIsMinimized(true);
+    }, 350);
+  };
+
+  // Click on minimized robot — restart tour from beginning
+  const handleRobotClick = () => {
+    if (isMinimized) {
+      setStep(0);
+      setInTour(false);
+      setIsMinimized(false);
+      setTimeout(() => setBubbleVisible(true), 300);
+    } else {
+      // Minimize if bubble is open
+      handleDismiss();
+    }
   };
 
   const handleStartTour = () => {
     setInTour(true);
-    setStep(1);
+    setBubbleVisible(false);
+    setTimeout(() => {
+      setStep(1);
+      setBubbleVisible(true);
+    }, 250);
   };
 
   const handleNext = () => {
@@ -106,7 +121,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         setBubbleVisible(true);
       }, 250);
     } else {
-      handleNoThanks();
+      setInTour(false);
+      handleDismiss();
     }
   };
 
@@ -117,16 +133,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     } else {
       navigate(current.route as never);
     }
-    handleNoThanks();
+    handleDismiss();
   };
 
-  const handleMinimize = () => {
-    setIsMinimized((m) => !m);
-    if (isMinimized) setBubbleVisible(true);
-    else setBubbleVisible(false);
-  };
-
-  if (dismissed || !visible) return null;
+  if (!visible) return null;
 
   return (
     <div className={`ai-assistant${isMinimized ? " ai-minimized" : ""}`}>
@@ -140,7 +150,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                   {step}/{TOUR_STEPS.length - 1}
                 </span>
               )}
-              <button className="ai-minimize-btn" onClick={handleMinimize} title="Minimize">
+              <button className="ai-minimize-btn" onClick={handleDismiss} title="Minimize">
                 ─
               </button>
             </div>
@@ -158,7 +168,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                 <button className="ai-btn ai-btn-primary" onClick={handleStartTour}>
                   🚀 Start Tour
                 </button>
-                <button className="ai-btn ai-btn-ghost" onClick={handleNoThanks}>
+                <button className="ai-btn ai-btn-ghost" onClick={handleDismiss}>
                   No Thanks
                 </button>
               </>
@@ -178,7 +188,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         </div>
       )}
 
-      <button className="ai-robot-btn" onClick={handleMinimize} title={isMinimized ? "Open Guide" : "Minimize"}>
+      <button
+        className="ai-robot-btn"
+        onClick={handleRobotClick}
+        title={isMinimized ? "Click to restart tour" : "Minimize"}
+      >
         <img src="/ai-robot.png" alt="AI Guide Gyaan" className="ai-robot-img" />
         {isMinimized && <span className="ai-robot-badge">👋</span>}
         <span className="ai-robot-glow" />

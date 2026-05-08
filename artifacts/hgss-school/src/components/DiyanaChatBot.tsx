@@ -19,6 +19,21 @@ declare global {
   }
 }
 
+// Load voices, retrying until available (browsers load them async)
+function getVoices(): Promise<SpeechSynthesisVoice[]> {
+  return new Promise((resolve) => {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) { resolve(voices); return; }
+    const handler = () => {
+      const v = window.speechSynthesis.getVoices();
+      if (v.length > 0) { window.speechSynthesis.removeEventListener("voiceschanged", handler); resolve(v); }
+    };
+    window.speechSynthesis.addEventListener("voiceschanged", handler);
+    // Fallback after 2s
+    setTimeout(() => resolve(window.speechSynthesis.getVoices()), 2000);
+  });
+}
+
 export default function DiyanaChatBot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -38,10 +53,10 @@ export default function DiyanaChatBot() {
   const inputRef = useRef<HTMLInputElement>(null);
   const initialized = useRef(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const synthRef = useRef(window.speechSynthesis);
   const lastFullTextRef = useRef("");
+  const sendAfterRecordRef = useRef<string>("");
 
-  // Check voice support
+  // Check voice support on mount
   useEffect(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     setVoiceSupported(!!SR && !!window.speechSynthesis);
@@ -60,14 +75,8 @@ export default function DiyanaChatBot() {
       setTimeout(() => inputRef.current?.focus(), 200);
       setPulse(false);
     }
-    // Stop speech when chat closes
     if (!open) stopSpeaking();
   }, [open]);
-
-  // Rebuild recognition when lang changes
-  useEffect(() => {
-    if (recording) stopRecording();
-  }, [lang]);
 
   const apiUrl = (path: string) => {
     const base = BASE_URL.endsWith("/") ? BASE_URL.slice(0, -1) : BASE_URL;
@@ -84,45 +93,46 @@ export default function DiyanaChatBot() {
       const conv = await res.json();
       setConvId(conv.id);
       const greeting = lang === "hi-IN"
-        ? "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide! Aap school ke baare mein kuch bhi pooch sakti hain — main yahan hoon aapki madad ke liye!"
-        : "Hello! I'm Diyana — your digital guide for Hindu Girls Sr. Sec. School, Kaithal. Ask me anything about admissions, academics, facilities or activities!";
+        ? "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Aap school ke baare mein kuch bhi pooch sakti hain — admissions, classes, facilities — main yahan hoon!"
+        : "Hello! I'm Diyana — your digital guide for Hindu Girls Sr. Sec. School, Kaithal. Ask me anything about admissions, academics or facilities!";
       setMessages([{ id: crypto.randomUUID(), role: "assistant", content: greeting }]);
-      speakText(greeting);
+      // Do NOT auto-speak greeting — browsers block audio without a direct user gesture
     } catch {
       setMessages([{ id: crypto.randomUUID(), role: "assistant", content: "Namaste! Server se connect nahi ho pa raha. Please thodi der baad try karein." }]);
     }
   };
 
   // ── Speech Synthesis ──
-  const speakText = useCallback((text: string) => {
+  const speakText = useCallback(async (text: string) => {
     if (!window.speechSynthesis) return;
     stopSpeaking();
 
-    // Strip markdown-style symbols for cleaner speech
-    const clean = text.replace(/[*_~`#>]/g, "").replace(/\n+/g, ". ");
+    const clean = text.replace(/[*_~`#>]/g, "").replace(/\n+/g, ". ").trim();
+    if (!clean) return;
+
     const utter = new SpeechSynthesisUtterance(clean);
     utter.lang = lang;
-    utter.rate = 0.95;
+    utter.rate = 0.92;
     utter.pitch = 1.05;
 
-    // Pick a Hindi voice if available
-    const voices = synthRef.current.getVoices();
+    // Wait for voices to load, then pick the best match
+    const voices = await getVoices();
     const preferred = voices.find((v) =>
       lang === "hi-IN"
-        ? v.lang.startsWith("hi") || v.name.toLowerCase().includes("hindi")
-        : v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
-    );
+        ? v.lang.startsWith("hi")
+        : v.lang.startsWith("en-IN") || (v.lang.startsWith("en") && v.name.toLowerCase().includes("female"))
+    ) ?? voices.find((v) => v.lang.startsWith(lang.slice(0, 2)));
     if (preferred) utter.voice = preferred;
 
     utter.onstart = () => setSpeaking(true);
     utter.onend = () => setSpeaking(false);
     utter.onerror = () => setSpeaking(false);
 
-    synthRef.current.speak(utter);
+    window.speechSynthesis.speak(utter);
   }, [lang]);
 
   const stopSpeaking = () => {
-    synthRef.current?.cancel();
+    window.speechSynthesis?.cancel();
     setSpeaking(false);
   };
 
@@ -136,40 +146,49 @@ export default function DiyanaChatBot() {
     recognition.lang = lang;
     recognition.continuous = false;
     recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
 
     recognition.onstart = () => {
       setRecording(true);
       setTranscript("");
       lastFullTextRef.current = "";
+      sendAfterRecordRef.current = "";
     };
 
     recognition.onresult = (e: SpeechRecognitionEvent) => {
-      let interim = "";
-      let final = "";
+      let finalText = "";
+      let interimText = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
-        if (e.results[i].isFinal) final += t;
-        else interim += t;
+        if (e.results[i].isFinal) finalText += t;
+        else interimText += t;
       }
-      const combined = (lastFullTextRef.current + final).trim();
-      if (final) lastFullTextRef.current = combined;
-      setTranscript(combined || interim);
-      setInput(combined || interim);
+      if (finalText) {
+        lastFullTextRef.current += finalText;
+        sendAfterRecordRef.current = lastFullTextRef.current.trim();
+      }
+      const shown = lastFullTextRef.current + interimText;
+      setTranscript(shown.trim());
+      setInput(shown.trim());
     };
 
     recognition.onend = () => {
       setRecording(false);
       recognitionRef.current = null;
-      // Auto-send if there's captured text
-      const captured = lastFullTextRef.current.trim();
-      if (captured) {
-        setInput(captured);
-        setTimeout(() => sendMessageText(captured), 100);
-      }
+      const toSend = sendAfterRecordRef.current.trim();
       setTranscript("");
+      if (toSend) {
+        setInput(toSend);
+        // Small delay lets React re-render input, then auto-send
+        setTimeout(() => {
+          sendMessageText(toSend);
+          setInput("");
+        }, 120);
+      }
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (e) => {
+      console.warn("SpeechRecognition error:", e.error);
       setRecording(false);
       setTranscript("");
     };
@@ -197,6 +216,7 @@ export default function DiyanaChatBot() {
     setInput("");
     setTranscript("");
     lastFullTextRef.current = "";
+    sendAfterRecordRef.current = "";
 
     const userId = crypto.randomUUID();
     setMessages((prev) => [...prev, { id: userId, role: "user", content: userText }]);
@@ -248,7 +268,7 @@ export default function DiyanaChatBot() {
         }
       }
 
-      // Speak the full response after streaming completes
+      // Speak the response — safe because this is triggered by a user action (send)
       if (fullResponse) speakText(fullResponse);
 
     } catch {
@@ -269,10 +289,7 @@ export default function DiyanaChatBot() {
   };
 
   const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
   const quickQuestions: { hi: string; en: string }[] = [
@@ -304,16 +321,13 @@ export default function DiyanaChatBot() {
               <div>
                 <div className="dc-name">Diyana</div>
                 <div className="dc-status">
-                  {speaking ? (
-                    <><span className="dc-speaking-dot" /> Speaking...</>
-                  ) : (
-                    <><span className="dc-online-dot" /> HGSS AI Assistant</>
-                  )}
+                  {speaking
+                    ? <><span className="dc-speaking-dot" /> Speaking...</>
+                    : <><span className="dc-online-dot" /> HGSS AI Assistant</>}
                 </div>
               </div>
             </div>
             <div className="dc-header-actions">
-              {/* Language toggle */}
               <button
                 className={`dc-lang-btn${lang === "hi-IN" ? " dc-lang-active" : ""}`}
                 onClick={() => setLang((l) => l === "hi-IN" ? "en-US" : "hi-IN")}
@@ -321,11 +335,8 @@ export default function DiyanaChatBot() {
               >
                 {lang === "hi-IN" ? "HI" : "EN"}
               </button>
-              {/* Stop speaking */}
               {speaking && (
-                <button className="dc-stop-btn" onClick={stopSpeaking} title="Stop speaking">
-                  ■
-                </button>
+                <button className="dc-stop-btn" onClick={stopSpeaking} title="Stop speaking">■</button>
               )}
               <button className="dc-close" onClick={() => setOpen(false)}>✕</button>
             </div>
@@ -353,11 +364,7 @@ export default function DiyanaChatBot() {
               {quickQuestions.map((q) => {
                 const label = lang === "hi-IN" ? q.hi : q.en;
                 return (
-                  <button
-                    key={label}
-                    className="dc-quick-btn"
-                    onClick={() => sendMessageText(label)}
-                  >
+                  <button key={label} className="dc-quick-btn" onClick={() => sendMessageText(label)}>
                     {label}
                   </button>
                 );
@@ -400,7 +407,13 @@ export default function DiyanaChatBot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKey}
-              placeholder={recording ? "Bol rahi hoon... sun rahi hoon..." : lang === "hi-IN" ? "Apna sawaal yahan likhein..." : "Type your question here..."}
+              placeholder={
+                recording
+                  ? "Sun rahi hoon..."
+                  : lang === "hi-IN"
+                  ? "Apna sawaal yahan likhein..."
+                  : "Type your question here..."
+              }
               disabled={loading || recording}
               maxLength={500}
             />

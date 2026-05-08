@@ -10,10 +10,6 @@ type TourStep = {
 
 const TOUR_STEPS: TourStep[] = [
   {
-    title: "Welcome to HGSS Kaithal",
-    text: "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Aap school ke baare mein kuch bhi pooch sakti hain, ya main aapko school ka ek special tour karwa sakti hoon. Batayein — main aapki kaise madad kar sakti hoon?",
-  },
-  {
     title: "About Our School",
     text: "Hindu Girls Sr. Sec. School, Kaithal — ek CISCE affiliated school with 50+ years of excellence in girls education. Hamare mission hai: 'Empowering girls through Education, Values and Excellence.' School Code: 10365, Kaithal, Haryana — 136027.",
     action: "Our History",
@@ -21,31 +17,31 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     title: "Academics",
-    text: "Nursery se lekar Class 12 tak — ICSE (Class 10) aur ISC (Class 12). Class 11-12 mein Arts, Commerce aur Science streams available hain. English medium, CISCE curriculum with focus on conceptual learning and overall development.",
+    text: "Nursery se lekar Class 12 tak — ICSE (Class 10) aur ISC (Class 12). Class 11-12 mein Arts, Commerce aur Science streams available hain. English medium, CISCE curriculum with focus on conceptual learning.",
     action: "Explore Academics",
     route: "curriculum",
   },
   {
     title: "Admissions",
-    text: "Admissions open hain Nursery se Class 11 tak. Documents chahiye: Birth Certificate, Marksheet, TC, Photographs, Aadhar Card aur Residence Proof. Process: School office visit karein, form bharein, verification ke baad admission confirm hoga.",
+    text: "Admissions open hain Nursery se Class 11 tak. Documents chahiye: Birth Certificate, Marksheet, TC, Photographs, Aadhar Card aur Residence Proof. School office mein aayein — hum aapka swagat karenge!",
     action: "Apply Now",
     route: "apply",
   },
   {
     title: "Facilities",
-    text: "Hamare paas hain: well-equipped Science Labs, Computer Lab, Library, Sports Ground aur safe girls-only campus. Experienced aur qualified teachers ke saath ek nurturing environment jahan har beti grow kar sake.",
+    text: "Hamare paas hain: well-equipped Science Labs, Computer Lab, Library, Sports Ground aur safe girls-only campus. Experienced faculty ke saath ek nurturing environment jahan har beti grow kar sake.",
     action: "View Facilities",
     route: "facilities",
   },
   {
     title: "Achievements",
-    text: "Consistently excellent results in ICSE aur ISC board exams. Students national aur state level mein sports, cultural aur academic achievements kar rahi hain. Annual Sports Day, cultural events, science fairs aur educational trips bhi hote hain.",
+    text: "Consistently excellent results in ICSE aur ISC board exams. Students national aur state level mein sports, cultural aur academic achievements kar rahi hain. Annual Sports Day, cultural events, science fairs bhi hote hain.",
     action: "View Achievements",
     route: "achievements",
   },
   {
     title: "Contact Us",
-    text: "Address: Ambala Road, Kaithal, Haryana — 136027. School Monday to Saturday (Morning) open rehti hai. Koi bhi sawaal ho toh school office mein directly contact karein — hum aapka swagat karenge.",
+    text: "Address: Ambala Road, Kaithal, Haryana — 136027. School Monday to Saturday (Morning) open rehti hai. Koi bhi sawaal ho toh school office mein directly contact karein.",
     action: "Contact School",
     route: "contact",
   },
@@ -57,26 +53,25 @@ type Props = {
 };
 
 export default function AiAssistant({ navigate, openApply }: Props) {
+  // welcome = centered modal; tour = corner bubble tour; minimized = corner icon only
+  const [phase, setPhase] = useState<"welcome" | "tour" | "minimized">("welcome");
   const [visible, setVisible] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   const [step, setStep] = useState(0);
-  const [inTour, setInTour] = useState(false);
   const [typing, setTyping] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [bubbleVisible, setBubbleVisible] = useState(false);
 
   const current = TOUR_STEPS[step];
 
+  // Show welcome modal after brief page-load delay
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(true);
-      setTimeout(() => setBubbleVisible(true), 400);
-    }, 1800);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setVisible(true), 1200);
+    return () => clearTimeout(t);
   }, []);
 
+  // Typewriter effect — only during tour phase
   useEffect(() => {
-    if (!bubbleVisible) return;
+    if (phase !== "tour" || !bubbleVisible) return;
     setTyping(true);
     setDisplayText("");
     const text = current.text;
@@ -91,33 +86,20 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       }
     }, 20);
     return () => clearInterval(interval);
-  }, [step, bubbleVisible, current.text]);
+  }, [step, bubbleVisible, phase, current.text]);
 
-  const handleDismiss = () => {
-    setBubbleVisible(false);
-    setTimeout(() => setIsMinimized(true), 350);
-  };
-
-  const handleRobotClick = () => {
-    if (isMinimized) {
-      setStep(0);
-      setInTour(false);
-      setIsMinimized(false);
-      setTimeout(() => setBubbleVisible(true), 300);
-    } else {
-      handleDismiss();
-    }
-  };
-
+  // ── Welcome modal actions ──
   const handleStartTour = () => {
-    setInTour(true);
-    setBubbleVisible(false);
-    setTimeout(() => {
-      setStep(1);
-      setBubbleVisible(true);
-    }, 250);
+    setPhase("tour");
+    setStep(0);
+    setTimeout(() => setBubbleVisible(true), 300);
   };
 
+  const handleNoThanks = () => {
+    setPhase("minimized");
+  };
+
+  // ── Tour actions ──
   const handleNext = () => {
     if (step < TOUR_STEPS.length - 1) {
       setBubbleVisible(false);
@@ -126,38 +108,71 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         setBubbleVisible(true);
       }, 250);
     } else {
-      setInTour(false);
-      handleDismiss();
+      setBubbleVisible(false);
+      setTimeout(() => setPhase("minimized"), 300);
     }
   };
 
   const handleStepAction = () => {
     if (!current.route) return;
-    if (current.route === "apply") {
-      openApply();
-    } else {
-      navigate(current.route as never);
+    if (current.route === "apply") openApply();
+    else navigate(current.route as never);
+    setBubbleVisible(false);
+    setTimeout(() => setPhase("minimized"), 300);
+  };
+
+  const handleMinimize = () => {
+    setBubbleVisible(false);
+    setTimeout(() => setPhase("minimized"), 300);
+  };
+
+  // Click minimized robot → restart welcome modal
+  const handleRobotClick = () => {
+    if (phase === "minimized") {
+      setPhase("welcome");
+    } else if (phase === "tour") {
+      handleMinimize();
     }
-    handleDismiss();
   };
 
   if (!visible) return null;
 
+  // ── Welcome Modal (centered) ──
+  if (phase === "welcome") {
+    return (
+      <div className="ai-welcome-overlay">
+        <div className="ai-welcome-modal">
+          <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot" />
+          <div className="ai-welcome-content">
+            <div className="ai-welcome-badge">HGSS Guide</div>
+            <h2 className="ai-welcome-title">Namaste! Main Diyana hoon</h2>
+            <p className="ai-welcome-text">
+              Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Kya aap school ka ek quick tour lena chahenge?
+            </p>
+            <div className="ai-welcome-actions">
+              <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
+                Start Tour
+              </button>
+              <button className="ai-btn ai-btn-ghost ai-btn-lg" onClick={handleNoThanks}>
+                No Thanks
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Corner widget (tour or minimized) ──
   return (
-    <div className={`ai-assistant${isMinimized ? " ai-minimized" : ""}`}>
-      {!isMinimized && (
+    <div className={`ai-assistant${phase === "minimized" ? " ai-minimized" : ""}`}>
+      {phase === "tour" && (
         <div className={`ai-bubble${bubbleVisible ? " ai-bubble-in" : ""}`}>
           <div className="ai-bubble-header">
             <span className="ai-bubble-name">Diyana — HGSS Guide</span>
             <div className="ai-bubble-controls">
-              {inTour && (
-                <span className="ai-step-counter">
-                  {step} / {TOUR_STEPS.length - 1}
-                </span>
-              )}
-              <button className="ai-minimize-btn" onClick={handleDismiss} title="Minimize">
-                ─
-              </button>
+              <span className="ai-step-counter">{step + 1} / {TOUR_STEPS.length}</span>
+              <button className="ai-minimize-btn" onClick={handleMinimize} title="Minimize">─</button>
             </div>
           </div>
 
@@ -168,27 +183,14 @@ export default function AiAssistant({ navigate, openApply }: Props) {
           </p>
 
           <div className="ai-bubble-actions">
-            {!inTour ? (
-              <>
-                <button className="ai-btn ai-btn-primary" onClick={handleStartTour}>
-                  Start Tour
-                </button>
-                <button className="ai-btn ai-btn-ghost" onClick={handleDismiss}>
-                  No Thanks
-                </button>
-              </>
-            ) : (
-              <>
-                {current.action && (
-                  <button className="ai-btn ai-btn-primary" onClick={handleStepAction}>
-                    {current.action}
-                  </button>
-                )}
-                <button className="ai-btn ai-btn-secondary" onClick={handleNext}>
-                  {step < TOUR_STEPS.length - 1 ? "Next" : "Finish"}
-                </button>
-              </>
+            {current.action && (
+              <button className="ai-btn ai-btn-primary" onClick={handleStepAction}>
+                {current.action}
+              </button>
             )}
+            <button className="ai-btn ai-btn-secondary" onClick={handleNext}>
+              {step < TOUR_STEPS.length - 1 ? "Next" : "Finish"}
+            </button>
           </div>
         </div>
       )}
@@ -196,10 +198,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       <button
         className="ai-robot-btn"
         onClick={handleRobotClick}
-        title={isMinimized ? "Click to restart tour" : "Minimize"}
+        title={phase === "minimized" ? "Click to restart tour" : "Minimize"}
       >
-        <img src="/ai-robot.png" alt="HGSS Guide" className="ai-robot-img" />
-        {isMinimized && <span className="ai-robot-badge-pro">Guide</span>}
+        <img src="/ai-robot.png" alt="HGSS Guide Diyana" className="ai-robot-img" />
+        {phase === "minimized" && <span className="ai-robot-badge-pro">Guide</span>}
         <span className="ai-robot-glow" />
       </button>
     </div>

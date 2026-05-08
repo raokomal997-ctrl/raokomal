@@ -223,6 +223,150 @@
   color: #1B2735;
 }
 
+/* ── Header Actions ── */
+.dc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Language toggle */
+.dc-lang-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.dc-lang-btn:hover,
+.dc-lang-active {
+  background: rgba(244,208,63,0.2);
+  border-color: #F4D03F;
+  color: #F4D03F;
+}
+
+/* Stop speaking */
+.dc-stop-btn {
+  background: rgba(192,57,43,0.8);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.dc-stop-btn:hover { background: #c0392b; }
+
+/* Speaking indicator dot */
+.dc-speaking-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F4D03F;
+  display: inline-block;
+  animation: dc-speaking-pulse 0.6s ease-in-out infinite alternate;
+}
+@keyframes dc-speaking-pulse {
+  from { transform: scale(0.7); opacity: 0.6; }
+  to   { transform: scale(1.3); opacity: 1; }
+}
+
+/* ── Live Transcript ── */
+.dc-transcript {
+  margin: 0 12px 6px;
+  padding: 7px 12px;
+  background: #fff8e6;
+  border: 1.5px solid #F4D03F;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #1B2735;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+.dc-transcript-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e74c3c;
+  flex-shrink: 0;
+  margin-top: 3px;
+  animation: dc-speaking-pulse 0.5s ease-in-out infinite alternate;
+}
+
+/* ── Microphone Button ── */
+.dc-mic-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f2f5;
+  color: #2C3E50;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.dc-mic-btn:hover:not(:disabled) {
+  background: #e0e5ea;
+  transform: scale(1.05);
+}
+.dc-mic-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.dc-mic-active {
+  background: #e74c3c !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(231,76,60,0.2);
+  animation: dc-mic-pulse 1.2s ease-in-out infinite;
+}
+.dc-mic-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(231,76,60,0.5);
+  animation: dc-ring-expand 1.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes dc-mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(231,76,60,0.2); }
+  50%       { box-shadow: 0 0 0 8px rgba(231,76,60,0.1); }
+}
+@keyframes dc-ring-expand {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  100% { transform: scale(1.7);  opacity: 0; }
+}
+
+/* Dark theme additions */
+[data-theme="dark"] .dc-transcript {
+  background: #1a2a1a;
+  border-color: #F4D03F;
+  color: #E2EAF4;
+}
+[data-theme="dark"] .dc-mic-btn {
+  background: #263348;
+  color: #C6D4E2;
+}
+[data-theme="dark"] .dc-mic-btn:hover:not(:disabled) {
+  background: #344a63;
+}
+
 /* ── Input Row ── */
 .dc-input-row {
   display: flex;

@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AdmissionModal from "./components/AdmissionModal";
 import AiAssistant from "./components/AiAssistant";
+import DiyanaChatBot from "./components/DiyanaChatBot";
 import LoadingScreen from "./components/LoadingScreen";
 import NotificationTicker from "./components/NotificationTicker";
 import SocialSidebar from "./components/SocialSidebar";
@@ -182,6 +183,7 @@ export default function App() {
       <Footer navigate={navigate} openApply={openApply} />
       {showApply && <AdmissionModal onClose={closeApply} />}
       <AiAssistant navigate={navigate} openApply={openApply} />
+      <DiyanaChatBot />
     </div>
   );
 }

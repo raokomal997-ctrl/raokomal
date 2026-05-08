@@ -4,44 +4,51 @@ import "../styles/ai-assistant.css";
 type TourStep = {
   title: string;
   text: string;
+  page: string;    // auto-navigate to this route when step activates
   action?: string;
-  route?: string;
+  route?: string;  // action button route (may differ from page, e.g. "apply" modal)
 };
 
 const TOUR_STEPS: TourStep[] = [
   {
     title: "About Our School",
     text: "Hindu Girls Sr. Sec. School, Kaithal — ek CISCE affiliated school with 50+ years of excellence in girls education. Hamare mission hai: 'Empowering girls through Education, Values and Excellence.' School Code: 10365, Kaithal, Haryana — 136027.",
-    action: "Our History",
+    page: "our-history",
+    action: "Read Full History",
     route: "our-history",
   },
   {
     title: "Academics",
     text: "Nursery se lekar Class 12 tak — ICSE (Class 10) aur ISC (Class 12). Class 11-12 mein Arts, Commerce aur Science streams available hain. English medium, CISCE curriculum with focus on conceptual learning.",
+    page: "curriculum",
     action: "Explore Academics",
     route: "curriculum",
   },
   {
     title: "Admissions",
     text: "Admissions open hain Nursery se Class 11 tak. Documents chahiye: Birth Certificate, Marksheet, TC, Photographs, Aadhar Card aur Residence Proof. School office mein aayein — hum aapka swagat karenge!",
+    page: "admissions",
     action: "Apply Now",
     route: "apply",
   },
   {
     title: "Facilities",
     text: "Hamare paas hain: well-equipped Science Labs, Computer Lab, Library, Sports Ground aur safe girls-only campus. Experienced faculty ke saath ek nurturing environment jahan har beti grow kar sake.",
+    page: "facilities",
     action: "View Facilities",
     route: "facilities",
   },
   {
     title: "Achievements",
     text: "Consistently excellent results in ICSE aur ISC board exams. Students national aur state level mein sports, cultural aur academic achievements kar rahi hain. Annual Sports Day, cultural events, science fairs bhi hote hain.",
+    page: "achievements",
     action: "View Achievements",
     route: "achievements",
   },
   {
     title: "Contact Us",
     text: "Address: Ambala Road, Kaithal, Haryana — 136027. School Monday to Saturday (Morning) open rehti hai. Koi bhi sawaal ho toh school office mein directly contact karein.",
+    page: "contact",
     action: "Contact School",
     route: "contact",
   },
@@ -68,6 +75,15 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     const t = setTimeout(() => setVisible(true), 1200);
     return () => clearTimeout(t);
   }, []);
+
+  // Auto-navigate to the current step's page when the tour step changes
+  useEffect(() => {
+    if (phase !== "tour" || !bubbleVisible) return;
+    const { page } = current;
+    navigate(page as never);
+    // Scroll to top so user sees the full page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step, bubbleVisible, phase]);
 
   // Typewriter effect — only during tour phase
   useEffect(() => {

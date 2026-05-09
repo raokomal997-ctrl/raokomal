@@ -81,8 +81,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     if (phase !== "tour" || !bubbleVisible) return;
     const { page } = current;
     navigate(page as never);
-    // Scroll to top so user sees the full page
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Give the new page time to render, then scroll to top
+    const t = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 350);
+    return () => clearTimeout(t);
   }, [step, bubbleVisible, phase]);
 
   // Typewriter effect — only during tour phase
@@ -153,20 +156,42 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   if (!visible) return null;
 
+  const STEP_ICONS = ["🏫", "📚", "🎯", "🏗️", "🏆", "📞"];
+
   // ── Welcome Modal (centered) ──
   if (phase === "welcome") {
     return (
       <div className="ai-welcome-overlay">
         <div className="ai-welcome-card-wrap">
-          {/* Robot pops out ABOVE the card */}
+          {/* Robot floats ABOVE the card */}
           <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot-float" />
+
           <div className="ai-welcome-modal">
-            <div className="ai-welcome-content">
-              <div className="ai-welcome-badge">HGSS Guide</div>
+            {/* Dark top section */}
+            <div className="ai-welcome-modal-top">
+              <div className="ai-welcome-badge-wrap">
+                <span className="ai-welcome-badge">HGSS Digital Guide</span>
+              </div>
               <h2 className="ai-welcome-title">Namaste! Main Diyana hoon</h2>
+              <p className="ai-welcome-subtitle">Hindu Girls Sr. Sec. School, Kaithal</p>
+            </div>
+
+            {/* White body */}
+            <div className="ai-welcome-modal-body">
               <p className="ai-welcome-text">
-                Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Kya aap school ka ek quick tour lena chahenge?
+                Main aapko hamare school ka ek guided tour dene wali hoon — 6 sections, step by step!
               </p>
+
+              <div className="ai-tour-steps">
+                {TOUR_STEPS.map((s, i) => (
+                  <div className="ai-tour-step-row" key={i}>
+                    <span className="ai-tour-step-num">{i + 1}</span>
+                    <span className="ai-tour-step-label">{s.title}</span>
+                    <span className="ai-tour-step-icon">{STEP_ICONS[i]}</span>
+                  </div>
+                ))}
+              </div>
+
               <div className="ai-welcome-actions">
                 <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
                   Start Tour
@@ -187,6 +212,14 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     <div className={`ai-assistant${phase === "minimized" ? " ai-minimized" : ""}`}>
       {phase === "tour" && (
         <div className={`ai-bubble${bubbleVisible ? " ai-bubble-in" : ""}`}>
+          {/* Gold progress bar */}
+          <div className="ai-bubble-progress">
+            <div
+              className="ai-bubble-progress-fill"
+              style={{ width: `${((step + 1) / TOUR_STEPS.length) * 100}%` }}
+            />
+          </div>
+
           <div className="ai-bubble-header">
             <span className="ai-bubble-name">Diyana — HGSS Guide</span>
             <div className="ai-bubble-controls">

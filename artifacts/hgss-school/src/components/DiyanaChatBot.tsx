@@ -452,6 +452,7 @@ export default function DiyanaChatBot() {
           {/* Quick questions */}
           {messages.length <= 1 && (
             <div className="dc-quick">
+              <span className="dc-quick-label">Quick questions</span>
               {quickQuestions.map((q) => {
                 const label = lang === "hi-IN" ? q.hi : q.en;
                 return (
@@ -473,41 +474,43 @@ export default function DiyanaChatBot() {
 
           {/* Input row */}
           <div className="dc-input-row">
-            {voiceSupported && (
-              <button
-                className={`dc-mic-btn${recording ? " dc-mic-active" : ""}`}
-                onClick={toggleRecording}
-                title={recording ? "Stop recording" : "Speak your question"}
-                disabled={loading}
-              >
-                {recording ? (
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                    <rect x="6" y="6" width="12" height="12" rx="2" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                    <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-1 18.93V21h2v-1.07A8.001 8.001 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8.001 8.001 0 0 0 7 7.93z" />
-                  </svg>
-                )}
-                {recording && <span className="dc-mic-ring" />}
-              </button>
-            )}
-            <input
-              ref={inputRef}
-              className="dc-input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder={
-                recording
-                  ? "Sun rahi hoon..."
-                  : lang === "hi-IN"
-                  ? "Apna sawaal yahan likhein..."
-                  : "Type your question here..."
-              }
-              disabled={loading || recording}
-              maxLength={500}
-            />
+            <div className="dc-input-wrap">
+              <input
+                ref={inputRef}
+                className="dc-input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKey}
+                placeholder={
+                  recording
+                    ? "Sun rahi hoon..."
+                    : lang === "hi-IN"
+                    ? "Apna sawaal yahan likhein..."
+                    : "Type your question here..."
+                }
+                disabled={loading || recording}
+                maxLength={500}
+              />
+              {voiceSupported && (
+                <button
+                  className={`dc-mic-btn${recording ? " dc-mic-active" : ""}`}
+                  onClick={toggleRecording}
+                  title={recording ? "Stop recording" : "Speak your question"}
+                  disabled={loading}
+                >
+                  {recording ? (
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
+                      <rect x="6" y="6" width="12" height="12" rx="2" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
+                      <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-1 18.93V21h2v-1.07A8.001 8.001 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8.001 8.001 0 0 0 7 7.93z" />
+                    </svg>
+                  )}
+                  {recording && <span className="dc-mic-ring" />}
+                </button>
+              )}
+            </div>
             <button
               className="dc-send"
               onClick={sendMessage}

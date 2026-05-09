@@ -1,6 +1,93 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import "../styles/diyana-chat.css";
 
+// ── Simple Markdown Renderer ──
+function renderInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**"))
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith("*") && part.endsWith("*"))
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    if (part.startsWith("`") && part.endsWith("`"))
+      return <code key={i} className="dc-inline-code">{part.slice(1, -1)}</code>;
+    return part;
+  });
+}
+
+function renderMarkdown(text: string): React.ReactNode {
+  const lines = text.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let orderedItems: string[] = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      nodes.push(
+        <ul key={key++} className="dc-md-list">
+          {listItems.map((item, i) => <li key={i}>{renderInline(item)}</li>)}
+        </ul>
+      );
+      listItems = [];
+    }
+    if (orderedItems.length > 0) {
+      nodes.push(
+        <ol key={key++} className="dc-md-list dc-md-ol">
+          {orderedItems.map((item, i) => <li key={i}>{renderInline(item)}</li>)}
+        </ol>
+      );
+      orderedItems = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Headings
+    if (/^###\s/.test(line)) {
+      flushList();
+      nodes.push(<p key={key++} className="dc-md-h3">{renderInline(line.replace(/^###\s/, ""))}</p>);
+    } else if (/^##\s/.test(line)) {
+      flushList();
+      nodes.push(<p key={key++} className="dc-md-h2">{renderInline(line.replace(/^##\s/, ""))}</p>);
+    } else if (/^#\s/.test(line)) {
+      flushList();
+      nodes.push(<p key={key++} className="dc-md-h1">{renderInline(line.replace(/^#\s/, ""))}</p>);
+    // Unordered list
+    } else if (/^[-*•]\s/.test(line)) {
+      flushList();
+      listItems.push(line.replace(/^[-*•]\s/, ""));
+      // collect consecutive list items
+      while (i + 1 < lines.length && /^[-*•]\s/.test(lines[i + 1])) {
+        i++;
+        listItems.push(lines[i].replace(/^[-*•]\s/, ""));
+      }
+      flushList();
+    // Ordered list
+    } else if (/^\d+\.\s/.test(line)) {
+      orderedItems.push(line.replace(/^\d+\.\s/, ""));
+      while (i + 1 < lines.length && /^\d+\.\s/.test(lines[i + 1])) {
+        i++;
+        orderedItems.push(lines[i].replace(/^\d+\.\s/, ""));
+      }
+      flushList();
+    // Blank line
+    } else if (line.trim() === "") {
+      flushList();
+    // Regular paragraph line
+    } else {
+      flushList();
+      nodes.push(
+        <span key={key++} className="dc-md-line">
+          {renderInline(line)}
+        </span>
+      );
+    }
+  }
+  flushList();
+  return <div className="dc-md">{nodes}</div>;
+}
+
 type Message = {
   id: string;
   role: "user" | "assistant";
@@ -350,8 +437,12 @@ export default function DiyanaChatBot() {
                   <img src="/ai-robot.png" alt="Diyana" className="dc-msg-avatar" />
                 )}
                 <div className="dc-bubble">
-                  {msg.content || (msg.streaming ? <span className="dc-typing"><span /><span /><span /></span> : "")}
-                  {msg.streaming && msg.content && <span className="dc-cursor-blink">|</span>}
+                  {msg.role === "assistant"
+                    ? msg.content
+                      ? <>{renderMarkdown(msg.content)}{msg.streaming && <span className="dc-cursor-blink">|</span>}</>
+                      : msg.streaming ? <span className="dc-typing"><span /><span /><span /></span> : ""
+                    : msg.content
+                  }
                 </div>
               </div>
             ))}

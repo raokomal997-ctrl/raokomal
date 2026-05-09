@@ -157,21 +157,24 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   if (phase === "welcome") {
     return (
       <div className="ai-welcome-overlay">
-        <div className="ai-welcome-modal">
-          <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot" />
-          <div className="ai-welcome-content">
-            <div className="ai-welcome-badge">HGSS Guide</div>
-            <h2 className="ai-welcome-title">Namaste! Main Diyana hoon</h2>
-            <p className="ai-welcome-text">
-              Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Kya aap school ka ek quick tour lena chahenge?
-            </p>
-            <div className="ai-welcome-actions">
-              <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
-                Start Tour
-              </button>
-              <button className="ai-btn ai-btn-ghost ai-btn-lg" onClick={handleNoThanks}>
-                No Thanks
-              </button>
+        <div className="ai-welcome-card-wrap">
+          {/* Robot pops out ABOVE the card */}
+          <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot-float" />
+          <div className="ai-welcome-modal">
+            <div className="ai-welcome-content">
+              <div className="ai-welcome-badge">HGSS Guide</div>
+              <h2 className="ai-welcome-title">Namaste! Main Diyana hoon</h2>
+              <p className="ai-welcome-text">
+                Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Kya aap school ka ek quick tour lena chahenge?
+              </p>
+              <div className="ai-welcome-actions">
+                <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
+                  Start Tour
+                </button>
+                <button className="ai-btn ai-btn-ghost ai-btn-lg" onClick={handleNoThanks}>
+                  No Thanks
+                </button>
+              </div>
             </div>
           </div>
         </div>

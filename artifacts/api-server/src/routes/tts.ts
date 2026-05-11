@@ -3,7 +3,7 @@ import https from "https";
 
 const router: IRouter = Router();
 
-const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
+const VOICE_ID = "RABOvaPec1ymXz02oDQi";
 const MODEL_ID = "eleven_multilingual_v2";
 
 router.post("/tts", (req, res) => {

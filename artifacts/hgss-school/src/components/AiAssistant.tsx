@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "../styles/ai-assistant.css";
 
 type TourStep = {
   title: string;
   text: string;
-  page: string;    // auto-navigate to this route when step activates
+  page: string;
   action?: string;
-  route?: string;  // action button route (may differ from page, e.g. "apply" modal)
+  route?: string;
 };
 
 const TOUR_STEPS: TourStep[] = [
@@ -54,43 +54,96 @@ const TOUR_STEPS: TourStep[] = [
   },
 ];
 
+type VoiceState = "idle" | "loading" | "playing";
+
 type Props = {
   navigate: (route: string) => void;
   openApply: () => void;
 };
 
 export default function AiAssistant({ navigate, openApply }: Props) {
-  // welcome = centered modal; tour = corner bubble tour; minimized = corner icon only
   const [phase, setPhase] = useState<"welcome" | "tour" | "minimized">("welcome");
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
   const [typing, setTyping] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [bubbleVisible, setBubbleVisible] = useState(false);
+  const [voiceState, setVoiceState] = useState<VoiceState>("idle");
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioBlobUrlRef = useRef<string | null>(null);
 
   const current = TOUR_STEPS[step];
 
-  // Show welcome modal after brief page-load delay
+  const stopAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (audioBlobUrlRef.current) {
+      URL.revokeObjectURL(audioBlobUrlRef.current);
+      audioBlobUrlRef.current = null;
+    }
+    setVoiceState("idle");
+  }, []);
+
+  const speakStep = useCallback(async (text: string) => {
+    stopAudio();
+    setVoiceState("loading");
+
+    try {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) throw new Error("TTS request failed");
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      audioBlobUrlRef.current = url;
+
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setVoiceState("idle");
+        if (audioBlobUrlRef.current) {
+          URL.revokeObjectURL(audioBlobUrlRef.current);
+          audioBlobUrlRef.current = null;
+        }
+        audioRef.current = null;
+      };
+
+      audio.onerror = () => {
+        setVoiceState("idle");
+      };
+
+      setVoiceState("playing");
+      await audio.play();
+    } catch {
+      setVoiceState("idle");
+    }
+  }, [stopAudio]);
+
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 1200);
     return () => clearTimeout(t);
   }, []);
 
-  // Auto-navigate to the current step's page when the tour step changes
   useEffect(() => {
     if (phase !== "tour" || !bubbleVisible) return;
-    const { page } = current;
-    navigate(page as never);
-    // Give the new page time to render, then scroll to top
+    navigate(current.page as never);
     const t = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 350);
     return () => clearTimeout(t);
   }, [step, bubbleVisible, phase]);
 
-  // Typewriter effect — only during tour phase
   useEffect(() => {
     if (phase !== "tour" || !bubbleVisible) return;
+    stopAudio();
     setTyping(true);
     setDisplayText("");
     const text = current.text;
@@ -104,10 +157,16 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         clearInterval(interval);
       }
     }, 20);
-    return () => clearInterval(interval);
-  }, [step, bubbleVisible, phase, current.text]);
+    return () => {
+      clearInterval(interval);
+      stopAudio();
+    };
+  }, [step, bubbleVisible, phase, current.text, stopAudio]);
 
-  // ── Welcome modal actions ──
+  useEffect(() => {
+    return () => stopAudio();
+  }, [stopAudio]);
+
   const handleStartTour = () => {
     setPhase("tour");
     setStep(0);
@@ -118,8 +177,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     setPhase("minimized");
   };
 
-  // ── Tour actions ──
   const handleNext = () => {
+    stopAudio();
     if (step < TOUR_STEPS.length - 1) {
       setBubbleVisible(false);
       setTimeout(() => {
@@ -134,6 +193,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const handleStepAction = () => {
     if (!current.route) return;
+    stopAudio();
     if (current.route === "apply") openApply();
     else navigate(current.route as never);
     setBubbleVisible(false);
@@ -141,11 +201,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   };
 
   const handleMinimize = () => {
+    stopAudio();
     setBubbleVisible(false);
     setTimeout(() => setPhase("minimized"), 300);
   };
 
-  // Click minimized robot → restart welcome modal
   const handleRobotClick = () => {
     if (phase === "minimized") {
       setPhase("welcome");
@@ -154,20 +214,25 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     }
   };
 
+  const handleVoiceToggle = () => {
+    if (voiceState === "playing" || voiceState === "loading") {
+      stopAudio();
+    } else {
+      speakStep(current.text);
+    }
+  };
+
   if (!visible) return null;
 
   const STEP_ICONS = ["🏫", "📚", "🎯", "🏗️", "🏆", "📞"];
 
-  // ── Welcome Modal (centered) ──
   if (phase === "welcome") {
     return (
       <div className="ai-welcome-overlay">
         <div className="ai-welcome-card-wrap">
-          {/* Robot floats ABOVE the card */}
           <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot-float" />
 
           <div className="ai-welcome-modal">
-            {/* Dark top section */}
             <div className="ai-welcome-modal-top">
               <div className="ai-welcome-badge-wrap">
                 <span className="ai-welcome-badge">HGSS Digital Guide</span>
@@ -176,7 +241,6 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               <p className="ai-welcome-subtitle">Hindu Girls Sr. Sec. School, Kaithal</p>
             </div>
 
-            {/* White body */}
             <div className="ai-welcome-modal-body">
               <p className="ai-welcome-text">
                 Main aapko hamare school ka ek guided tour dene wali hoon — 6 sections, step by step!
@@ -207,12 +271,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     );
   }
 
-  // ── Corner widget (tour or minimized) ──
   return (
     <div className={`ai-assistant${phase === "minimized" ? " ai-minimized" : ""}`}>
       {phase === "tour" && (
         <div className={`ai-bubble${bubbleVisible ? " ai-bubble-in" : ""}`}>
-          {/* Gold progress bar */}
           <div className="ai-bubble-progress">
             <div
               className="ai-bubble-progress-fill"
@@ -224,6 +286,28 @@ export default function AiAssistant({ navigate, openApply }: Props) {
             <span className="ai-bubble-name">Diyana — HGSS Guide</span>
             <div className="ai-bubble-controls">
               <span className="ai-step-counter">{step + 1} / {TOUR_STEPS.length}</span>
+              <button
+                className={`ai-voice-btn${voiceState === "playing" ? " ai-voice-btn--playing" : ""}${voiceState === "loading" ? " ai-voice-btn--loading" : ""}`}
+                onClick={handleVoiceToggle}
+                title={voiceState === "playing" ? "Stop voice" : "Listen (voice)"}
+                aria-label={voiceState === "playing" ? "Stop voice" : "Play voice"}
+              >
+                {voiceState === "loading" && (
+                  <span className="ai-voice-spinner" />
+                )}
+                {voiceState === "playing" && (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="5" y="4" width="4" height="16" rx="1" />
+                    <rect x="15" y="4" width="4" height="16" rx="1" />
+                  </svg>
+                )}
+                {voiceState === "idle" && (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2H3v2a9 9 0 0 0 8 8.94V22H8v2h8v-2h-3v-1.06A9 9 0 0 0 21 12v-2h-2z"/>
+                  </svg>
+                )}
+              </button>
               <button className="ai-minimize-btn" onClick={handleMinimize} title="Minimize">─</button>
             </div>
           </div>

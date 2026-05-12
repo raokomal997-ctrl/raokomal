@@ -25,15 +25,39 @@
   cursor: pointer;
   padding: 0;
   pointer-events: all;
-  animation: ai-float 3s ease-in-out infinite;
   flex-shrink: 0;
-  transition: transform 0.2s;
+  transform-origin: center bottom;
 }
-.ai-robot-btn:hover { transform: scale(1.07); }
+.ai-robot-btn:hover .ai-robot-img {
+  filter: drop-shadow(0 12px 32px rgba(44,62,80,0.55)) brightness(1.05);
+}
 .ai-robot-img {
   width: 110px; height: 110px;
   object-fit: contain;
   filter: drop-shadow(0 8px 24px rgba(44,62,80,0.4));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Entrance — slides up from below with overshoot bounce */
+.ai-robot-btn--entering .ai-robot-img {
+  animation: ai-enter 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+/* Idle — gentle human sway: float + tilt + look-around loop */
+.ai-robot-btn--idle .ai-robot-img {
+  animation: ai-idle 5s ease-in-out infinite;
+}
+
+/* Speaking — energetic bounce + nod */
+.ai-robot-btn--speaking .ai-robot-img {
+  animation: ai-speaking 0.55s ease-in-out infinite;
+}
+
+/* Welcome modal robot */
+.ai-welcome-robot-float {
+  animation: ai-welcome-enter 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards,
+             ai-idle 5s 0.9s ease-in-out infinite !important;
 }
 .ai-robot-glow {
   position: absolute;
@@ -429,13 +453,56 @@
 .ai-welcome-actions .ai-btn { flex: 1; text-align: center; justify-content: center; }
 
 /* ── Minimized state ── */
-.ai-minimized .ai-robot-btn { animation: ai-float 3s ease-in-out infinite; }
+.ai-minimized .ai-robot-btn .ai-robot-img { animation: ai-idle 5s ease-in-out infinite; }
 
 /* ── Animations ── */
-@keyframes ai-float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-9px); }
+
+/* Entrance: pop up from below with bounce */
+@keyframes ai-enter {
+  0%   { transform: translateY(90px) scale(0.4) rotate(-8deg); opacity: 0; }
+  55%  { transform: translateY(-18px) scale(1.08) rotate(3deg); opacity: 1; }
+  75%  { transform: translateY(6px) scale(0.97) rotate(-1deg); }
+  90%  { transform: translateY(-4px) scale(1.02) rotate(0.5deg); }
+  100% { transform: translateY(0px) scale(1) rotate(0deg); opacity: 1; }
 }
+
+/* Welcome robot entrance */
+@keyframes ai-welcome-enter {
+  0%   { transform: translateY(60px) scale(0.5) rotate(-6deg); opacity: 0; }
+  60%  { transform: translateY(-12px) scale(1.06) rotate(2deg); opacity: 1; }
+  80%  { transform: translateY(4px) scale(0.98) rotate(-0.5deg); }
+  100% { transform: translateY(0px) scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Idle: human-like sway — float + tilt + subtle look-around */
+@keyframes ai-idle {
+  0%   { transform: translateY(0px)  rotate(0deg)    scale(1);    }
+  10%  { transform: translateY(-3px) rotate(1.8deg)  scale(1.01); }
+  22%  { transform: translateY(-8px) rotate(0deg)    scale(1.02); }
+  35%  { transform: translateY(-5px) rotate(-2deg)   scale(1.01); }
+  45%  { transform: translateY(-9px) rotate(0.5deg)  scale(1.02); }
+  55%  { transform: translateY(-6px) rotate(-1.5deg) scale(1.01); }
+  /* look-around moment */
+  62%  { transform: translateY(-4px) rotate(-5deg)   scale(1);    }
+  70%  { transform: translateY(-2px) rotate(5deg)    scale(1);    }
+  78%  { transform: translateY(-1px) rotate(0deg)    scale(1);    }
+  88%  { transform: translateY(1px)  rotate(0.8deg)  scale(0.99); }
+  100% { transform: translateY(0px)  rotate(0deg)    scale(1);    }
+}
+
+/* Speaking: energetic nod + bounce (like talking with expression) */
+@keyframes ai-speaking {
+  0%   { transform: translateY(0px)  scale(1)    rotate(0deg);   }
+  12%  { transform: translateY(-7px) scale(1.04) rotate(-2deg);  }
+  25%  { transform: translateY(-2px) scale(0.97) rotate(1.5deg); }
+  38%  { transform: translateY(-9px) scale(1.05) rotate(-1deg);  }
+  50%  { transform: translateY(-3px) scale(0.98) rotate(2deg);   }
+  62%  { transform: translateY(-8px) scale(1.04) rotate(-1.5deg);}
+  75%  { transform: translateY(-2px) scale(0.97) rotate(1deg);   }
+  88%  { transform: translateY(-6px) scale(1.03) rotate(-0.5deg);}
+  100% { transform: translateY(0px)  scale(1)    rotate(0deg);   }
+}
+
 @keyframes ai-glow-pulse {
   0%, 100% { opacity: 0.5; transform: scale(1); }
   50%       { opacity: 1;   transform: scale(1.1); }

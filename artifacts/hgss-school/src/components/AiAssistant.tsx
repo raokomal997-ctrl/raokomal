@@ -65,6 +65,7 @@ type Props = {
 export default function AiAssistant({ navigate, openApply }: Props) {
   const [phase, setPhase] = useState<"welcome" | "tour" | "minimized">("welcome");
   const [visible, setVisible] = useState(false);
+  const [entering, setEntering] = useState(false);
   const [step, setStep] = useState(0);
   const [typing, setTyping] = useState(false);
   const [displayText, setDisplayText] = useState("");
@@ -118,9 +119,13 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     }
   }, [stopAudio]);
 
-  // Show welcome after brief delay
+  // Show welcome after brief delay, trigger entrance animation
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 1200);
+    const t = setTimeout(() => {
+      setVisible(true);
+      setEntering(true);
+      setTimeout(() => setEntering(false), 1000);
+    }, 1200);
     return () => clearTimeout(t);
   }, []);
 
@@ -211,6 +216,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const handleRobotClick = () => {
     if (phase === "minimized") {
+      setEntering(true);
+      setTimeout(() => setEntering(false), 1000);
       setPhase("welcome");
     } else if (phase === "tour") {
       handleMinimize();
@@ -338,7 +345,12 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       )}
 
       <button
-        className="ai-robot-btn"
+        className={[
+          "ai-robot-btn",
+          entering        ? "ai-robot-btn--entering" :
+          isSpeaking      ? "ai-robot-btn--speaking"  :
+                            "ai-robot-btn--idle",
+        ].join(" ")}
         onClick={handleRobotClick}
         title={phase === "minimized" ? "Click to restart tour" : "Minimize"}
       >

@@ -3,9 +3,9 @@ import https from "https";
 
 const router: IRouter = Router();
 
-// ElevenLabs "Bella" — warm female voice, free plan compatible, multilingual
-const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
-const MODEL_ID = "eleven_multilingual_v2";
+// Voice ID and model — configurable via env, fallback to defaults
+const VOICE_ID = process.env["ELEVENLABS_VOICE_ID"] ?? "EXAVITQu4vr4xnSDxMaL";
+const MODEL_ID = process.env["ELEVENLABS_MODEL_ID"] ?? "eleven_v3";
 
 router.post("/tts", (req, res) => {
   const { text } = req.body as { text?: string };
@@ -25,9 +25,9 @@ router.post("/tts", (req, res) => {
     text: text.trim(),
     model_id: MODEL_ID,
     voice_settings: {
-      stability: 0.68,
-      similarity_boost: 0.82,
-      style: 0.35,
+      stability: 0.65,
+      similarity_boost: 0.80,
+      style: 0.40,
       use_speaker_boost: true,
     },
   });

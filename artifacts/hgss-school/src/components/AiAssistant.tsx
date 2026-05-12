@@ -7,6 +7,7 @@ type TourStep = {
   page: string;
   action?: string;
   route?: string;
+  audioSrc: string;
 };
 
 const TOUR_STEPS: TourStep[] = [
@@ -16,6 +17,7 @@ const TOUR_STEPS: TourStep[] = [
     page: "our-history",
     action: "Read Full History",
     route: "our-history",
+    audioSrc: "/audio/step-0.mp3",
   },
   {
     title: "Academics",
@@ -23,6 +25,7 @@ const TOUR_STEPS: TourStep[] = [
     page: "curriculum",
     action: "Explore Academics",
     route: "curriculum",
+    audioSrc: "/audio/step-1.mp3",
   },
   {
     title: "Admissions",
@@ -30,6 +33,7 @@ const TOUR_STEPS: TourStep[] = [
     page: "admissions",
     action: "Apply Now",
     route: "apply",
+    audioSrc: "/audio/step-2.mp3",
   },
   {
     title: "Facilities",
@@ -37,6 +41,7 @@ const TOUR_STEPS: TourStep[] = [
     page: "facilities",
     action: "View Facilities",
     route: "facilities",
+    audioSrc: "/audio/step-3.mp3",
   },
   {
     title: "Achievements",
@@ -44,6 +49,7 @@ const TOUR_STEPS: TourStep[] = [
     page: "achievements",
     action: "View Achievements",
     route: "achievements",
+    audioSrc: "/audio/step-4.mp3",
   },
   {
     title: "Contact Us",
@@ -51,11 +57,13 @@ const TOUR_STEPS: TourStep[] = [
     page: "contact",
     action: "Contact School",
     route: "contact",
+    audioSrc: "/audio/step-5.mp3",
   },
 ];
 
 const WELCOME_TEXT =
   "Namaste! Main Diyana hoon — Hindu Girls Senior Secondary School, Kaithal ki digital guide. Main aapko hamare school ka ek guided tour dene wali hoon. Kya aap tour shuru karna chahenge?";
+const WELCOME_AUDIO = "/audio/welcome.mp3";
 
 type Props = {
   navigate: (route: string) => void;
@@ -73,46 +81,57 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const blobUrlRef = useRef<string | null>(null);
 
   const current = TOUR_STEPS[step];
 
   const stopAudio = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
+      audioRef.current.src = "";
       audioRef.current = null;
-    }
-    if (blobUrlRef.current) {
-      URL.revokeObjectURL(blobUrlRef.current);
-      blobUrlRef.current = null;
     }
     setIsSpeaking(false);
   }, []);
 
-  const speak = useCallback(async (text: string) => {
+  // Play from a static pre-generated audio file; fall back to live API if file fails
+  const speak = useCallback(async (audioSrc: string, fallbackText: string) => {
     stopAudio();
     setIsSpeaking(true);
+
+    const tryPlay = (src: string): Promise<void> =>
+      new Promise((resolve, reject) => {
+        const audio = new Audio(src);
+        audioRef.current = audio;
+        audio.onended = () => { setIsSpeaking(false); resolve(); };
+        audio.onerror = () => reject(new Error("audio error"));
+        audio.play().catch(reject);
+      });
+
+    // 1. Try cached static file
+    try {
+      await tryPlay(audioSrc);
+      return;
+    } catch {
+      // static file failed — fall through to live API
+    }
+
+    // 2. Fall back to live TTS API
     try {
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text: fallbackText }),
       });
       if (!res.ok) throw new Error("TTS failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      blobUrlRef.current = url;
       const audio = new Audio(url);
       audioRef.current = audio;
       audio.onended = () => {
         setIsSpeaking(false);
-        if (blobUrlRef.current) {
-          URL.revokeObjectURL(blobUrlRef.current);
-          blobUrlRef.current = null;
-        }
-        audioRef.current = null;
+        URL.revokeObjectURL(url);
       };
-      audio.onerror = () => setIsSpeaking(false);
+      audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
       await audio.play();
     } catch {
       setIsSpeaking(false);
@@ -132,10 +151,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   // Auto-read welcome when modal appears
   useEffect(() => {
     if (visible && phase === "welcome") {
-      const t = setTimeout(() => speak(WELCOME_TEXT), 600);
+      const t = setTimeout(() => speak(WELCOME_AUDIO, WELCOME_TEXT), 600);
       return () => clearTimeout(t);
     }
-  }, [visible, phase]);
+  }, [visible, phase, speak]);
 
   // Navigate + scroll when tour step changes
   useEffect(() => {
@@ -143,7 +162,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     navigate(current.page as never);
     const t = setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 350);
     return () => clearTimeout(t);
-  }, [step, bubbleVisible, phase]);
+  }, [step, bubbleVisible, phase, navigate, current.page]);
 
   // Typewriter effect + auto-speak each step
   useEffect(() => {
@@ -162,14 +181,13 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         clearInterval(interval);
       }
     }, 18);
-    // Speak after a short delay so scroll/navigation settles first
-    const speakTimer = setTimeout(() => speak(text), 600);
+    const speakTimer = setTimeout(() => speak(current.audioSrc, text), 600);
     return () => {
       clearInterval(interval);
       clearTimeout(speakTimer);
       stopAudio();
     };
-  }, [step, bubbleVisible, phase, current.text]);
+  }, [step, bubbleVisible, phase, current.text, current.audioSrc, speak, stopAudio]);
 
   useEffect(() => () => stopAudio(), [stopAudio]);
 
@@ -226,7 +244,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const handleVoiceToggle = () => {
     if (isSpeaking) stopAudio();
-    else speak(phase === "welcome" ? WELCOME_TEXT : current.text);
+    else if (phase === "welcome") speak(WELCOME_AUDIO, WELCOME_TEXT);
+    else speak(current.audioSrc, current.text);
   };
 
   if (!visible) return null;

@@ -167,6 +167,7 @@ export default function DiyanaChatBot() {
   const [loading, setLoading] = useState(false);
   const [convId, setConvId] = useState<number | null>(null);
   const [pulse, setPulse] = useState(true);
+  const [hideFabs, setHideFabs] = useState(false);
 
   // Voice state
   const [recording, setRecording] = useState(false);
@@ -195,6 +196,18 @@ export default function DiyanaChatBot() {
     const handler = () => setOpen(true);
     window.addEventListener("diyana-open-chat", handler);
     return () => window.removeEventListener("diyana-open-chat", handler);
+  }, []);
+
+  // Hide FABs when AiAssistant is active (tour/chat/welcome/expanded), show when idle
+  useEffect(() => {
+    const onActive = () => setHideFabs(true);
+    const onIdle  = () => setHideFabs(false);
+    window.addEventListener("diyana-assistant-active", onActive);
+    window.addEventListener("diyana-assistant-idle",   onIdle);
+    return () => {
+      window.removeEventListener("diyana-assistant-active", onActive);
+      window.removeEventListener("diyana-assistant-idle",   onIdle);
+    };
   }, []);
 
   useEffect(() => {
@@ -441,13 +454,14 @@ export default function DiyanaChatBot() {
 
   const startTour = () => {
     setOpen(false);
+    setHideFabs(true);
     window.dispatchEvent(new CustomEvent("diyana-start-tour"));
   };
 
   return (
     <>
-      {/* FAB cluster — Tour pill + Chat circle */}
-      <div className="dc-fab-cluster">
+      {/* FAB cluster — hidden while AiAssistant is active */}
+      <div className="dc-fab-cluster" style={{ opacity: hideFabs ? 0 : 1, pointerEvents: hideFabs ? "none" : "auto", transition: "opacity 0.3s ease" }}>
         {!open && (
           <button
             className="dc-tour-fab"

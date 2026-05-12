@@ -437,6 +437,12 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => window.removeEventListener("diyana-start-tour", handler);
   }, [stopAudio]);
 
+  // Broadcast active/idle state so DiyanaChatBot can hide its FABs
+  useEffect(() => {
+    const isActive = phase !== "minimized" || minimizedExpanded;
+    window.dispatchEvent(new CustomEvent(isActive ? "diyana-assistant-active" : "diyana-assistant-idle"));
+  }, [phase, minimizedExpanded]);
+
   // ── Handlers ─────────────────────────────────────────────────
 
   const handleStartTour = () => {

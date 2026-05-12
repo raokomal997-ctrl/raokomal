@@ -462,6 +462,16 @@ export default function DiyanaChatBot() {
             </div>
             <div className="dc-header-actions">
               <button
+                className="dc-tour-btn"
+                onClick={() => {
+                  setOpen(false);
+                  window.dispatchEvent(new CustomEvent("diyana-start-tour"));
+                }}
+                title="Start guided tour"
+              >
+                🎓 Tour
+              </button>
+              <button
                 className={`dc-lang-btn${lang === "hi-IN" ? " dc-lang-active" : ""}`}
                 onClick={() => setLang((l) => l === "hi-IN" ? "en-US" : "hi-IN")}
                 title="Toggle Hindi / English"

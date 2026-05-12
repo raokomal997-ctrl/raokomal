@@ -5,8 +5,8 @@
 /* ── FAB Button ── */
 .dc-fab {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  bottom: 152px;
+  right: 36px;
   z-index: 9998;
   width: 56px;
   height: 56px;
@@ -41,7 +41,7 @@
 /* ── Chat Panel ── */
 .dc-panel {
   position: fixed;
-  bottom: 100px;
+  bottom: 220px;
   right: 24px;
   z-index: 9997;
   width: 420px;
@@ -459,8 +459,27 @@
   100% { transform: scale(1.8); opacity: 0; }
 }
 
+/* ── Tour button in header ── */
+.dc-tour-btn {
+  background: rgba(244,208,63,0.15);
+  border: 1px solid rgba(244,208,63,0.4);
+  color: #F4D03F;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.dc-tour-btn:hover {
+  background: rgba(244,208,63,0.3);
+  border-color: #F4D03F;
+}
+
 /* ── Mobile ── */
 @media (max-width: 480px) {
-  .dc-panel { right: 8px; left: 8px; width: auto; bottom: 86px; height: 75vh; }
-  .dc-fab   { right: 16px; bottom: 20px; }
+  .dc-panel { right: 8px; left: 8px; width: auto; bottom: 220px; height: 65vh; }
+  .dc-fab   { right: 20px; bottom: 152px; }
 }

@@ -423,6 +423,20 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => window.removeEventListener("diyana-open-chat", handler);
   }, [stopAudio]);
 
+  // Listen for external start-tour events (from DiyanaChatBot "Tour" button)
+  useEffect(() => {
+    const handler = () => {
+      stopAudio();
+      setBubbleVisible(false);
+      setMinimizedExpanded(false);
+      setPhase("tour");
+      setStep(0);
+      setTimeout(() => setBubbleVisible(true), 300);
+    };
+    window.addEventListener("diyana-start-tour", handler);
+    return () => window.removeEventListener("diyana-start-tour", handler);
+  }, [stopAudio]);
+
   // ── Handlers ─────────────────────────────────────────────────
 
   const handleStartTour = () => {

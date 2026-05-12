@@ -181,6 +181,8 @@ export default function DiyanaChatBot() {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const lastFullTextRef = useRef("");
   const sendAfterRecordRef = useRef<string>("");
+  const convIdRef = useRef<number | null>(null);
+  const loadingRef = useRef(false);
 
   // Check voice support on mount
   useEffect(() => {
@@ -224,6 +226,8 @@ export default function DiyanaChatBot() {
         body: JSON.stringify({ title: "HGSS Chat" }),
       });
       const conv = await res.json();
+      if (!conv.id) throw new Error("No conversation id");
+      convIdRef.current = conv.id;
       setConvId(conv.id);
       const greeting = lang === "hi-IN"
         ? "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Aap school ke baare mein kuch bhi pooch sakti hain — admissions, classes, facilities — main yahan hoon!"
@@ -344,8 +348,9 @@ export default function DiyanaChatBot() {
 
   // ── Send Message ──
   const sendMessageText = async (text: string) => {
-    if (!text.trim() || loading || convId === null) return;
+    if (!text.trim() || loadingRef.current || !convIdRef.current) return;
     const userText = text.trim();
+    const currentConvId = convIdRef.current;
     setInput("");
     setTranscript("");
     lastFullTextRef.current = "";
@@ -353,6 +358,7 @@ export default function DiyanaChatBot() {
 
     const userId = crypto.randomUUID();
     setMessages((prev) => [...prev, { id: userId, role: "user", content: userText }]);
+    loadingRef.current = true;
     setLoading(true);
 
     const assistantId = crypto.randomUUID();
@@ -361,7 +367,7 @@ export default function DiyanaChatBot() {
     let fullResponse = "";
 
     try {
-      const res = await fetch(apiUrl(`/openai/conversations/${convId}/messages`), {
+      const res = await fetch(apiUrl(`/openai/conversations/${currentConvId}/messages`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: userText }),
@@ -413,6 +419,7 @@ export default function DiyanaChatBot() {
         )
       );
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
   };

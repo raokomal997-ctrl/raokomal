@@ -7,7 +7,7 @@
   position: fixed;
   bottom: 152px;
   right: 36px;
-  z-index: 9998;
+  z-index: 10002;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -43,7 +43,7 @@
   position: fixed;
   bottom: 220px;
   right: 24px;
-  z-index: 9997;
+  z-index: 10001;
   width: 420px;
   height: 600px;
   background: #f8f9fb;

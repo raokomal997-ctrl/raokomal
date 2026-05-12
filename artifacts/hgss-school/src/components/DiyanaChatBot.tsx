@@ -462,10 +462,13 @@ export default function DiyanaChatBot() {
         <button
           className={`dc-fab${open ? " dc-fab-open" : ""}${pulse ? " dc-fab-pulse" : ""}`}
           onClick={() => setOpen((o) => !o)}
-          title="Chat with Diyana"
+          title="Chat with AI Assistant"
           aria-label="Open AI chat"
         >
           <span className="dc-fab-icon">{open ? "✕" : "💬"}</span>
+          <span className="dc-fab-label">
+            {open ? "Close" : "Chat with AI Assistant"}
+          </span>
           {!open && pulse && <span className="dc-fab-dot" />}
         </button>
       </div>

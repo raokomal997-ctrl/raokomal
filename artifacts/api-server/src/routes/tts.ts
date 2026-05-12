@@ -3,7 +3,8 @@ import https from "https";
 
 const router: IRouter = Router();
 
-const VOICE_ID = "TTtB1x9U8PF0Vgf20IAP";
+// ElevenLabs "Bella" — warm female voice, free plan compatible, multilingual
+const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 const MODEL_ID = "eleven_multilingual_v2";
 
 router.post("/tts", (req, res) => {
@@ -24,8 +25,10 @@ router.post("/tts", (req, res) => {
     text: text.trim(),
     model_id: MODEL_ID,
     voice_settings: {
-      stability: 0.5,
-      similarity_boost: 0.75,
+      stability: 0.68,
+      similarity_boost: 0.82,
+      style: 0.35,
+      use_speaker_boost: true,
     },
   });
 
@@ -46,9 +49,9 @@ router.post("/tts", (req, res) => {
       const chunks: Buffer[] = [];
       proxyRes.on("data", (c: Buffer) => chunks.push(c));
       proxyRes.on("end", () => {
-        const body = Buffer.concat(chunks).toString("utf8");
-        req.log.error({ status: proxyRes.statusCode, body }, "ElevenLabs TTS error");
-        res.status(502).json({ error: "TTS provider error", detail: body });
+        const errBody = Buffer.concat(chunks).toString("utf8");
+        req.log.error({ status: proxyRes.statusCode, body: errBody }, "ElevenLabs TTS error");
+        res.status(502).json({ error: "TTS provider error", detail: errBody });
       });
       return;
     }

@@ -95,56 +95,56 @@ type TourStep = {
 
 const TOUR_STEPS: TourStep[] = [
   {
-    title: "हमारे विद्यालय के बारे में",
-    text: "Hindu Girls Sr. Sec. School, Kaithal — CISCE se manyata prapt ek vidyalay hai jo 50 se adhik varshon se balika shiksha mein uchch shiksha pradan kar raha hai. Hamare vidyalay ka uddeshya hai — Shiksha, Sanskaar aur Uttkarshtta ke madhyam se betiyon ko sashakt banana.",
+    title: "About Our School",
+    text: "Hindu Girls Sr. Sec. School, Kaithal — affiliated with CISCE, has been providing excellence in girls' education for over 50 years. Our mission: empowering girls through Education, Values, and Excellence.",
     audioText: "हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल — सीआईएससीई से संबद्ध एक विद्यालय है जो पचास से अधिक वर्षों से बालिका शिक्षा में उत्कृष्टता प्रदान कर रहा है।",
     page: "our-history",
-    action: "Itihas Padhein",
+    action: "Read History",
     route: "our-history",
     audioSrc: "/audio/step-0.mp3",
   },
   {
-    title: "शिक्षा व्यवस्था",
-    text: "Nursery se Kaksha 12 tak — ICSE Kaksha 10 aur ISC Kaksha 12. Kaksha 11-12 mein Kala, Vanijya aur Vigyan dhaaraen uplabdh hain. Angrezi madhyam mein CISCE pathyakram.",
+    title: "Academics",
+    text: "Nursery to Class 12 — ICSE at Class 10 and ISC at Class 12. Streams available in Class 11–12: Arts, Commerce, and Science. CISCE curriculum in English medium.",
     audioText: "नर्सरी से कक्षा बारहवीं तक। कक्षा ग्यारह और बारह में कला, वाणिज्य और विज्ञान धाराएँ उपलब्ध हैं।",
     page: "curriculum",
-    action: "Shiksha Dekhein",
+    action: "View Curriculum",
     route: "curriculum",
     audioSrc: "/audio/step-1.mp3",
   },
   {
-    title: "प्रवेश प्रक्रिया",
-    text: "Pravesh Nursery se Kaksha 11 tak khule hain. Aavashyak dastaavez: Janm Praman Patra, Anktaalika, TC, Photograph, Aadhar Card aur Nivas Praman.",
+    title: "Admissions",
+    text: "Admissions open from Nursery to Class 11. Required documents: Birth Certificate, Marksheet, TC, Photograph, Aadhar Card, and Address Proof.",
     audioText: "प्रवेश नर्सरी से कक्षा ग्यारह तक खुले हैं। आवश्यक दस्तावेज़ — जन्म प्रमाण पत्र, अंकतालिका, आधार कार्ड।",
     page: "admissions",
-    action: "Avedan Karein",
+    action: "Apply Now",
     route: "apply",
     audioSrc: "/audio/step-2.mp3",
   },
   {
-    title: "विद्यालय की सुविधाएँ",
-    text: "Sujjit Vigyan Prayogshaalaen, Computer Lab, Pustakalay, Khel Maidaan aur surakshit balika parisar. Anubhavi shikshkon ke saath poshan kaari vatavaran.",
+    title: "Facilities",
+    text: "Well-equipped Science Labs, Computer Lab, Library, Sports Ground, and a safe girls-only campus. A nurturing environment with experienced faculty.",
     audioText: "सुसज्जित विज्ञान प्रयोगशालाएँ, कंप्यूटर प्रयोगशाला, पुस्तकालय और खेल मैदान।",
     page: "facilities",
-    action: "Suvidhaen Dekhein",
+    action: "View Facilities",
     route: "facilities",
     audioSrc: "/audio/step-3.mp3",
   },
   {
-    title: "उपलब्धियाँ",
-    text: "ICSE aur ISC board pareekshaon mein nirantar uttam parinam. Chhatraen rashtriya aur rajya star par khel, saanskritik aur shaikshnik upalabdhiyan praapt kar rahi hain.",
+    title: "Achievements",
+    text: "Consistently outstanding results in ICSE and ISC board exams. Students excelling in sports, cultural, and academic achievements at national and state level.",
     audioText: "आईसीएसई और आईएससी बोर्ड परीक्षाओं में निरंतर उत्कृष्ट परिणाम।",
     page: "achievements",
-    action: "Uplabdhiyan Dekhein",
+    action: "View Achievements",
     route: "achievements",
     audioSrc: "/audio/step-4.mp3",
   },
   {
-    title: "संपर्क करें",
-    text: "Pata: Ambala Road, Kaithal, Haryana — 136027. Somvar se Shanivar, pratahkaalin paali mein. Koi bhi prashna ho toh seedha sampark karein.",
+    title: "Contact Us",
+    text: "Address: Ambala Road, Kaithal, Haryana — 136027. Monday to Saturday, morning shift. Feel free to reach out for any queries.",
     audioText: "पता: अंबाला रोड, कैथल, हरियाणा। सोमवार से शनिवार, प्रातःकालीन पाली में।",
     page: "contact",
-    action: "Sampark Karein",
+    action: "Contact Us",
     route: "contact",
     audioSrc: "/audio/step-5.mp3",
   },
@@ -510,7 +510,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                 <button
                   className={`ai-welcome-voice-btn${isSpeaking ? " speaking" : ""}`}
                   onClick={handleVoiceToggle}
-                  title={isSpeaking ? "Rokein" : "Sunein"}
+                  title={isSpeaking ? "Stop" : "Listen"}
                 >
                   {isSpeaking ? (
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -526,10 +526,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               </div>
               <div className="ai-welcome-actions">
                 <div className="ai-welcome-actions-row">
-                  <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>🎓 Tour Shuru Karein</button>
-                  <button className="ai-btn ai-btn-chat ai-btn-lg" onClick={handleOpenChat}>💬 Kuch Poochein</button>
+                  <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>🎓 Start Tour</button>
+                  <button className="ai-btn ai-btn-chat ai-btn-lg" onClick={handleOpenChat}>💬 Ask a Question</button>
                 </div>
-                <button className="ai-btn ai-btn-ghost" onClick={handleNoThanks}>Baad Mein</button>
+                <button className="ai-btn ai-btn-ghost" onClick={handleNoThanks}>Maybe Later</button>
               </div>
             </div>
           </div>
@@ -554,7 +554,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                 <div className="ai-chat-hdr-name">Diyana</div>
                 <div className="ai-chat-hdr-status">
                   {chatLoading
-                    ? <><span className="ai-chat-loading-dot" /> Soch rahi hoon...</>
+                    ? <><span className="ai-chat-loading-dot" /> Thinking...</>
                     : <><span className="ai-chat-online-dot" /> HGSS AI Assistant</>
                   }
                 </div>
@@ -562,11 +562,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
             </div>
             <div className="ai-chat-header-right">
               {/* Switch to tour */}
-              <button className="ai-chat-hdr-btn" onClick={handleRestartTour} title="Tour mein jaayein">
+              <button className="ai-chat-hdr-btn" onClick={handleRestartTour} title="Go to Tour">
                 🎓
               </button>
               {/* Minimize */}
-              <button className="ai-chat-hdr-btn ai-chat-hdr-close" onClick={handleMinimize} title="Band karein">✕</button>
+              <button className="ai-chat-hdr-btn ai-chat-hdr-close" onClick={handleMinimize} title="Close">✕</button>
             </div>
           </div>
 
@@ -594,7 +594,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
           {/* ── Quick Questions ── */}
           {chatMessages.length <= 1 && !chatLoading && (
             <div className="ai-chat-quick">
-              <span className="ai-chat-quick-label">Jaldi poochein</span>
+              <span className="ai-chat-quick-label">Quick Questions</span>
               <div className="ai-chat-quick-grid">
                 {QUICK_QS.map((q) => (
                   <button key={q} className="ai-chat-quick-btn" onClick={() => sendChatMessage(q)}>{q}</button>
@@ -611,7 +611,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChatMessage(chatInput); } }}
-              placeholder="Kuch bhi poochein — Hindi ya English mein..."
+              placeholder="Ask anything about HGSS..."
               disabled={chatLoading}
               maxLength={600}
             />
@@ -637,7 +637,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         <button
           className={`ai-robot-btn${isSpeaking ? " ai-robot-btn--speaking" : " ai-robot-btn--idle"}`}
           onClick={handleRobotClick}
-          title="Chhota karein"
+          title="Minimize"
         >
           <img src="/ai-robot.png" alt="Diyana" className="ai-robot-img" />
           <span className="ai-robot-badge-pro">Chat</span>
@@ -669,21 +669,21 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               <button
                 className={`ai-voice-btn${isSpeaking ? " ai-voice-btn--playing" : ""}`}
                 onClick={handleVoiceToggle}
-                title={isSpeaking ? "Rokein" : "Sunein"}
+                title={isSpeaking ? "Stop" : "Play"}
               >
                 {isSpeaking
                   ? <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="4" height="16" rx="1" /><rect x="15" y="4" width="4" height="16" rx="1" /></svg>
                   : <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>
                 }
               </button>
-              <button className="ai-minimize-btn" onClick={handleMinimize} title="Chhota karein">─</button>
+              <button className="ai-minimize-btn" onClick={handleMinimize} title="Minimize">─</button>
             </div>
           </div>
 
           {isSpeaking && (
             <div className="ai-scroll-indicator">
               <span className="ai-scroll-dot" />
-              <span>Page scroll ho rahi hai...</span>
+              <span>Page scrolling...</span>
             </div>
           )}
 
@@ -698,13 +698,13 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               <button className="ai-btn ai-btn-primary" onClick={handleStepAction}>{current.action}</button>
             )}
             <button className="ai-btn ai-btn-secondary" onClick={handleNext}>
-              {step < TOUR_STEPS.length - 1 ? "Aage →" : "Samapt Karein"}
+              {step < TOUR_STEPS.length - 1 ? "Next →" : "Finish"}
             </button>
           </div>
 
           <div className="ai-bubble-chat-row">
             <button className="ai-bubble-chat-btn" onClick={handleOpenChat}>
-              💬 Kuch poochna hai? Diyana se baat karein
+              💬 Have a question? Chat with Diyana
             </button>
           </div>
         </div>
@@ -713,8 +713,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       {/* ── Minimized popup menu ── */}
       {phase === "minimized" && minimizedExpanded && (
         <div className="ai-minimized-menu">
-          <button className="ai-minimized-option" onClick={handleRestartTour}>🎓 Tour Shuru Karein</button>
-          <button className="ai-minimized-option" onClick={handleOpenChat}>💬 Diyana se Poochein</button>
+          <button className="ai-minimized-option" onClick={handleRestartTour}>🎓 Start Tour</button>
+          <button className="ai-minimized-option" onClick={handleOpenChat}>💬 Ask Diyana</button>
         </div>
       )}
 

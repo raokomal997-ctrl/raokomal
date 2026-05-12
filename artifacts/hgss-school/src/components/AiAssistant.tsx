@@ -258,12 +258,15 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const stopAudio = useCallback(() => {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; audioRef.current = null; }
+    window.speechSynthesis?.cancel();
     setIsSpeaking(false);
   }, []);
 
   const speak = useCallback(async (audioSrc: string, fallbackText: string) => {
     stopAudio();
     setIsSpeaking(true);
+
+    // 1️⃣ Try pre-recorded audio file
     const tryPlay = (src: string): Promise<void> =>
       new Promise((resolve, reject) => {
         const audio = new Audio(src);
@@ -273,6 +276,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         audio.play().catch(reject);
       });
     try { await tryPlay(audioSrc); return; } catch { /* fall through */ }
+
+    // 2️⃣ Try server TTS API
     try {
       const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: fallbackText }) });
       if (!res.ok) throw new Error("TTS failed");
@@ -283,6 +288,35 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       audio.onended = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
       audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
       await audio.play();
+      return;
+    } catch { /* fall through */ }
+
+    // 3️⃣ Final fallback: Web Speech API (works in all modern browsers)
+    try {
+      if (!window.speechSynthesis) { setIsSpeaking(false); return; }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(fallbackText);
+      utter.lang = "hi-IN";
+      utter.rate = 0.88;
+      utter.pitch = 1.05;
+      // Wait for voices to load (browsers load them async on first call)
+      const loadVoices = (): Promise<SpeechSynthesisVoice[]> =>
+        new Promise((resolve) => {
+          const v = window.speechSynthesis.getVoices();
+          if (v.length > 0) { resolve(v); return; }
+          const handler = () => {
+            const vv = window.speechSynthesis.getVoices();
+            if (vv.length > 0) { window.speechSynthesis.removeEventListener("voiceschanged", handler); resolve(vv); }
+          };
+          window.speechSynthesis.addEventListener("voiceschanged", handler);
+          setTimeout(() => resolve(window.speechSynthesis.getVoices()), 1500);
+        });
+      const voices = await loadVoices();
+      const hiVoice = voices.find((v) => v.lang.startsWith("hi")) ?? voices.find((v) => v.lang.startsWith("en-IN"));
+      if (hiVoice) utter.voice = hiVoice;
+      utter.onend = () => setIsSpeaking(false);
+      utter.onerror = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utter);
     } catch { setIsSpeaking(false); }
   }, [stopAudio]);
 

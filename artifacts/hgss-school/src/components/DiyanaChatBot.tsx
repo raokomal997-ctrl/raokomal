@@ -99,10 +99,49 @@ type Lang = "hi-IN" | "en-US";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 
+// ── Speech API type declarations (not in all TS dom libs) ──
+interface SpeechRecognitionResultItem {
+  transcript: string;
+  confidence: number;
+}
+interface SpeechRecognitionResult {
+  readonly length: number;
+  readonly isFinal: boolean;
+  item(index: number): SpeechRecognitionResultItem;
+  [index: number]: SpeechRecognitionResultItem;
+}
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+interface SpeechRecognitionEvent extends Event {
+  readonly resultIndex: number;
+  readonly results: SpeechRecognitionResultList;
+}
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: string;
+  readonly message: string;
+}
+interface SpeechRecognition extends EventTarget {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
+  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void) | null;
+  onend: ((this: SpeechRecognition, ev: Event) => void) | null;
+  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void) | null;
+  start(): void;
+  stop(): void;
+  abort(): void;
+}
+declare let SpeechRecognition: { new(): SpeechRecognition };
+
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
+    SpeechRecognition: { new(): SpeechRecognition };
+    webkitSpeechRecognition: { new(): SpeechRecognition };
   }
 }
 
@@ -147,6 +186,13 @@ export default function DiyanaChatBot() {
   useEffect(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     setVoiceSupported(!!SR && !!window.speechSynthesis);
+  }, []);
+
+  // Listen for external open event — fired by AiAssistant "Chat" buttons
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("diyana-open-chat", handler);
+    return () => window.removeEventListener("diyana-open-chat", handler);
   }, []);
 
   useEffect(() => {

@@ -1,54 +1,46 @@
 /**
- * AiAssistant.tsx — Diyana, HGSS ki AI Tour Guide
+ * AiAssistant.tsx — Diyana, HGSS Tour Guide
  *
- * Is file mein teen cheezein hain:
- *   1. TOUR_STEPS  — school ke baare mein 6 step ki jaankari
- *   2. Audio Logic — pehle cached MP3 chalata hai, agar fail ho toh live API se maangta hai
- *   3. UI          — teen states: welcome modal → tour bubble → minimized corner robot
+ * Phases:
+ *   "welcome"   → full-screen modal with Start / No / Chat buttons
+ *   "tour"      → corner bubble navigates pages + auto-scrolls while voice plays
+ *   "minimized" → small robot in corner with Tour + Chat quick-access buttons
+ *   "chat"      → dispatches event to open DiyanaChatBot panel
  *
- * File Structure:
- *   ┌─ Types & Constants (TourStep, TOUR_STEPS, WELCOME_TEXT)
- *   ├─ Component State  (phase, step, isSpeaking, etc.)
- *   ├─ Audio Functions  (stopAudio, speak)
- *   ├─ Effects          (auto-show, auto-speak, typewriter, navigation)
- *   ├─ Event Handlers   (handleNext, handleStartTour, etc.)
- *   └─ JSX Render       (welcome modal | tour bubble + robot)
+ * Voice: Cached MP3 files from /audio/ (pre-generated with ElevenLabs eleven_v3).
+ *        Falls back to live /api/tts if a file fails.
+ *
+ * Auto-scroll: While isSpeaking = true during tour, the page slowly scrolls
+ *              down so visitors read along. Pauses if user manually scrolls.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import "../styles/ai-assistant.css";
 
 // ═══════════════════════════════════════════════════════════════
-// SECTION 1: DATA — Har tour step ka content yahan likha hai
-//   text      → screen par dikhne wala text (Roman Hindi)
-//   audioText → Devanagari Hindi — ElevenLabs ko bheji jaane
-//               wali shuddh Hindi (fallback API ke liye)
-//   audioSrc  → pehle se bana hua cached MP3 file ka path
+// SECTION 1: TOUR DATA
 // ═══════════════════════════════════════════════════════════════
 
 type TourStep = {
-  title: string;       // bubble ka heading
-  text: string;        // screen par dikhne wala text
-  audioText: string;   // shuddh Hindi — TTS API ke liye
-  page: string;        // is step par kaun sa page open hoga
-  action?: string;     // CTA button ka label (optional)
-  route?: string;      // CTA click hone par kaun se route par jaana hai
-  audioSrc: string;    // cached MP3 file path (public/audio/)
+  title: string;       // Hindi heading shown in bubble
+  text: string;        // Romanized Hindi shown on screen
+  audioText: string;   // Devanagari Hindi sent to TTS API (fallback)
+  page: string;        // which page to navigate to for this step
+  action?: string;     // optional CTA button label
+  route?: string;      // CTA click destination
+  audioSrc: string;    // cached MP3 path in public/audio/
 };
 
 const TOUR_STEPS: TourStep[] = [
-  // ── Step 1: Vidyalay ke baare mein ──
   {
     title: "हमारे विद्यालय के बारे में",
     text: "Hindu Girls Sr. Sec. School, Kaithal — CISCE se manyata prapt ek vidyalay hai jo 50 se adhik varshon se balika shiksha mein uchch shiksha pradan kar raha hai. Hamare vidyalay ka uddeshya hai — Shiksha, Sanskaar aur Uttkarshtta ke madhyam se betiyon ko sashakt banana.",
-    audioText: "हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल — सीआईएससीई से संबद्ध एक विद्यालय है जो पचास से अधिक वर्षों से बालिका शिक्षा में उत्कृष्टता प्रदान कर रहा है। हमारा उद्देश्य है — शिक्षा, संस्कार और उत्कृष्टता के माध्यम से बेटियों को सशक्त बनाना। विद्यालय कोड दस हजार तीन सौ पैंसठ, कैथल, हरियाणा।",
+    audioText: "हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल — सीआईएससीई से संबद्ध एक विद्यालय है जो पचास से अधिक वर्षों से बालिका शिक्षा में उत्कृष्टता प्रदान कर रहा है। हमारा उद्देश्य है — शिक्षा, संस्कार और उत्कृष्टता के माध्यम से बेटियों को सशक्त बनाना।",
     page: "our-history",
     action: "Itihas Padhein",
     route: "our-history",
     audioSrc: "/audio/step-0.mp3",
   },
-
-  // ── Step 2: Shiksha / Curriculum ──
   {
     title: "शिक्षा व्यवस्था",
     text: "Nursery se Kaksha 12 tak — ICSE Kaksha 10 aur ISC Kaksha 12. Kaksha 11-12 mein Kala, Vanijya aur Vigyan dhaaraen uplabdh hain. Angrezi madhyam, CISCE pathyakram ke saath vaichaarak adhigam par vishesh bal diya jaata hai.",
@@ -58,8 +50,6 @@ const TOUR_STEPS: TourStep[] = [
     route: "curriculum",
     audioSrc: "/audio/step-1.mp3",
   },
-
-  // ── Step 3: Pravesh / Admissions ──
   {
     title: "प्रवेश प्रक्रिया",
     text: "Pravesh Nursery se Kaksha 11 tak khule hain. Aavashyak dastaavez: Janm Praman Patra, Anktaalika, TC, Photograph, Aadhar Card aur Nivas Praman. Vidyalay kaaryaalay mein pdhaaraein — hum aapka swagat karenge!",
@@ -69,8 +59,6 @@ const TOUR_STEPS: TourStep[] = [
     route: "apply",
     audioSrc: "/audio/step-2.mp3",
   },
-
-  // ── Step 4: Suvidhaen / Facilities ──
   {
     title: "विद्यालय की सुविधाएँ",
     text: "Hamare vidyalay mein hain — sujjit Vigyan Prayogshaalaen, Computer Lab, Pustakalay, Khel Maidaan aur surakshit balika parisar. Anubhavi shikshkon ke saath ek poshankari vatavaran jahan har beti vikas kar sake.",
@@ -80,8 +68,6 @@ const TOUR_STEPS: TourStep[] = [
     route: "facilities",
     audioSrc: "/audio/step-3.mp3",
   },
-
-  // ── Step 5: Uplabdhiyan / Achievements ──
   {
     title: "उपलब्धियाँ",
     text: "ICSE aur ISC board pareekshaon mein nirantar uttam parinam. Chhatraen rashtriya aur rajya star par khel, saanskritik aur shaikshnik upalabdhiyan praapt kar rahi hain. Varshik Khel Divas, saanskritik karyakram aur Vigyan Mele bhi aayojit hote hain.",
@@ -91,8 +77,6 @@ const TOUR_STEPS: TourStep[] = [
     route: "achievements",
     audioSrc: "/audio/step-4.mp3",
   },
-
-  // ── Step 6: Sampark / Contact ──
   {
     title: "संपर्क करें",
     text: "Pata: Ambala Road, Kaithal, Haryana — 136027. Vidyalay Somvar se Shanivar, pratahkaalin paali mein khula rehta hai. Koi bhi prashna ho toh vidyalay kaaryaalay mein seedha sampark karein.",
@@ -104,58 +88,91 @@ const TOUR_STEPS: TourStep[] = [
   },
 ];
 
-// Welcome screen ke liye alag text
 const WELCOME_TEXT =
   "Namaste! Main Diyana hoon — Hindu Girls Senior Secondary School, Kaithal ki digital guide. Main aapko hamare vidyalay ka ek guided bhraman karaane wali hoon. Kya aap bhraman shuru karna chahenge?";
-
-// Welcome audio ke liye shuddh Hindi (Devanagari) — TTS fallback
 const WELCOME_AUDIO_TEXT =
   "नमस्ते! मैं दियाना हूँ — हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल की डिजिटल गाइड। मैं आपको हमारे विद्यालय का एक मार्गदर्शित भ्रमण कराने वाली हूँ। क्या आप भ्रमण शुरू करना चाहेंगे?";
-
-// Cached welcome audio file
 const WELCOME_AUDIO_SRC = "/audio/welcome.mp3";
 
 // ═══════════════════════════════════════════════════════════════
-// SECTION 2: COMPONENT PROPS
+// SECTION 2: COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
 type Props = {
-  navigate: (route: string) => void;  // page change karne ke liye App.tsx se aata hai
-  openApply: () => void;              // Admission form kholne ke liye
+  navigate: (route: string) => void;
+  openApply: () => void;
 };
 
-// ═══════════════════════════════════════════════════════════════
-// SECTION 3: MAIN COMPONENT
-// ═══════════════════════════════════════════════════════════════
+/** Open DiyanaChatBot from anywhere by dispatching this event */
+const openChat = () => window.dispatchEvent(new Event("diyana-open-chat"));
 
 export default function AiAssistant({ navigate, openApply }: Props) {
 
-  // ── State Variables ──────────────────────────────────────────
-  // phase: assistant kis mode mein hai
-  //   "welcome"   → pehli baar wala modal dikhta hai
-  //   "tour"      → corner mein bubble + robot dikhta hai
-  //   "minimized" → sirf robot dikhta hai, bubble nahi
-  const [phase, setPhase] = useState<"welcome" | "tour" | "minimized">("welcome");
+  // ── State ───────────────────────────────────────────────────
+  const [phase, setPhase]               = useState<"welcome" | "tour" | "minimized">("welcome");
+  const [visible, setVisible]           = useState(false);
+  const [entering, setEntering]         = useState(false);
+  const [step, setStep]                 = useState(0);
+  const [typing, setTyping]             = useState(false);
+  const [displayText, setDisplayText]   = useState("");
+  const [bubbleVisible, setBubbleVisible] = useState(false);
+  const [isSpeaking, setIsSpeaking]     = useState(false);
+  const [minimizedExpanded, setMinimizedExpanded] = useState(false);
 
-  const [visible, setVisible]           = useState(false);   // page load ke baad delay se dikhta hai
-  const [entering, setEntering]         = useState(false);   // entrance animation chal rahi hai?
-  const [step, setStep]                 = useState(0);       // tour ka current step (0 se 5)
-  const [typing, setTyping]             = useState(false);   // typewriter effect chal rahi hai?
-  const [displayText, setDisplayText]   = useState("");      // typewriter ka abhi tak dikhaya hua text
-  const [bubbleVisible, setBubbleVisible] = useState(false); // tour bubble animate-in hoga?
-  const [isSpeaking, setIsSpeaking]     = useState(false);   // audio abhi chal raha hai?
+  // ── Refs ────────────────────────────────────────────────────
+  const audioRef         = useRef<HTMLAudioElement | null>(null);
+  const scrollTimerRef   = useRef<number | null>(null);    // auto-scroll setInterval
+  const userScrolledRef  = useRef<number>(0);              // countdown: paused by user scroll
 
-  // Audio element ka reference — pause/stop ke liye
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Current step ka data shortcut
   const current = TOUR_STEPS[step];
 
-  // ── Audio Functions ──────────────────────────────────────────
+  // ── Auto-scroll helpers ─────────────────────────────────────
 
-  /**
-   * stopAudio — jo bhi audio chal raha ho use rokta hai
-   */
+  const stopPageScroll = useCallback(() => {
+    if (scrollTimerRef.current !== null) {
+      clearInterval(scrollTimerRef.current);
+      scrollTimerRef.current = null;
+    }
+  }, []);
+
+  const startPageScroll = useCallback(() => {
+    stopPageScroll();
+    userScrolledRef.current = 0;
+    // Scroll 2px every 60ms ≈ 33px/sec — slow, guided feel
+    scrollTimerRef.current = window.setInterval(() => {
+      if (userScrolledRef.current > 0) {
+        userScrolledRef.current -= 60; // count down pause timer
+        return;
+      }
+      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 120;
+      if (!atBottom) window.scrollBy(0, 2);
+    }, 60);
+  }, [stopPageScroll]);
+
+  // Detect manual user scroll → pause auto-scroll for 3 seconds
+  useEffect(() => {
+    const onManualScroll = () => { userScrolledRef.current = 3000; };
+    window.addEventListener("wheel",     onManualScroll, { passive: true });
+    window.addEventListener("touchmove", onManualScroll, { passive: true });
+    return () => {
+      window.removeEventListener("wheel",     onManualScroll);
+      window.removeEventListener("touchmove", onManualScroll);
+    };
+  }, []);
+
+  // Start/stop auto-scroll based on speaking state (tour only)
+  useEffect(() => {
+    if (phase === "tour" && isSpeaking) {
+      // Delay 1.5s so page navigation settles before scroll begins
+      const t = setTimeout(startPageScroll, 1500);
+      return () => { clearTimeout(t); stopPageScroll(); };
+    }
+    stopPageScroll();
+    return undefined;
+  }, [phase, isSpeaking, startPageScroll, stopPageScroll]);
+
+  // ── Audio helpers ───────────────────────────────────────────
+
   const stopAudio = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -166,18 +183,14 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   }, []);
 
   /**
-   * speak — audio chalata hai
-   *   Step 1: Pehle cached MP3 file try karta hai (fast, free)
-   *   Step 2: Agar file nahi chali toh live ElevenLabs API call karta hai (fallback)
-   *
-   * @param audioSrc   — cached MP3 ka path (e.g. "/audio/welcome.mp3")
-   * @param fallbackText — agar cached file fail ho toh API ko bhejna wala shuddh Hindi text
+   * speak — first tries the cached static MP3, then falls back to live API
+   * @param audioSrc    path to pre-generated MP3 (e.g. "/audio/welcome.mp3")
+   * @param fallbackText Devanagari Hindi text for live TTS fallback
    */
   const speak = useCallback(async (audioSrc: string, fallbackText: string) => {
     stopAudio();
     setIsSpeaking(true);
 
-    // Helper: ek audio source se play karne ki koshish karta hai
     const tryPlay = (src: string): Promise<void> =>
       new Promise((resolve, reject) => {
         const audio = new Audio(src);
@@ -187,15 +200,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
         audio.play().catch(reject);
       });
 
-    // Pehle cached static file try karo
-    try {
-      await tryPlay(audioSrc);
-      return; // success — bahar nikal jao
-    } catch {
-      // File nahi chali, neeche fallback API try karega
-    }
+    // Try cached file first (fast, no API cost)
+    try { await tryPlay(audioSrc); return; } catch { /* fall through */ }
 
-    // Fallback: live TTS API se audio maango
+    // Fallback: live TTS API
     try {
       const res = await fetch("/api/tts", {
         method: "POST",
@@ -207,10 +215,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audioRef.current = audio;
-      audio.onended = () => {
-        setIsSpeaking(false);
-        URL.revokeObjectURL(url); // memory free karo
-      };
+      audio.onended = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
       audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
       await audio.play();
     } catch {
@@ -218,34 +223,19 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     }
   }, [stopAudio]);
 
-  // ── Effects (Side Effects) ───────────────────────────────────
+  // ── Effects ─────────────────────────────────────────────────
 
-  /**
-   * Page load hone ke 1.2 second baad Diyana ko dikhata hai
-   * aur entrance animation trigger karta hai
-   */
+  // Appear after 1.2s with entrance animation
   useEffect(() => {
     const t = setTimeout(() => {
       setVisible(true);
       setEntering(true);
-      setTimeout(() => setEntering(false), 1000); // animation khatam hone ke baad reset
+      setTimeout(() => setEntering(false), 1000);
     }, 1200);
     return () => clearTimeout(t);
   }, []);
 
-  /**
-   * Welcome modal dikhne ke baad automatically welcome audio chalata hai
-   */
-  useEffect(() => {
-    if (visible && phase === "welcome") {
-      const t = setTimeout(() => speak(WELCOME_AUDIO_SRC, WELCOME_AUDIO_TEXT), 600);
-      return () => clearTimeout(t);
-    }
-  }, [visible, phase, speak]);
-
-  /**
-   * Har tour step ke saath page navigate karta hai aur top par scroll karta hai
-   */
+  // Navigate + scroll-to-top when tour step changes
   useEffect(() => {
     if (phase !== "tour" || !bubbleVisible) return;
     navigate(current.page as never);
@@ -253,11 +243,9 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => clearTimeout(t);
   }, [step, bubbleVisible, phase, navigate, current.page]);
 
-  /**
-   * Tour step badalne par:
-   *   1. Typewriter effect se text dikhata hai
-   *   2. 600ms baad voice chalata hai (page load settle ho sake)
-   */
+  // Typewriter + auto-speak each tour step
+  // Note: voice auto-plays here because user already clicked "Tour Shuru Karein"
+  // (that prior user interaction satisfies browser autoplay policy)
   useEffect(() => {
     if (phase !== "tour" || !bubbleVisible) return;
     stopAudio();
@@ -265,31 +253,20 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     setDisplayText("");
     const text = current.text;
     let i = 0;
-    // Typewriter: har 18ms mein ek character add karo
     const interval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayText(text.slice(0, i + 1));
-        i++;
-      } else {
-        setTyping(false);
-        clearInterval(interval);
-      }
+      if (i < text.length) { setDisplayText(text.slice(0, i + 1)); i++; }
+      else { setTyping(false); clearInterval(interval); }
     }, 18);
-    // Voice play karo — fallback ke liye audioText (shuddh Hindi) use karo
-    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText), 600);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(speakTimer);
-      stopAudio();
-    };
+    // Auto-play voice — works because user already interacted with page
+    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText), 500);
+    return () => { clearInterval(interval); clearTimeout(speakTimer); stopAudio(); };
   }, [step, bubbleVisible, phase, current.text, current.audioSrc, current.audioText, speak, stopAudio]);
 
-  // Component unmount hone par audio band karo
-  useEffect(() => () => stopAudio(), [stopAudio]);
+  // Cleanup on unmount
+  useEffect(() => () => { stopAudio(); stopPageScroll(); }, [stopAudio, stopPageScroll]);
 
-  // ── Event Handlers ───────────────────────────────────────────
+  // ── Handlers ────────────────────────────────────────────────
 
-  /** "Tour Shuru Karein" button dabane par */
   const handleStartTour = () => {
     stopAudio();
     setPhase("tour");
@@ -297,29 +274,19 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     setTimeout(() => setBubbleVisible(true), 300);
   };
 
-  /** "Nahi Chahiye" button dabane par */
-  const handleNoThanks = () => {
-    stopAudio();
-    setPhase("minimized");
-  };
+  const handleNoThanks = () => { stopAudio(); setPhase("minimized"); };
 
-  /** "Aage" button dabane par — agla step ya tour khatam */
   const handleNext = () => {
     stopAudio();
     if (step < TOUR_STEPS.length - 1) {
       setBubbleVisible(false);
-      setTimeout(() => {
-        setStep((s) => s + 1);
-        setBubbleVisible(true);
-      }, 250);
+      setTimeout(() => { setStep((s) => s + 1); setBubbleVisible(true); }, 250);
     } else {
-      // Tour khatam — minimize kar do
       setBubbleVisible(false);
       setTimeout(() => setPhase("minimized"), 300);
     }
   };
 
-  /** Step ke CTA button (e.g. "Avedan Karein") dabane par */
   const handleStepAction = () => {
     if (!current.route) return;
     stopAudio();
@@ -329,79 +296,68 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     setTimeout(() => setPhase("minimized"), 300);
   };
 
-  /** Minimize button dabane par */
   const handleMinimize = () => {
     stopAudio();
     setBubbleVisible(false);
     setTimeout(() => setPhase("minimized"), 300);
   };
 
-  /** Robot image par click — minimized se wapas laata hai ya minimize karta hai */
   const handleRobotClick = () => {
     if (phase === "minimized") {
-      setEntering(true);
-      setTimeout(() => setEntering(false), 1000);
-      setPhase("welcome");
-    } else if (phase === "tour") {
-      handleMinimize();
+      setMinimizedExpanded((v) => !v);
     }
   };
 
-  /** Voice button (play/pause toggle) */
+  const handleRestartTour = () => {
+    stopAudio();
+    setMinimizedExpanded(false);
+    setEntering(true);
+    setTimeout(() => setEntering(false), 1000);
+    setPhase("welcome");
+  };
+
   const handleVoiceToggle = () => {
-    if (isSpeaking) {
-      stopAudio();
-    } else if (phase === "welcome") {
-      speak(WELCOME_AUDIO_SRC, WELCOME_AUDIO_TEXT);
-    } else {
-      speak(current.audioSrc, current.audioText);
-    }
+    if (isSpeaking) stopAudio();
+    else if (phase === "welcome") speak(WELCOME_AUDIO_SRC, WELCOME_AUDIO_TEXT);
+    else speak(current.audioSrc, current.audioText);
   };
 
-  // ── Render ───────────────────────────────────────────────────
-
-  // Jab tak page load nahi ho jaata, kuch nahi dikhao
   if (!visible) return null;
 
-  // ─────────────────────────────────────────────
-  // RENDER A: Welcome Modal (pehli baar wala popup)
-  // ─────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  // RENDER A: Welcome Modal
+  // ─────────────────────────────────────────────────────────────
   if (phase === "welcome") {
     return (
       <div className="ai-welcome-overlay">
         <div className="ai-welcome-card-wrap">
-          {/* Diyana ka robot image — card ke upar float karta hai */}
           <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot-float" />
 
           <div className="ai-welcome-modal">
-            {/* Card ka upar wala dark section */}
             <div className="ai-welcome-modal-top">
               <div className="ai-welcome-badge-wrap">
-                <span className="ai-welcome-badge">HGSS Digital Guide</span>
+                <span className="ai-welcome-badge">✦ HGSS Digital Guide</span>
               </div>
               <h2 className="ai-welcome-title">Namaste! Main Diyana hoon</h2>
               <p className="ai-welcome-subtitle">Hindu Girls Sr. Sec. School, Kaithal</p>
             </div>
 
-            {/* Card ka neeche wala body section */}
             <div className="ai-welcome-modal-body">
-              {/* Welcome message box + voice button */}
               <div className="ai-welcome-message-box">
                 <p className="ai-welcome-message-text">{WELCOME_TEXT}</p>
+                {/* Voice button — click to hear welcome in Hindi */}
                 <button
                   className={`ai-welcome-voice-btn${isSpeaking ? " speaking" : ""}`}
                   onClick={handleVoiceToggle}
                   title={isSpeaking ? "Rokein" : "Sunein"}
                   aria-label={isSpeaking ? "Awaaz rokein" : "Welcome message sunein"}
                 >
-                  {/* Pause icon (jab chal raha ho) */}
                   {isSpeaking ? (
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <rect x="5" y="4" width="4" height="16" rx="1" />
                       <rect x="15" y="4" width="4" height="16" rx="1" />
                     </svg>
                   ) : (
-                    /* Mic icon (jab band ho) */
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
                       <path d="M19 10v2a7 7 0 0 1-14 0v-2H3v2a9 9 0 0 0 8 8.94V22H8v2h8v-2h-3v-1.06A9 9 0 0 0 21 12v-2h-2z"/>
@@ -410,13 +366,18 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                 </button>
               </div>
 
-              {/* Action buttons */}
+              {/* Action strip: two main CTA buttons + a small ghost below */}
               <div className="ai-welcome-actions">
-                <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
-                  Tour Shuru Karein
-                </button>
-                <button className="ai-btn ai-btn-ghost ai-btn-lg" onClick={handleNoThanks}>
-                  Nahi Chahiye
+                <div className="ai-welcome-actions-row">
+                  <button className="ai-btn ai-btn-primary ai-btn-lg" onClick={handleStartTour}>
+                    🎓 Tour Shuru Karein
+                  </button>
+                  <button className="ai-btn ai-btn-chat ai-btn-lg" onClick={() => { setPhase("minimized"); openChat(); }}>
+                    💬 Poochein
+                  </button>
+                </div>
+                <button className="ai-btn ai-btn-ghost" onClick={handleNoThanks}>
+                  Baad Mein
                 </button>
               </div>
             </div>
@@ -426,17 +387,17 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // RENDER B: Tour Bubble + Corner Robot Widget
-  // ─────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  // RENDER B: Tour Bubble + Corner Robot
+  // ─────────────────────────────────────────────────────────────
   return (
     <div className={`ai-assistant${phase === "minimized" ? " ai-minimized" : ""}`}>
 
-      {/* Tour bubble — sirf tour phase mein dikhta hai */}
+      {/* ── Tour Bubble ── */}
       {phase === "tour" && (
         <div className={`ai-bubble${bubbleVisible ? " ai-bubble-in" : ""}`}>
 
-          {/* Progress bar — kitne steps complete hue */}
+          {/* Progress bar */}
           <div className="ai-bubble-progress">
             <div
               className="ai-bubble-progress-fill"
@@ -444,20 +405,17 @@ export default function AiAssistant({ navigate, openApply }: Props) {
             />
           </div>
 
-          {/* Header: name + speaking dots + controls */}
+          {/* Header */}
           <div className="ai-bubble-header">
             <span className="ai-bubble-name">
               Diyana — HGSS Guide
-              {/* Animated dots jab audio chal raha ho */}
               {isSpeaking && (
-                <span className="ai-speaking-dots">
-                  <span /><span /><span />
-                </span>
+                <span className="ai-speaking-dots"><span /><span /><span /></span>
               )}
             </span>
             <div className="ai-bubble-controls">
               <span className="ai-step-counter">{step + 1} / {TOUR_STEPS.length}</span>
-              {/* Voice play/pause button */}
+              {/* Voice toggle — plays / pauses current step audio */}
               <button
                 className={`ai-voice-btn${isSpeaking ? " ai-voice-btn--playing" : ""}`}
                 onClick={handleVoiceToggle}
@@ -475,15 +433,22 @@ export default function AiAssistant({ navigate, openApply }: Props) {
                   </svg>
                 )}
               </button>
-              {/* Minimize button */}
               <button className="ai-minimize-btn" onClick={handleMinimize} title="Chhota karein">─</button>
             </div>
           </div>
 
+          {/* Auto-scroll indicator */}
+          {isSpeaking && (
+            <div className="ai-scroll-indicator">
+              <span className="ai-scroll-dot" />
+              <span>Page scroll ho rahi hai...</span>
+            </div>
+          )}
+
           {/* Step title */}
           <div className="ai-bubble-title">{current.title}</div>
 
-          {/* Step content — typewriter effect se aata hai */}
+          {/* Typewriter text */}
           <p className="ai-bubble-text">
             {displayText}
             {typing && <span className="ai-cursor">|</span>}
@@ -500,24 +465,45 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               {step < TOUR_STEPS.length - 1 ? "Aage →" : "Samapt Karein"}
             </button>
           </div>
+
+          {/* Chat shortcut at bottom of bubble */}
+          <div className="ai-bubble-chat-row">
+            <button className="ai-bubble-chat-btn" onClick={openChat}>
+              💬 Kuch poochna hai? Diyana se baat karein
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Corner robot button — hamesha dikhta hai */}
+      {/* ── Minimized quick-access popup ── */}
+      {phase === "minimized" && minimizedExpanded && (
+        <div className="ai-minimized-menu">
+          <button className="ai-minimized-option" onClick={handleRestartTour}>
+            🎓 Tour Shuru Karein
+          </button>
+          <button className="ai-minimized-option" onClick={() => { setMinimizedExpanded(false); openChat(); }}>
+            💬 Diyana se Poochein
+          </button>
+        </div>
+      )}
+
+      {/* ── Corner Robot Button ── */}
       <button
         className={[
           "ai-robot-btn",
-          entering   ? "ai-robot-btn--entering" :  // entrance animation
-          isSpeaking ? "ai-robot-btn--speaking"  :  // speaking animation
-                       "ai-robot-btn--idle",         // idle sway animation
+          entering   ? "ai-robot-btn--entering" :
+          isSpeaking ? "ai-robot-btn--speaking"  :
+                       "ai-robot-btn--idle",
         ].join(" ")}
         onClick={handleRobotClick}
-        title={phase === "minimized" ? "Tour dobara shuru karein" : "Chhota karein"}
+        title={phase === "minimized" ? "Diyana — click karein" : "Chhota karein"}
       >
         <img src="/ai-robot.png" alt="HGSS Guide Diyana" className="ai-robot-img" />
-        {/* "Guide" badge — sirf minimized state mein dikhta hai */}
-        {phase === "minimized" && <span className="ai-robot-badge-pro">Guide</span>}
-        {/* Glow effect */}
+        {phase === "minimized" && (
+          <span className="ai-robot-badge-pro">
+            {minimizedExpanded ? "✕ Band" : "Guide"}
+          </span>
+        )}
         <span className="ai-robot-glow" />
       </button>
     </div>

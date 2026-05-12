@@ -439,18 +439,36 @@ export default function DiyanaChatBot() {
     { hi: "Documents kya chahiye?", en: "What documents are needed?" },
   ];
 
+  const startTour = () => {
+    setOpen(false);
+    window.dispatchEvent(new CustomEvent("diyana-start-tour"));
+  };
+
   return (
     <>
-      {/* FAB */}
-      <button
-        className={`dc-fab${open ? " dc-fab-open" : ""}${pulse ? " dc-fab-pulse" : ""}`}
-        onClick={() => setOpen((o) => !o)}
-        title="Chat with Diyana"
-        aria-label="Open AI chat"
-      >
-        <span className="dc-fab-icon">{open ? "✕" : "💬"}</span>
-        {!open && pulse && <span className="dc-fab-dot" />}
-      </button>
+      {/* FAB cluster — Tour pill + Chat circle */}
+      <div className="dc-fab-cluster">
+        {!open && (
+          <button
+            className="dc-tour-fab"
+            onClick={startTour}
+            title="Start guided school tour"
+            aria-label="Start guided tour"
+          >
+            <span className="dc-tour-fab-icon">🎓</span>
+            Start Tour
+          </button>
+        )}
+        <button
+          className={`dc-fab${open ? " dc-fab-open" : ""}${pulse ? " dc-fab-pulse" : ""}`}
+          onClick={() => setOpen((o) => !o)}
+          title="Chat with Diyana"
+          aria-label="Open AI chat"
+        >
+          <span className="dc-fab-icon">{open ? "✕" : "💬"}</span>
+          {!open && pulse && <span className="dc-fab-dot" />}
+        </button>
+      </div>
 
       {open && (
         <div className="dc-panel">

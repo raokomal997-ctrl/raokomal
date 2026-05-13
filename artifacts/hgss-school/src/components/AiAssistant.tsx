@@ -226,23 +226,43 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       cancelAnimationFrame(scrollTimerRef.current);
       scrollTimerRef.current = null;
     }
+    // Restore CSS smooth scrolling after tour scroll ends
+    document.documentElement.style.scrollBehavior = "";
   }, []);
 
   const startPageScroll = useCallback(() => {
     stopPageScroll();
+    // Disable CSS scroll-behavior:smooth while RAF loop is running —
+    // otherwise each scrollBy() queues a new native smooth animation,
+    // causing multiple animations to stack and fight each other (jitter).
+    document.documentElement.style.scrollBehavior = "auto";
+
     userScrolledRef.current = 0;
-    const SPEED = 45; // px per second — gentle, readable pace
+    const SPEED = 50; // px per second
     let lastTime: number | null = null;
+    let accumulated = 0; // sub-pixel accumulator — only scroll by integer px
 
     const frame = (now: number) => {
       if (scrollTimerRef.current === null) return;
       if (lastTime !== null) {
-        const dt = Math.min(now - lastTime, 50); // cap dt to avoid big jumps after tab switch
+        const dt = Math.min(now - lastTime, 40); // cap to avoid jumps on tab-switch
         if (userScrolledRef.current > 0) {
-          userScrolledRef.current = Math.max(0, userScrolledRef.current - dt * 3);
+          // User scrolled — pause auto-scroll briefly
+          userScrolledRef.current = Math.max(0, userScrolledRef.current - dt * 4);
+          accumulated = 0;
         } else {
-          const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 120;
-          if (!atBottom) window.scrollBy(0, (SPEED * dt) / 1000);
+          const atBottom =
+            window.innerHeight + window.scrollY >= document.body.scrollHeight - 80;
+          if (!atBottom) {
+            accumulated += (SPEED * dt) / 1000;
+            const px = Math.floor(accumulated);
+            if (px >= 1) {
+              window.scrollBy(0, px); // always integer pixels — no sub-pixel jitter
+              accumulated -= px;
+            }
+          } else {
+            accumulated = 0;
+          }
         }
       }
       lastTime = now;

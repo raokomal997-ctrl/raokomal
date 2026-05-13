@@ -215,6 +215,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   const userScrolledRef   = useRef<number>(0);
   const speakGenRef       = useRef<number>(0);   // cancels stale async speak() calls
   const cachedVoicesRef   = useRef<SpeechSynthesisVoice[]>([]); // pre-loaded voices
+  const welcomeSpokenRef  = useRef(false);       // ensures welcome narration plays only once
 
   const current = TOUR_STEPS[step];
 
@@ -428,9 +429,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => clearTimeout(t);
   }, []);
 
-  // Auto-speak welcome message when Diyana first appears (or returns to welcome)
+  // Auto-speak welcome message only once — the very first time Diyana appears
   useEffect(() => {
-    if (!visible || phase !== "welcome") return;
+    if (!visible || phase !== "welcome" || welcomeSpokenRef.current) return;
+    welcomeSpokenRef.current = true;
     const t = setTimeout(() => speak(WELCOME_AUDIO_SRC, WELCOME_AUDIO_TEXT), 600);
     return () => { clearTimeout(t); };
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -428,8 +428,6 @@ export default function DiyanaChatBot() {
         }
       }
 
-      // Speak the response — safe because this is triggered by a user action (send)
-      if (fullResponse) speakText(fullResponse);
 
     } catch {
       setMessages((prev) =>
@@ -504,9 +502,7 @@ export default function DiyanaChatBot() {
               <div>
                 <div className="dc-name">Diyana</div>
                 <div className="dc-status">
-                  {speaking
-                    ? <><span className="dc-speaking-dot" /> Speaking...</>
-                    : <><span className="dc-online-dot" /> HGSS AI Assistant</>}
+                  <><span className="dc-online-dot" /> HGSS AI Assistant</>
                 </div>
               </div>
             </div>
@@ -528,9 +524,6 @@ export default function DiyanaChatBot() {
               >
                 {lang === "hi-IN" ? "HI" : "EN"}
               </button>
-              {speaking && (
-                <button className="dc-stop-btn" onClick={stopSpeaking} title="Stop speaking">■</button>
-              )}
               <button className="dc-close" onClick={() => setOpen(false)}>✕</button>
             </div>
           </div>

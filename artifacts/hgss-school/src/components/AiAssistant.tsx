@@ -265,7 +265,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     setIsSpeaking(false);
   }, []);
 
-  const speak = useCallback((audioSrc: string, fallbackText: string) => {
+  const speak = useCallback((audioSrc: string, fallbackText: string, onEnd?: () => void) => {
     // Cancel any previous speak by incrementing generation BEFORE async work
     speakGenRef.current++;
     const gen = speakGenRef.current;
@@ -274,10 +274,16 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     window.speechSynthesis?.cancel();
     setIsSpeaking(true);
 
+    const handleEnd = () => {
+      if (speakGenRef.current !== gen) return;
+      setIsSpeaking(false);
+      onEnd?.();
+    };
+
     // 1️⃣ Try pre-recorded audio file (synchronous setup, async play)
     const audio = new Audio(audioSrc);
     audioRef.current = audio;
-    audio.onended = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
+    audio.onended = handleEnd;
     audio.onerror = () => {
       // Audio file failed — immediately fall back to Web Speech API
       if (speakGenRef.current !== gen) return;  // cancelled in the meantime
@@ -294,7 +300,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       const hiVoice = voices.find((v) => v.lang.startsWith("hi"))
                    ?? voices.find((v) => v.lang.startsWith("en-IN"));
       if (hiVoice) utter.voice = hiVoice;
-      utter.onend  = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
+      utter.onend  = handleEnd;
       utter.onerror = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
       window.speechSynthesis.speak(utter);
     };
@@ -422,6 +428,14 @@ export default function AiAssistant({ navigate, openApply }: Props) {
     return () => clearTimeout(t);
   }, []);
 
+  // Auto-speak welcome message when Diyana first appears (or returns to welcome)
+  useEffect(() => {
+    if (!visible || phase !== "welcome") return;
+    const t = setTimeout(() => speak(WELCOME_AUDIO_SRC, WELCOME_AUDIO_TEXT), 600);
+    return () => { clearTimeout(t); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, phase]);
+
   useEffect(() => {
     if (phase !== "tour" || !bubbleVisible) return;
     navigate(current.page as never);
@@ -440,7 +454,20 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       if (i < text.length) { setDisplayText(text.slice(0, i + 1)); i++; }
       else { setTyping(false); clearInterval(interval); }
     }, 18);
-    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText), 300);
+    // Auto-advance: when narration ends, wait 1.5 s then move to next step (or finish tour)
+    const capturedStep = step;
+    const autoNext = () => {
+      setTimeout(() => {
+        if (capturedStep < TOUR_STEPS.length - 1) {
+          setBubbleVisible(false);
+          setTimeout(() => { setStep((s) => s + 1); setBubbleVisible(true); }, 250);
+        } else {
+          setBubbleVisible(false);
+          setTimeout(() => setPhase("minimized"), 300);
+        }
+      }, 1500);
+    };
+    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText, autoNext), 300);
     return () => { clearInterval(interval); clearTimeout(speakTimer); stopAudio(); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, bubbleVisible, phase]);

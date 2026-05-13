@@ -210,9 +210,11 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   const [minimizedExpanded, setMinimizedExpanded] = useState(false);
 
   // ── Refs ─────────────────────────────────────────────────────
-  const audioRef        = useRef<HTMLAudioElement | null>(null);
-  const scrollTimerRef  = useRef<number | null>(null);
-  const userScrolledRef = useRef<number>(0);
+  const audioRef          = useRef<HTMLAudioElement | null>(null);
+  const scrollTimerRef    = useRef<number | null>(null);
+  const userScrolledRef   = useRef<number>(0);
+  const speakGenRef       = useRef<number>(0);   // cancels stale async speak() calls
+  const cachedVoicesRef   = useRef<SpeechSynthesisVoice[]>([]); // pre-loaded voices
 
   const current = TOUR_STEPS[step];
 
@@ -257,68 +259,50 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   // ── Audio helpers ────────────────────────────────────────────
 
   const stopAudio = useCallback(() => {
+    speakGenRef.current++;                        // invalidate any in-flight speak()
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; audioRef.current = null; }
     window.speechSynthesis?.cancel();
     setIsSpeaking(false);
   }, []);
 
-  const speak = useCallback(async (audioSrc: string, fallbackText: string) => {
-    stopAudio();
+  const speak = useCallback((audioSrc: string, fallbackText: string) => {
+    // Cancel any previous speak by incrementing generation BEFORE async work
+    speakGenRef.current++;
+    const gen = speakGenRef.current;
+
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; audioRef.current = null; }
+    window.speechSynthesis?.cancel();
     setIsSpeaking(true);
 
-    // 1️⃣ Try pre-recorded audio file
-    const tryPlay = (src: string): Promise<void> =>
-      new Promise((resolve, reject) => {
-        const audio = new Audio(src);
-        audioRef.current = audio;
-        audio.onended = () => { setIsSpeaking(false); resolve(); };
-        audio.onerror = () => reject(new Error("audio error"));
-        audio.play().catch(reject);
-      });
-    try { await tryPlay(audioSrc); return; } catch { /* fall through */ }
+    // 1️⃣ Try pre-recorded audio file (synchronous setup, async play)
+    const audio = new Audio(audioSrc);
+    audioRef.current = audio;
+    audio.onended = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
+    audio.onerror = () => {
+      // Audio file failed — immediately fall back to Web Speech API
+      if (speakGenRef.current !== gen) return;  // cancelled in the meantime
+      audioRef.current = null;
 
-    // 2️⃣ Try server TTS API
-    try {
-      const res = await fetch("/api/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: fallbackText }) });
-      if (!res.ok) throw new Error("TTS failed");
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.onended = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
-      audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
-      await audio.play();
-      return;
-    } catch { /* fall through */ }
-
-    // 3️⃣ Final fallback: Web Speech API (works in all modern browsers)
-    try {
       if (!window.speechSynthesis) { setIsSpeaking(false); return; }
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(fallbackText);
       utter.lang = "hi-IN";
       utter.rate = 0.88;
       utter.pitch = 1.05;
-      // Wait for voices to load (browsers load them async on first call)
-      const loadVoices = (): Promise<SpeechSynthesisVoice[]> =>
-        new Promise((resolve) => {
-          const v = window.speechSynthesis.getVoices();
-          if (v.length > 0) { resolve(v); return; }
-          const handler = () => {
-            const vv = window.speechSynthesis.getVoices();
-            if (vv.length > 0) { window.speechSynthesis.removeEventListener("voiceschanged", handler); resolve(vv); }
-          };
-          window.speechSynthesis.addEventListener("voiceschanged", handler);
-          setTimeout(() => resolve(window.speechSynthesis.getVoices()), 1500);
-        });
-      const voices = await loadVoices();
-      const hiVoice = voices.find((v) => v.lang.startsWith("hi")) ?? voices.find((v) => v.lang.startsWith("en-IN"));
+      // Use pre-cached voices (loaded on mount — no async wait needed)
+      const voices = cachedVoicesRef.current;
+      const hiVoice = voices.find((v) => v.lang.startsWith("hi"))
+                   ?? voices.find((v) => v.lang.startsWith("en-IN"));
       if (hiVoice) utter.voice = hiVoice;
-      utter.onend = () => setIsSpeaking(false);
-      utter.onerror = () => setIsSpeaking(false);
+      utter.onend  = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
+      utter.onerror = () => { if (speakGenRef.current === gen) setIsSpeaking(false); };
       window.speechSynthesis.speak(utter);
-    } catch { setIsSpeaking(false); }
-  }, [stopAudio]);
+    };
+    audio.play().catch(() => {
+      // play() rejected — trigger onerror path
+      audio.dispatchEvent(new Event("error"));
+    });
+  }, []);
 
   // ── Chat helpers ─────────────────────────────────────────────
 
@@ -417,6 +401,18 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   // ── Lifecycle effects ─────────────────────────────────────────
 
+  // Pre-load speech voices so they're ready instantly when tour starts
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+    const load = () => {
+      const v = window.speechSynthesis.getVoices();
+      if (v.length > 0) cachedVoicesRef.current = v;
+    };
+    load();
+    window.speechSynthesis.addEventListener("voiceschanged", load);
+    return () => window.speechSynthesis.removeEventListener("voiceschanged", load);
+  }, []);
+
   useEffect(() => {
     const t = setTimeout(() => {
       setVisible(true);
@@ -444,9 +440,10 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       if (i < text.length) { setDisplayText(text.slice(0, i + 1)); i++; }
       else { setTyping(false); clearInterval(interval); }
     }, 18);
-    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText), 500);
+    const speakTimer = setTimeout(() => speak(current.audioSrc, current.audioText), 300);
     return () => { clearInterval(interval); clearTimeout(speakTimer); stopAudio(); };
-  }, [step, bubbleVisible, phase, current.text, current.audioSrc, current.audioText, speak, stopAudio]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, bubbleVisible, phase]);
 
   useEffect(() => () => { stopAudio(); stopPageScroll(); }, [stopAudio, stopPageScroll]);
 

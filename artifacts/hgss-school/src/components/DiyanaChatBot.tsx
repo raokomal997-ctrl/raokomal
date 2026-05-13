@@ -223,7 +223,15 @@ export default function DiyanaChatBot() {
       setTimeout(() => inputRef.current?.focus(), 200);
       setPulse(false);
     }
-    if (!open) stopSpeaking();
+    if (!open) {
+      stopSpeaking();
+      initialized.current = false;
+      convIdRef.current = null;
+      setConvId(null);
+      setMessages([]);
+      setInput("");
+      setTranscript("");
+    }
   }, [open]);
 
   const apiUrl = (path: string) => {

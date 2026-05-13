@@ -223,7 +223,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const stopPageScroll = useCallback(() => {
     if (scrollTimerRef.current !== null) {
-      clearInterval(scrollTimerRef.current);
+      cancelAnimationFrame(scrollTimerRef.current);
       scrollTimerRef.current = null;
     }
   }, []);
@@ -231,11 +231,25 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   const startPageScroll = useCallback(() => {
     stopPageScroll();
     userScrolledRef.current = 0;
-    scrollTimerRef.current = window.setInterval(() => {
-      if (userScrolledRef.current > 0) { userScrolledRef.current -= 60; return; }
-      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 120;
-      if (!atBottom) window.scrollBy(0, 2);
-    }, 60);
+    const SPEED = 45; // px per second — gentle, readable pace
+    let lastTime: number | null = null;
+
+    const frame = (now: number) => {
+      if (scrollTimerRef.current === null) return;
+      if (lastTime !== null) {
+        const dt = Math.min(now - lastTime, 50); // cap dt to avoid big jumps after tab switch
+        if (userScrolledRef.current > 0) {
+          userScrolledRef.current = Math.max(0, userScrolledRef.current - dt * 3);
+        } else {
+          const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 120;
+          if (!atBottom) window.scrollBy(0, (SPEED * dt) / 1000);
+        }
+      }
+      lastTime = now;
+      scrollTimerRef.current = requestAnimationFrame(frame);
+    };
+
+    scrollTimerRef.current = requestAnimationFrame(frame);
   }, [stopPageScroll]);
 
   useEffect(() => {

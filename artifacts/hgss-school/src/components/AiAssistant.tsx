@@ -96,8 +96,8 @@ type TourStep = {
 const TOUR_STEPS: TourStep[] = [
   {
     title: "About Our School",
-    text: "Hindu Girls Sr. Sec. School, Kaithal — affiliated with CISCE, has been providing excellence in girls' education for over 50 years. Our mission: empowering girls through Education, Values, and Excellence.",
-    audioText: "हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल — सीआईएससीई से संबद्ध एक विद्यालय है जो पचास से अधिक वर्षों से बालिका शिक्षा में उत्कृष्टता प्रदान कर रहा है।",
+    text: "Hindu Girls Sr. Sec. School, Kaithal — affiliated with HBSE (Haryana Board of School Education), has been providing excellence in girls' education for over 50 years. Our mission: empowering girls through Education, Values, and Excellence.",
+    audioText: "हिन्दू गर्ल्स सीनियर सेकेंडरी स्कूल, कैथल — हरियाणा बोर्ड ऑफ स्कूल एजुकेशन से संबद्ध एक विद्यालय है जो पचास से अधिक वर्षों से बालिका शिक्षा में उत्कृष्टता प्रदान कर रहा है।",
     page: "our-history",
     action: "Read History",
     route: "our-history",
@@ -105,8 +105,8 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     title: "Academics",
-    text: "Nursery to Class 12 — ICSE at Class 10 and ISC at Class 12. Streams available in Class 11–12: Arts, Commerce, and Science. CISCE curriculum in English medium.",
-    audioText: "नर्सरी से कक्षा बारहवीं तक। कक्षा ग्यारह और बारह में कला, वाणिज्य और विज्ञान धाराएँ उपलब्ध हैं।",
+    text: "Nursery to Class 12 — HBSE board exams at Class 10 and Class 12. Streams available in Class 11–12: Arts, Commerce, and Science. HBSE (Haryana Board of School Education) curriculum.",
+    audioText: "नर्सरी से कक्षा बारहवीं तक। हरियाणा बोर्ड ऑफ स्कूल एजुकेशन से संबद्ध। कक्षा ग्यारह और बारह में कला, वाणिज्य और विज्ञान धाराएँ उपलब्ध हैं।",
     page: "curriculum",
     action: "View Curriculum",
     route: "curriculum",
@@ -132,8 +132,8 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     title: "Achievements",
-    text: "Consistently outstanding results in ICSE and ISC board exams. Students excelling in sports, cultural, and academic achievements at national and state level.",
-    audioText: "आईसीएसई और आईएससी बोर्ड परीक्षाओं में निरंतर उत्कृष्ट परिणाम।",
+    text: "Consistently outstanding results in HBSE board exams. Students excelling in sports, cultural, and academic achievements at national and state level.",
+    audioText: "एचबीएसई बोर्ड परीक्षाओं में निरंतर उत्कृष्ट परिणाम। विद्यार्थी खेल, सांस्कृतिक और शैक्षणिक क्षेत्रों में राष्ट्रीय और राज्य स्तर पर उत्कृष्ट प्रदर्शन कर रहे हैं।",
     page: "achievements",
     action: "View Achievements",
     route: "achievements",

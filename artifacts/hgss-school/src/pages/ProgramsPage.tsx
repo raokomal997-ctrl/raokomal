@@ -40,10 +40,10 @@ const data: Record<Level, {
   senior: {
     crumb: "Academics · Senior Secondary",
     title: "Senior Secondary (Classes IX – XII)",
-    intro: "Rigorous CISCE preparation across Science, Commerce and Humanities — with full board readiness.",
+    intro: "Rigorous HBSE preparation across Science, Commerce and Humanities — with full board readiness.",
     hero: "/photos/annual-day-toppers.jpeg",
     programs: [
-      { num: "01", meta: "Class IX – X · ICSE", title: "Core Compulsory Subjects",       desc: "English, Second Language (Hindi/Sanskrit), History/Civics & Geography, Mathematics, Science, plus electives." },
+      { num: "01", meta: "Class IX – X · HBSE", title: "Core Compulsory Subjects",       desc: "English, Second Language (Hindi/Sanskrit), History/Civics & Geography, Mathematics, Science, plus electives." },
       { num: "02", meta: "Stream",              title: "Science (PCM / PCB)",            desc: "Physics, Chemistry, Mathematics or Biology — with full lab access and competitive-exam readiness." },
       { num: "03", meta: "Stream",              title: "Commerce",                        desc: "Accounts, Business Studies, Economics, Mathematics — preparing students for CA, BBA, BCom and beyond." },
       { num: "04", meta: "Stream",              title: "Humanities",                      desc: "History, Political Science, Psychology, Sociology, Economics — for law, civil services and the social sciences." },

@@ -1,13 +1,13 @@
 export default function OurHistoryPage() {
   const milestones = [
     { year: "1974", title: "Foundation", desc: "Hindu Girls Senior Secondary School is established on Ambala Road, Kaithal, with a vision to educate girls from all sections of society." },
-    { year: "1980", title: "First Board Results", desc: "Our first batch of Class X students appears for the CISCE board examinations — achieving a 100% pass rate that set a lasting benchmark." },
+    { year: "1980", title: "First Board Results", desc: "Our first batch of Class X students appears for the HBSE board examinations — achieving a 100% pass rate that set a lasting benchmark." },
     { year: "1988", title: "Senior Secondary Wing", desc: "Classes XI and XII (Science & Commerce streams) are introduced, extending the school's reach to higher secondary education." },
     { year: "1995", title: "New Academic Block", desc: "A modern three-storey academic block with science laboratories, a computer room, and a dedicated library is inaugurated." },
     { year: "2003", title: "Sports Complex", desc: "A multi-purpose indoor sports hall, volleyball courts, and an athletics track are added to promote physical education and inter-school competitions." },
     { year: "2010", title: "Smart Classrooms", desc: "Digital smart boards and projector systems are installed across all classrooms, modernising the teaching environment." },
     { year: "2015", title: "NCC Unit Established", desc: "A National Cadet Corps (NCC) unit is inaugurated, offering girls leadership training, discipline and national service opportunities." },
-    { year: "2019", title: "500+ Distinction Students", desc: "The school celebrates a milestone of over 500 students achieving distinction in CISCE board examinations over the decade." },
+    { year: "2019", title: "500+ Distinction Students", desc: "The school celebrates a milestone of over 500 students achieving distinction in HBSE board examinations over the decade." },
     { year: "2024", title: "Golden Jubilee", desc: "HGSS celebrates 50 years of educating girls — a landmark occasion with 1,500+ students, 80+ faculty, and generations of accomplished alumnae." },
   ];
 

@@ -139,7 +139,7 @@ export default function HomePage({ navigate, openApply }: Props) {
             <span style={{ fontSize: ".78rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: "var(--gold-dk)" }}>Welcome to HGSS</span>
             <h2 style={{ marginTop: 10 }}>A Legacy Built on Educating Girls Since 1974</h2>
             <p>Founded on Ambala Road, Kaithal, with the conviction that educating a girl is the surest way to uplift a family and community, HGSS has grown into one of Haryana's most trusted schools.</p>
-            <p>We follow the <strong>CISCE board</strong> (ICSE & ISC) curriculum from Pre-Primary through Class XII, with a commitment to academic rigour, cultural depth, and holistic development.</p>
+            <p>We follow the <strong>HBSE</strong> (Haryana Board of School Education) curriculum from Pre-Primary through Class XII, with a commitment to academic rigour, cultural depth, and holistic development.</p>
             <p>Our motto — <em>विद्या ददाति विनयम्</em> — "Knowledge bestows humility" — guides every classroom, every ceremony, and every interaction on this campus.</p>
             <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
               <button className="btn btn-outline-dark" onClick={() => navigate("our-history")}>Our History</button>
@@ -163,10 +163,10 @@ export default function HomePage({ navigate, openApply }: Props) {
             { img: UP("1573496359142-b8d87734a5a2"), title: "Principal's Message",  desc: "A warm welcome from the head of our institution.",   route: "principals-message" as Route },
             { img: UP("1522202176988-66273c2fd55f"), title: "Mission & Vision",     desc: "The values and goals that drive everything we do.",   route: "mission-vision" as Route },
             { img: UP("1524178232363-1fb2b075b655"), title: "Faculty & Staff",      desc: "Dedicated educators committed to every student.",    route: "faculty-staff" as Route },
-            { img: UP("1481627834876-b7833e8f5570"), title: "Curriculum",           desc: "CISCE-aligned learning from Pre-Primary to Class XII.", route: "curriculum" as Route },
+            { img: UP("1481627834876-b7833e8f5570"), title: "Curriculum",           desc: "HBSE-aligned learning from Pre-Primary to Class XII.", route: "curriculum" as Route },
             { img: UP("1532094349884-543bc11b234d"), title: "Subjects Offered",     desc: "Science, Commerce & Humanities streams for XI–XII.",  route: "subjects-offered" as Route },
             { img: UP("1506784983877-45594efa4cbe"), title: "Timetable",            desc: "Our structured daily and weekly school schedule.",    route: "timetable" as Route },
-            { img: UP("1434030216411-0b793f4b4173"), title: "Exam Results",         desc: "Outstanding ICSE & ISC board results year after year.", route: "exam-results" as Route },
+            { img: UP("1434030216411-0b793f4b4173"), title: "Exam Results",         desc: "Outstanding HBSE board results year after year.", route: "exam-results" as Route },
             { img: UP("1546519638-68e109498ffc"),   title: "Achievements",         desc: "Academic, sports, and cultural accolades.",           route: "achievements" as Route },
             { img: UP("1530103862676-de8c9debad1d"), title: "Events & Activities",  desc: "A vibrant annual calendar of school-wide events.",    route: "events-activities" as Route },
             { img: UP("1461896836934-ffe607ba8211"), title: "Sports",               desc: "8 sports disciplines, courts, and champion teams.",  route: "sports" as Route },
@@ -318,7 +318,7 @@ export default function HomePage({ navigate, openApply }: Props) {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
           {[
-            { img: UP("1523580494863-6f0b13b5a5c4"), title: "CISCE Board Affiliation", desc: "Nationally recognised ICSE & ISC curriculum with consistent 99%+ pass rates." },
+            { img: UP("1523580494863-6f0b13b5a5c4"), title: "HBSE Board Affiliation", desc: "State recognised HBSE curriculum with consistent 99%+ pass rates." },
             { img: UP("1532094349884-543bc11b234d"), title: "Fully Equipped Labs",     desc: "Physics, Chemistry, Biology & Computer labs for hands-on, practical learning." },
             { img: UP("1481627834876-b7833e8f5570"), title: "8,000+ Book Library",     desc: "A rich library with books, periodicals, and digital resources for all classes." },
             { img: UP("1516321318423-f06f85e504b3"), title: "Smart Classrooms",        desc: "Digital smart boards and e-learning tools integrated into every classroom." },

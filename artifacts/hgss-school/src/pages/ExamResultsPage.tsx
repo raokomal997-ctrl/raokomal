@@ -24,7 +24,7 @@ export default function ExamResultsPage() {
       <section className="page-banner">
         <div className="crumb">Academics · Exam Results</div>
         <h1>Exam Results</h1>
-        <p>Year after year, our students demonstrate outstanding performance in ICSE and ISC board examinations.</p>
+        <p>Year after year, our students demonstrate outstanding performance in HBSE board examinations.</p>
       </section>
 
       <section className="section">
@@ -32,8 +32,8 @@ export default function ExamResultsPage() {
           {[
             { num: "99.1%", label: "5-Year Average Pass Rate" },
             { num: "415+",  label: "Distinctions (5 Years)" },
-            { num: "100%",  label: "Pass Rate (3 Years ISC)" },
-            { num: "98.6%", label: "Highest ICSE Score 2024" },
+            { num: "100%",  label: "Pass Rate (3 Years Class XII)" },
+            { num: "98.6%", label: "Highest HBSE Score 2024" },
           ].map((s, i) => (
             <div key={i} className="stat reveal">
               <div className="num">{s.num}</div>
@@ -44,8 +44,8 @@ export default function ExamResultsPage() {
 
         <div className="section-head reveal">
           <div className="divider"></div>
-          <span className="eyebrow">ICSE (Class X)</span>
-          <h2>Board Results — ICSE</h2>
+          <span className="eyebrow">HBSE (Class X)</span>
+          <h2>Board Results — Class X</h2>
         </div>
 
         <div style={{ overflowX: "auto", marginBottom: 60 }}>
@@ -74,8 +74,8 @@ export default function ExamResultsPage() {
 
         <div className="section-head reveal">
           <div className="divider"></div>
-          <span className="eyebrow">ISC (Class XII)</span>
-          <h2>Board Results — ISC</h2>
+          <span className="eyebrow">HBSE (Class XII)</span>
+          <h2>Board Results — Class XII</h2>
         </div>
 
         <div style={{ overflowX: "auto" }}>

@@ -83,7 +83,7 @@ export default function SubjectsOfferedPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }} className="subj-lower-grid">
             <div className="reveal">
               <h3 style={{ marginBottom: 18, fontSize: "1.3rem" }}>Secondary — Classes IX & X</h3>
-              <p style={{ color: "var(--muted)", marginBottom: 20 }}>Follows the ICSE (Class X) syllabus of the CISCE board.</p>
+              <p style={{ color: "var(--muted)", marginBottom: 20 }}>Follows the HBSE curriculum for Class X Board Examinations.</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {secondary.map((s, i) => (
                   <span key={i} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 6, padding: "5px 13px", fontSize: ".87rem" }}>{s}</span>

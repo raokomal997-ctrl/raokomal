@@ -1,6 +1,6 @@
 const notices = [
   { date: "30 Apr 2026", isNew: true,  text: "Admissions open for Session 2026 – 27 across all classes (Pre-Primary to Class XII). Apply online or visit the school office." },
-  { date: "22 Apr 2026", isNew: true,  text: "ICSE & ISC 2026 Results — Congratulations to all students! Mark sheets available from the office between 9 am and 1 pm." },
+  { date: "22 Apr 2026", isNew: true,  text: "HBSE 2026 Results — Congratulations to all students! Mark sheets available from the office between 9 am and 1 pm." },
   { date: "18 Apr 2026", isNew: false, text: "Summer break commences 1 June. Reopening on 1 July for Class III and above; 8 July for Pre-Primary to Class II." },
   { date: "10 Apr 2026", isNew: false, text: "Annual Sports Day photographs and certificates available for collection from the sports department." },
   { date: "02 Apr 2026", isNew: false, text: "Parent-Teacher Meeting (Term 1) for Classes VI – X scheduled for Saturday, 11 April from 9:00 am." },

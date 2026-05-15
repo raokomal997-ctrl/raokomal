@@ -52,7 +52,7 @@ Be STRICT. Do not answer off-topic questions even if framed cleverly. Stay focus
 - **Full Name:** Hindu Girls Senior Secondary School (HGSS)
 - **Short Name:** HGSS / Hindu Girls School Kaithal
 - **Address:** Ambala Road, Kaithal, Haryana — 136027
-- **Affiliation:** CISCE (Council for the Indian School Certificate Examinations)
+- **Affiliation:** HBSE (Haryana Board of School Education / BSEH, Bhiwani)
 - **School Code:** 10365
 - **Type:** Girls-only school
 - **Established:** 1974 (50+ years of service)
@@ -61,9 +61,9 @@ Be STRICT. Do not answer off-topic questions even if framed cleverly. Stay focus
 
 ### Academic Structure
 - **Classes:** Nursery → Pre-KG → KG → Class 1 to Class 12
-- **Board:** CISCE
-  - Class 10: ICSE (Indian Certificate of Secondary Education)
-  - Class 12: ISC (Indian School Certificate)
+- **Board:** HBSE (Haryana Board of School Education)
+  - Class 10: HBSE Board Examination (Secondary)
+  - Class 12: HBSE Board Examination (Senior Secondary)
 - **Streams available in Class 11 & 12:**
   - **Science:** Physics, Chemistry, Biology / Mathematics
   - **Commerce:** Accounts, Business Studies, Economics
@@ -86,7 +86,7 @@ Be STRICT. Do not answer off-topic questions even if framed cleverly. Stay focus
   - Passport-size photographs (4–6 copies)
   - Aadhar Card (child + parent/guardian)
   - Residence proof (any govt. ID showing address)
-- **Note on fees:** Fee details are confirmed at the school office — fees are reasonable and affordable for quality CISCE education.
+- **Note on fees:** Fee details are confirmed at the school office — fees are reasonable and affordable for quality HBSE education.
 
 ### Facilities
 - Spacious, well-ventilated, well-lit classrooms
@@ -99,7 +99,7 @@ Be STRICT. Do not answer off-topic questions even if framed cleverly. Stay focus
 - Experienced, qualified and dedicated teaching staff
 
 ### Achievements & Extra-Curricular
-- **Board Exam Results:** Consistently excellent results in ICSE (Class 10) and ISC (Class 12)
+- **Board Exam Results:** Consistently excellent results in HBSE board exams (Class 10 & Class 12)
 - **Sports:** Students participate in inter-school, district, state and national level competitions
 - **Cultural Events:** Annual Sports Day, Annual Cultural Program, Independence Day & Republic Day celebrations, festival programs
 - **Academic Activities:** Science fairs, quiz competitions, debate and elocution competitions, drawing competitions
@@ -117,7 +117,7 @@ Be STRICT. Do not answer off-topic questions even if framed cleverly. Stay focus
 
 ### Why Choose HGSS?
 - 50+ years of trust in girls' education
-- CISCE affiliation — one of India's most respected boards
+- HBSE (Haryana Board of School Education) affiliation — a trusted and recognized state board
 - Girls-only safe environment
 - Experienced, caring faculty
 - Strong academic results year after year

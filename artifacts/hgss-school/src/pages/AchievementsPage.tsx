@@ -2,8 +2,8 @@ const UP = (id: string) =>
   `https://images.unsplash.com/photo-${id}?w=64&h=64&fit=crop&q=80`;
 
 const awards = [
-  { year: "2025", title: "ICSE Class X — 99.2% pass percentage",     desc: "Top scorer 97.4% · 14 students above 95%",                    img: UP("1546519638-68e109498ffc") },
-  { year: "2025", title: "ISC Class XII — 98.7% pass percentage",    desc: "9 students above 95% across Science and Commerce",             img: UP("1523580494863-6f0b13b5a5c4") },
+  { year: "2025", title: "HBSE Class X — 99.2% pass percentage",     desc: "Top scorer 97.4% · 14 students above 95%",                    img: UP("1546519638-68e109498ffc") },
+  { year: "2025", title: "HBSE Class XII — 98.7% pass percentage",   desc: "9 students above 95% across Science and Commerce",             img: UP("1523580494863-6f0b13b5a5c4") },
   { year: "2024", title: "State Champion — Judo (Sub-Junior)",       desc: "Gold medal at Haryana State Judo Championship",                img: UP("1567459399498-64ad4f6f75c9") },
   { year: "2024", title: "Best Cultural Performance — District",     desc: "First place for folk dance at District Annual Festival",        img: UP("1518834107812-67b0b7c58434") },
   { year: "2024", title: "NCC — Republic Day Camp Selection",        desc: "Two cadets selected for the RDC parade contingent",            img: UP("1569982175286-3f1b4a4b16a2") },

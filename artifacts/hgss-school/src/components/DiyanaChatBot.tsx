@@ -478,7 +478,7 @@ export default function DiyanaChatBot() {
             aria-label="Start guided tour"
           >
             <span className="dc-tour-fab-icon">🎓</span>
-            Start Tour
+            <span className="dc-tour-fab-label">Start Tour</span>
           </button>
         )}
         <button

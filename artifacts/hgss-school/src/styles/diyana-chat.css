@@ -538,30 +538,39 @@
 
 /* ── Mobile (≤ 480px) — bottom-sheet style ── */
 @media (max-width: 480px) {
-  /* FAB cluster — tight bottom-right corner */
+  /* FAB cluster — stacked column, centred above the AI robot */
   .dc-fab-cluster {
-    bottom: 14px;
-    right: 10px;
-    flex-direction: column-reverse;
-    align-items: flex-end;
-    gap: 8px;
+    bottom: 114px;   /* clears 84px robot + 16px robot-bottom + 14px gap */
+    right: 27px;     /* centres 50px FABs with 84px robot (robot right=10px) */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* Tour FAB — icon only */
+  /* Tour FAB — circular icon-only */
   .dc-tour-fab {
-    height: 42px;
-    padding: 0 14px;
-    font-size: 12px;
-    gap: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
   }
-  .dc-tour-fab-icon { font-size: 16px; }
+  .dc-tour-fab-label { display: none; }
+  .dc-tour-fab-icon { font-size: 22px; line-height: 1; }
 
-  /* Chat FAB */
-  .dc-fab {
-    height: 46px;
-    padding: 0 16px 0 12px;
+  /* Chat FAB — circular icon-only (including open/close state) */
+  .dc-fab,
+  .dc-fab.dc-fab-open {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    justify-content: center;
   }
-  .dc-fab-label { font-size: 12.5px; }
+  .dc-fab-label { display: none; }
+  .dc-fab-icon { font-size: 22px; }
+  .dc-fab-dot { top: 2px; right: 2px; }
 
   /* Chat panel — full-width bottom sheet */
   .dc-panel {

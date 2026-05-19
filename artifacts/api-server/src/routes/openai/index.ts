@@ -20,8 +20,8 @@ function getGroq(): OpenAI {
 const router = Router();
 
 // ── Groq model ────────────────────────────────────────────────────────────────
-// Groq's most capable model (fast + powerful)
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+// llama-3.1-8b-instant: Groq's fastest model — ideal for school FAQ chatbot
+const GROQ_MODEL = "llama-3.1-8b-instant";
 
 // ── Strictly school-only system prompt ───────────────────────────────────────
 const DIYANA_SYSTEM_PROMPT = `
@@ -345,7 +345,7 @@ router.post("/conversations/:id/messages", async (req, res) => {
     const groq = getGroq();
     const stream = await groq.chat.completions.create({
       model: GROQ_MODEL,
-      max_completion_tokens: 4096,
+      max_completion_tokens: 600,
       messages: chatMessages,
       stream: true,
     });

@@ -75,14 +75,22 @@
   animation: dc-dot-pulse 1.8s ease-in-out infinite;
 }
 
-/* ── Chat Panel ── */
+/* ── Chat Panel ─────────────────────────────────────────────────
+   Sits just above the FAB cluster (FAB top ≈ 206px from bottom).
+   Height shrinks dynamically so the panel NEVER overflows the
+   top of the viewport on any screen size.
+   ─────────────────────────────────────────────────────────────── */
 .dc-panel {
   position: fixed;
   bottom: 220px;
   right: 24px;
   z-index: 10001;
   width: 420px;
-  height: 600px;
+
+  /* clamp: min 400px, prefer 60dvh, max 580px
+     Also cap at (viewport - 240px) so top edge never clips */
+  height: clamp(400px, min(60dvh, calc(100dvh - 244px)), 580px);
+
   background: #f8f9fb;
   border-radius: 20px;
   box-shadow:
@@ -225,6 +233,7 @@
   scrollbar-width: thin;
   scrollbar-color: #dde2e9 transparent;
   background: #f8f9fb;
+  min-height: 0; /* crucial: lets flex child shrink below content size */
 }
 .dc-messages::-webkit-scrollbar { width: 4px; }
 .dc-messages::-webkit-scrollbar-thumb { background: #dde2e9; border-radius: 4px; }
@@ -469,7 +478,7 @@
 
 /* ── Animations ── */
 @keyframes dc-panel-in {
-  from { opacity: 0; transform: translateY(24px) scale(0.95); }
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 @keyframes dc-fab-bounce {
@@ -522,14 +531,19 @@
 }
 
 /* ── Tablet (481px – 768px) ── */
-@media (min-width: 481px) and (max-width: 768px) {
+@media (min-width: 481px) and (max-width: 900px) {
   .dc-fab-cluster { bottom: 120px; right: 20px; }
-  .dc-panel { width: 370px; height: 560px; right: 20px; bottom: 190px; }
+  .dc-panel {
+    width: 360px;
+    bottom: 186px;
+    right: 20px;
+    height: clamp(360px, min(58dvh, calc(100dvh - 206px)), 520px);
+  }
 }
 
 /* ── Mobile (≤ 480px) — bottom-sheet style ── */
 @media (max-width: 480px) {
-  /* FAB cluster — stacked column, centred above the AI robot */
+  /* FAB cluster — stacked column, above the AI robot */
   .dc-fab-cluster {
     bottom: 114px;
     right: 27px;
@@ -553,10 +567,10 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 85dvh;
-    height: 85vh; /* fallback */
+    height: 88dvh;
+    height: 88vh; /* fallback */
     border-radius: 22px 22px 0 0;
-    animation: dc-panel-in-mobile 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    animation: dc-panel-in-mobile 0.28s cubic-bezier(0.32, 0.72, 0, 1);
   }
   @keyframes dc-panel-in-mobile {
     from { transform: translateY(100%); opacity: 0.6; }

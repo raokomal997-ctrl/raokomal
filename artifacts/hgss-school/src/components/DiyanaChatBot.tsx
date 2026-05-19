@@ -220,11 +220,13 @@ export default function DiyanaChatBot() {
       initConversation();
     }
     if (open) {
-      setTimeout(() => inputRef.current?.focus(), 200);
+      setTimeout(() => inputRef.current?.focus(), 300);
       setPulse(false);
     }
     if (!open) {
       stopSpeaking();
+      loadingRef.current = false;
+      setLoading(false);
       initialized.current = false;
       convIdRef.current = null;
       setConvId(null);
@@ -494,7 +496,7 @@ export default function DiyanaChatBot() {
       </div>
 
       {open && (
-        <div className="dc-panel">
+        <div className="dc-panel" onClick={() => { if (!loading && !recording) inputRef.current?.focus(); }}>
           {/* Header */}
           <div className="dc-header">
             <div className="dc-header-info">
@@ -502,7 +504,10 @@ export default function DiyanaChatBot() {
               <div>
                 <div className="dc-name">Diyana</div>
                 <div className="dc-status">
-                  <><span className="dc-online-dot" /> HGSS AI Assistant</>
+                  {convId === null
+                    ? <><span className="dc-online-dot" style={{ background: "#F4D03F" }} /> Connecting...</>
+                    : <><span className="dc-online-dot" /> HGSS AI Assistant</>
+                  }
                 </div>
               </div>
             </div>
@@ -580,15 +585,19 @@ export default function DiyanaChatBot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKey}
+                onClick={(e) => e.stopPropagation()}
                 placeholder={
-                  recording
+                  convId === null
+                    ? "Connecting to Diyana..."
+                    : recording
                     ? "Sun rahi hoon..."
                     : lang === "hi-IN"
                     ? "Apna sawaal yahan likhein..."
                     : "Type your question here..."
                 }
-                disabled={loading || recording}
+                disabled={loading || recording || convId === null}
                 maxLength={500}
+                autoComplete="off"
               />
               {voiceSupported && (
                 <button
@@ -612,8 +621,8 @@ export default function DiyanaChatBot() {
             </div>
             <button
               className="dc-send"
-              onClick={sendMessage}
-              disabled={loading || !input.trim() || recording}
+              onClick={(e) => { e.stopPropagation(); sendMessage(); }}
+              disabled={loading || !input.trim() || recording || convId === null}
               title="Send"
             >
               {loading ? <span className="dc-send-spinner" /> : "➤"}

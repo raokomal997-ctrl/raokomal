@@ -607,8 +607,8 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   // ═══════════════════════════════════════════════════════════════
   if (phase === "welcome") {
     return (
-      <div className="ai-welcome-overlay">
-        <div className="ai-welcome-card-wrap">
+      <div className="ai-welcome-overlay" onClick={handleNoThanks}>
+        <div className="ai-welcome-card-wrap" onClick={(e) => e.stopPropagation()}>
           <img src="/ai-robot.png" alt="Diyana" className="ai-welcome-robot-float" />
           <div className="ai-welcome-modal">
             <div className="ai-welcome-modal-top">

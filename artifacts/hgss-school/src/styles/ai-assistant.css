@@ -941,14 +941,52 @@
   flex-shrink: 0;
 }
 
-/* ── Mobile ── */
+/* ── Tablet (481px – 768px) ── */
+@media (min-width: 481px) and (max-width: 768px) {
+  .ai-assistant { bottom: 20px; right: 16px; }
+  .ai-bubble { width: 300px; }
+  .ai-chat-panel { width: 340px; max-height: 520px; right: 16px; bottom: 130px; }
+  .ai-welcome-card-wrap { max-width: 420px; }
+}
+
+/* ── Mobile (≤ 480px) ── */
 @media (max-width: 480px) {
-  .ai-assistant { bottom: 16px; right: 10px; }
-  .ai-bubble { width: 270px; padding: 14px 14px 12px; }
-  .ai-robot-btn, .ai-robot-img { width: 90px; height: 90px; }
-  .ai-welcome-robot-float { width: 110px; height: 110px; margin-bottom: -48px; }
-  .ai-welcome-modal-top { padding: 58px 20px 22px; }
-  .ai-welcome-modal-body { padding: 20px 20px 24px; }
-  .ai-welcome-actions { flex-direction: column; }
-  .ai-chat-panel { width: 300px; max-height: 480px; }
+  /* Robot FAB */
+  .ai-assistant { bottom: 14px; right: 10px; }
+  .ai-robot-btn, .ai-robot-img { width: 84px; height: 84px; }
+
+  /* Bubble */
+  .ai-bubble { width: calc(100vw - 28px); max-width: 320px; padding: 14px 14px 12px; }
+
+  /* Welcome overlay — full-width card */
+  .ai-welcome-card-wrap { max-width: calc(100vw - 24px); }
+  .ai-welcome-robot-float { width: 100px; height: 100px; margin-bottom: -44px; }
+  .ai-welcome-modal-top { padding: 52px 18px 18px; }
+  .ai-welcome-modal-top h2 { font-size: 1.3rem; }
+  .ai-welcome-modal-top p { font-size: .85rem; }
+  .ai-welcome-modal-body { padding: 16px 18px 20px; }
+  .ai-welcome-actions { flex-direction: column; gap: 10px; }
+  .ai-welcome-actions .btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* Inline chat panel — full-width bottom sheet */
+  .ai-chat-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 82dvh;
+    max-height: 82vh; /* fallback */
+    border-radius: 22px 22px 0 0;
+  }
+
+  /* Chat messages */
+  .ai-chat-bubble { font-size: 12.5px; }
+  .ai-chat-input { font-size: 14px; }
+  .ai-chat-input-row { padding: 10px 12px 14px; }
+
+  /* Quick buttons — scrollable row */
+  .ai-chat-quick-grid { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .ai-chat-quick-grid::-webkit-scrollbar { display: none; }
+  .ai-chat-quick-btn { flex-shrink: 0; font-size: 11px; padding: 4px 9px; }
 }

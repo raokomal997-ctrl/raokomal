@@ -530,8 +530,72 @@
   border-color: #F4D03F;
 }
 
-/* ── Mobile ── */
+/* ── Tablet (481px – 768px) ── */
+@media (min-width: 481px) and (max-width: 768px) {
+  .dc-fab-cluster { bottom: 120px; right: 20px; }
+  .dc-panel { width: 370px; height: 560px; right: 20px; bottom: 190px; }
+}
+
+/* ── Mobile (≤ 480px) — bottom-sheet style ── */
 @media (max-width: 480px) {
-  .dc-panel { right: 8px; left: 8px; width: auto; bottom: 220px; height: 65vh; }
-  .dc-fab   { right: 20px; bottom: 152px; }
+  /* FAB cluster — tight bottom-right corner */
+  .dc-fab-cluster {
+    bottom: 14px;
+    right: 10px;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  /* Tour FAB — icon only */
+  .dc-tour-fab {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .dc-tour-fab-icon { font-size: 16px; }
+
+  /* Chat FAB */
+  .dc-fab {
+    height: 46px;
+    padding: 0 16px 0 12px;
+  }
+  .dc-fab-label { font-size: 12.5px; }
+
+  /* Chat panel — full-width bottom sheet */
+  .dc-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 85dvh;
+    height: 85vh; /* fallback */
+    border-radius: 22px 22px 0 0;
+    animation: dc-panel-in-mobile 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  @keyframes dc-panel-in-mobile {
+    from { transform: translateY(100%); opacity: 0.6; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Wider bubbles on small screens */
+  .dc-bubble { max-width: 82%; font-size: 13px; }
+  .dc-messages { padding: 8px 12px 10px; }
+
+  /* Input row tweaks */
+  .dc-input-row { padding: 10px 12px 14px; gap: 8px; }
+  .dc-input { font-size: 14px; padding: 12px 6px 12px 0; }
+
+  /* Quick questions: scrollable single row */
+  .dc-quick { flex-wrap: nowrap; overflow-x: auto; padding: 8px 12px 10px; scrollbar-width: none; }
+  .dc-quick::-webkit-scrollbar { display: none; }
+  .dc-quick-btn { flex-shrink: 0; }
+
+  /* Header tweaks */
+  .dc-header { padding: 12px 14px 10px; }
+  .dc-name { font-size: 14px; }
+  .dc-status { font-size: 10.5px; }
+  .dc-tour-btn { font-size: 10px; padding: 3px 8px; }
 }

@@ -184,6 +184,7 @@ export default function DiyanaChatBot() {
   const sendAfterRecordRef = useRef<string>("");
   const convIdRef = useRef<number | null>(null);
   const loadingRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   // Check voice support on mount
   useEffect(() => {
@@ -224,6 +225,8 @@ export default function DiyanaChatBot() {
       setPulse(false);
     }
     if (!open) {
+      abortRef.current?.abort();
+      abortRef.current = null;
       stopSpeaking();
       loadingRef.current = false;
       setLoading(false);
@@ -387,13 +390,16 @@ export default function DiyanaChatBot() {
     const assistantId = crypto.randomUUID();
     setMessages((prev) => [...prev, { id: assistantId, role: "assistant", content: "", streaming: true }]);
 
-    let fullResponse = "";
+    // Create a fresh AbortController for this request
+    const ac = new AbortController();
+    abortRef.current = ac;
 
     try {
       const res = await fetch(apiUrl(`/openai/conversations/${currentConvId}/messages`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: userText }),
+        signal: ac.signal,
       });
 
       if (!res.body) throw new Error("No stream");
@@ -401,8 +407,9 @@ export default function DiyanaChatBot() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      let streamDone = false;
 
-      while (true) {
+      while (!streamDone) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -414,24 +421,28 @@ export default function DiyanaChatBot() {
           try {
             const data = JSON.parse(line.slice(6));
             if (data.content) {
-              fullResponse += data.content;
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId ? { ...m, content: m.content + data.content } : m
                 )
               );
             }
-            if (data.done) {
+            if (data.done || data.error) {
               setMessages((prev) =>
                 prev.map((m) => (m.id === assistantId ? { ...m, streaming: false } : m))
               );
+              streamDone = true;
+              break;
             }
           } catch {}
         }
       }
 
+      reader.cancel().catch(() => {});
 
-    } catch {
+    } catch (err: unknown) {
+      // Ignore abort errors (user closed chat)
+      if (err instanceof Error && err.name === "AbortError") return;
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
@@ -442,6 +453,9 @@ export default function DiyanaChatBot() {
     } finally {
       loadingRef.current = false;
       setLoading(false);
+      if (abortRef.current === ac) abortRef.current = null;
+      // Re-focus input for next message
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   };
 

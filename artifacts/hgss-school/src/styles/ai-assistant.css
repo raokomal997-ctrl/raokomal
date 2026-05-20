@@ -632,7 +632,7 @@
 /* The chat panel itself */
 .ai-chat-panel {
   width: 360px;
-  max-height: 540px;
+  max-height: clamp(300px, calc(100vh - 200px), 540px);
   background: #fff;
   border-radius: 22px;
   box-shadow:
@@ -945,7 +945,7 @@
 @media (min-width: 481px) and (max-width: 768px) {
   .ai-assistant { bottom: 20px; right: 16px; }
   .ai-bubble { width: 300px; }
-  .ai-chat-panel { width: 340px; max-height: 520px; right: 16px; bottom: 130px; }
+  .ai-chat-panel { width: 340px; max-height: clamp(300px, calc(100vh - 180px), 520px); right: 16px; bottom: 130px; }
   .ai-welcome-card-wrap { max-width: 420px; }
 }
 

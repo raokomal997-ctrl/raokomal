@@ -273,12 +273,13 @@ router.get("/conversations", async (req, res) => {
 
 router.post("/conversations", async (req, res) => {
   try {
-    const { db, conversations } = await getDb();
     const body = CreateOpenaiConversationBody.parse(req.body);
+    const { db, conversations } = await getDb();
     const [conv] = await db.insert(conversations).values({ title: body.title }).returning();
     res.status(201).json(conv);
-  } catch {
-    res.status(400).json({ error: "Invalid request" });
+  } catch (err) {
+    const isValidation = err instanceof Error && err.name === "ZodError";
+    res.status(isValidation ? 400 : 500).json({ error: isValidation ? "Invalid request" : "Server error" });
   }
 });
 

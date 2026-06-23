@@ -1,5 +1,1 @@
 SESSION_SECRET="ZBE+cz20mXk59udGpryUThPNooojeq3rBxLsIfdDWQ3x1lg7P1+9+vqoKCYKs5Djv1HwiKur0hMgQpEgpfcRTQ=="
-GROQ_API_KEY="your-groq-api-key-here"
-ELEVENLABS_API_KEY="your-elevenlabs-api-key-here"
-ELEVENLABS_VOICE_ID="EXAVITQu4vr4xnSDxMaL"
-ELEVENLABS_MODEL_ID="eleven_v3"

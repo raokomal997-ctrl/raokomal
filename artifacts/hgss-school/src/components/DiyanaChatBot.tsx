@@ -167,7 +167,7 @@ export default function DiyanaChatBot() {
   const [loading, setLoading] = useState(false);
   const [convId, setConvId] = useState<number | null>(null);
   const [pulse, setPulse] = useState(true);
-  const [hideFabs, setHideFabs] = useState(true);
+  const [hideFabs, setHideFabs] = useState(false);
 
   // Voice state
   const [recording, setRecording] = useState(false);

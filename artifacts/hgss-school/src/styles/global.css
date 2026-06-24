@@ -972,7 +972,7 @@ main { flex: 1; padding-top: 88px; }
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -1004,12 +1004,17 @@ main { flex: 1; padding-top: 88px; }
   color: rgba(255,255,255,.65);
   line-height: 1.4;
 }
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 700px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat { padding: 24px 10px; }
+  .stat .num { font-size: 1.8rem; }
 }
 
 /* ===================== PAGE BANNER ===================== */
@@ -2039,4 +2044,122 @@ main { flex: 1; padding-top: 88px; }
   .stat .num { font-size: 1.9rem; }
   .footer-grid { gap: 28px; }
   .btn { padding: 11px 18px; font-size: .88rem; }
+}
+
+/* ==========================================================
+   RESPONSIVE — COMPREHENSIVE MOBILE FIXES
+   ========================================================== */
+
+/* ── Make all images fluid ── */
+img { max-width: 100%; height: auto; }
+
+/* ── Navbar mobile ── */
+@media (max-width: 960px) {
+  .navbar { padding: 0 16px; }
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { display: flex; flex-direction: column; }
+}
+
+/* ── Hero — full mobile treatment ── */
+@media (max-width: 600px) {
+  .hero { min-height: 100svh; }
+  .hero-text { max-width: 100%; }
+  .hero-text h1 { font-size: clamp(1.4rem, 7vw, 2rem); line-height: 1.22; }
+  .hero-text .eyebrow { font-size: .7rem; letter-spacing: .1em; padding: 5px 12px; }
+  .hero-cta { flex-direction: column; gap: 10px; }
+  .hero-cta .btn { width: 100%; text-align: center; justify-content: center; }
+}
+
+/* ── Footer responsive ── */
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bar { flex-direction: column; gap: 10px; text-align: center; }
+  .footer-bar-links { justify-content: center; }
+}
+
+/* ── About grid — stack on mobile ── */
+@media (max-width: 768px) {
+  .about-grid { gap: 32px; }
+  .about-text h2 { font-size: 1.6rem; }
+}
+
+/* ── Team / Faculty grid ── */
+@media (max-width: 600px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .team-avatar { width: 100px; height: 100px; font-size: 2.5rem; }
+}
+@media (max-width: 380px) {
+  .team-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Gallery grid ── */
+@media (max-width: 480px) {
+  .gallery-grid { gap: 8px; }
+  .gal-item { border-radius: 10px; }
+}
+
+/* ── Feature cards ── */
+@media (max-width: 600px) {
+  .feature-card { flex-direction: column; }
+  .feature-card .img { width: 100%; height: 200px; border-radius: 12px 12px 0 0; }
+  .feature-card .body { padding: 18px 16px; }
+}
+
+/* ── Page banners ── */
+@media (max-width: 480px) {
+  .page-banner h1 { font-size: clamp(1.3rem, 6.5vw, 1.8rem); }
+  .page-banner p { font-size: .88rem; }
+}
+
+/* ── Section headings ── */
+@media (max-width: 480px) {
+  .section-head h2 { font-size: clamp(1.3rem, 6vw, 1.7rem); }
+  .section-head p { font-size: .9rem; }
+}
+
+/* ── CTA band ── */
+@media (max-width: 500px) {
+  .cta-band { text-align: center; }
+  .cta-band h2 { font-size: clamp(1.3rem, 5.5vw, 1.7rem); }
+  .cta-band-actions { flex-direction: column; align-items: center; gap: 10px; }
+  .cta-band-actions .btn { width: 100%; max-width: 280px; text-align: center; }
+}
+
+/* ── Admission modal ── */
+@media (max-width: 600px) {
+  .modal-tabs { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  .modal-tabs::-webkit-scrollbar { display: none; }
+  .modal-tab { flex-shrink: 0; }
+}
+
+/* ── Program rows (Curriculum etc.) ── */
+@media (max-width: 500px) {
+  .program-row { grid-template-columns: 1fr; }
+  .program-num { font-size: 1.2rem; }
+}
+
+/* ── Notice cards ── */
+@media (max-width: 500px) {
+  .notice-card { padding: 14px 14px; flex-direction: column; gap: 8px; }
+  .notice-meta { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+}
+
+/* ── Horizontal scroll tables (Timetable, etc.) ── */
+@media (max-width: 700px) {
+  .table-wrap, table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ── Buttons full-width on tiny screens ── */
+@media (max-width: 360px) {
+  .btn { padding: 10px 14px; font-size: .84rem; }
+}
+
+/* ── Touch target minimum 44px ── */
+@media (max-width: 960px) {
+  .btn { min-height: 44px; }
+  .nav-link { min-height: 44px; }
 }

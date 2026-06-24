@@ -118,7 +118,7 @@ export default function HomePage({ navigate, openApply }: Props) {
 
       {/* ── STATS ── */}
       <section className="stats">
-        <div className="stats-grid" style={{ gridTemplateColumns: "repeat(6, 1fr)" }}>
+        <div className="stats-grid">
           <div className="stat"><div className="num"><Counter end={50} suffix="+" /></div><div className="label">Years of Legacy</div></div>
           <div className="stat"><div className="num"><Counter end={1500} suffix="+" /></div><div className="label">Students</div></div>
           <div className="stat"><div className="num"><Counter end={80} suffix="+" /></div><div className="label">Faculty Members</div></div>

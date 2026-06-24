@@ -5,7 +5,6 @@ import AdmissionModal from "./components/AdmissionModal";
 import AiAssistant from "./components/AiAssistant";
 import DiyanaChatBot from "./components/DiyanaChatBot";
 import LoadingScreen from "./components/LoadingScreen";
-import NotificationTicker from "./components/NotificationTicker";
 import SocialSidebar from "./components/SocialSidebar";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -73,7 +72,6 @@ const ALL_ROUTES: Route[] = [
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [tickerVisible, setTickerVisible] = useState(true);
   const [route, setRoute] = useState<Route>("home");
   const [showApply, setShowApply] = useState(false);
   const handleLoadDone = useCallback(() => setLoading(false), []);
@@ -143,9 +141,8 @@ export default function App() {
   }, [route]);
 
   return (
-    <div className={`app-shell${tickerVisible ? " has-ticker" : ""}`}>
+    <div className="app-shell">
       {loading && <LoadingScreen onDone={handleLoadDone} />}
-      <NotificationTicker visible={tickerVisible} onClose={() => setTickerVisible(false)} />
       <SocialSidebar />
       <Navbar route={route} navigate={navigate} openApply={openApply} theme={theme} toggleTheme={toggleTheme} />
       <main className="page-fade" key={route}>

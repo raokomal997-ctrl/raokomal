@@ -1,0 +1,1 @@
+- [Groq chatbot hangs on thinking](groq-chatbot-hangs.md) — usually TPM rate-limit from huge prompt + uncapped history, not networking; compact prompt + cap history + client timeout.

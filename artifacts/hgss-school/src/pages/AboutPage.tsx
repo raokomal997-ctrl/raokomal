@@ -23,7 +23,7 @@ export default function AboutPage() {
             <p>
               What began as a small institution on Ambala Road has grown into one of
               Kaithal's most trusted schools, serving over 1,500 students across
-              Pre-Primary to Class XII under the CISCE board.
+              Pre-Primary to Class XII under the HBSE (Haryana Board of School Education) board.
             </p>
             <p>
               Our motto — <em>विद्या ददाति विनयम्</em> — reminds us every day that true

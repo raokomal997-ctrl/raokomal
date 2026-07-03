@@ -19,7 +19,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
           <img src="/photos/school-logo.jpeg" alt="HGSS Logo" className="ls-logo" />
         </div>
         <h1 className="ls-name">Hindu Girls Sr. Sec. School</h1>
-        <p className="ls-tagline">Kaithal · Estd. 1974 · CISCE Affiliated</p>
+        <p className="ls-tagline">Kaithal · Estd. 1974 · HBSE Affiliated</p>
         <div className="ls-bar-track">
           <div className="ls-bar-fill" />
         </div>

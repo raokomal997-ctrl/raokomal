@@ -45,7 +45,7 @@ export default function Footer({ navigate, openApply }: Props) {
               <h3>Hindu Girls Sr. Sec. School</h3>
             </div>
             <p>
-              Established 1974 · CISCE Affiliated · Kaithal, Haryana.<br/>
+              Established 1974 · HBSE Affiliated · Kaithal, Haryana.<br/>
               Empowering girls through Education, Values & Excellence for over 50 years.
             </p>
             <div className="footer-social">

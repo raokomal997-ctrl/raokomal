@@ -642,6 +642,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overscroll-behavior: contain;
   animation: ai-chat-panel-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes ai-chat-panel-in {
@@ -722,6 +723,9 @@
 .ai-chat-messages {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   padding: 14px 14px 8px;
   display: flex;
   flex-direction: column;

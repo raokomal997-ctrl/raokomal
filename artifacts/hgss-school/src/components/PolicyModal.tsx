@@ -16,7 +16,7 @@ const CONTENT: Record<PolicyType, { title: string; sections: { heading: string; 
       },
       {
         heading: "Data Sharing",
-        body: "We do not sell, trade, or share your personal information with any third party. Information may be shared with relevant government bodies or CISCE as required for academic and affiliation purposes.",
+        body: "We do not sell, trade, or share your personal information with any third party. Information may be shared with relevant government bodies or HBSE as required for academic and affiliation purposes.",
       },
       {
         heading: "Data Security",

@@ -510,7 +510,12 @@ export default function DiyanaChatBot() {
       </div>
 
       {open && (
-        <div className="dc-panel" onClick={() => { if (!loading && !recording) inputRef.current?.focus(); }}>
+        <div
+          className="dc-panel"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !loading && !recording) inputRef.current?.focus();
+          }}
+        >
           {/* Header */}
           <div className="dc-header">
             <div className="dc-header-info">

@@ -7,6 +7,6 @@ services:
     pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
-        value: 20
+        value: 22
       - key: BASE_PATH
         value: /

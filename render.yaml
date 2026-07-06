@@ -2,8 +2,9 @@ services:
   - type: web
     name: hgss-school
     runtime: static
+    rootDir: artifacts/hgss-school
     buildCommand: corepack enable && corepack prepare pnpm@10.15.0 --activate && pnpm install --frozen-lockfile && pnpm build
-    staticPublishPath: artifacts/hgss-school/dist/public
+    staticPublishPath: dist/public
     pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION

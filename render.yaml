@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: hgss-school
+    runtime: static
+    buildCommand: pnpm install --frozen-lockfile && pnpm --dir artifacts/hgss-school build
+    staticPublishPath: artifacts/hgss-school/dist/public
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: BASE_PATH
+        value: /

@@ -11,6 +11,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "../styles/ai-assistant.css";
 
+const CHAT_STORAGE_KEY = "hgss-diyana-chat-state-v1";
+
+type ChatPersistedState = {
+  convId: number | null;
+  messages: ChatMsg[];
+};
+
 // ═══════════════════════════════════════════════════════════════
 // SECTION 1: MARKDOWN RENDERER (lightweight, no deps)
 // ═══════════════════════════════════════════════════════════════
@@ -202,6 +209,7 @@ export default function AiAssistant({ navigate, openApply }: Props) {
   const [chatInput, setChatInput]   = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [chatConvId, setChatConvId] = useState<number | null>(null);
+  const [chatReady, setChatReady] = useState(false);
   const chatInitializedRef          = useRef(false);
   const chatEndRef                  = useRef<HTMLDivElement>(null);
   const chatInputRef                = useRef<HTMLInputElement>(null);
@@ -349,6 +357,19 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
   const initChat = useCallback(async () => {
     try {
+      const savedRaw = window.localStorage.getItem(CHAT_STORAGE_KEY);
+      const saved = savedRaw ? (JSON.parse(savedRaw) as ChatPersistedState) : null;
+      if (saved?.convId) {
+        setChatConvId(saved.convId);
+        setChatMessages(saved.messages.length ? saved.messages : [{
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content: "Namaste! Main Diyana hoon — HGSS ki AI assistant. School ke baare mein ya kuch bhi poochein, main poori madad karungi! 😊\n\nAap Hindi ya English dono mein pooch sakte hain.",
+        }]);
+        setChatReady(true);
+        return;
+      }
+
       const res = await fetch("/api/openai/conversations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -356,13 +377,17 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       });
       const conv = await res.json();
       setChatConvId(conv.id);
-      setChatMessages([{
+      const initialMessages = [{
         id: crypto.randomUUID(),
         role: "assistant",
         content: "Namaste! Main Diyana hoon — HGSS ki AI assistant. School ke baare mein ya kuch bhi poochein, main poori madad karungi! 😊\n\nAap Hindi ya English dono mein pooch sakte hain.",
-      }]);
+      }];
+      setChatMessages(initialMessages);
+      window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: conv.id, messages: initialMessages }));
+      setChatReady(true);
     } catch {
       setChatMessages([{ id: crypto.randomUUID(), role: "assistant", content: "Server se connect nahi ho paya. Thodi der baad try karein." }]);
+      setChatReady(true);
     }
   }, []);
 
@@ -373,11 +398,16 @@ export default function AiAssistant({ navigate, openApply }: Props) {
 
     const userId = crypto.randomUUID();
     const assistantId = crypto.randomUUID();
-    setChatMessages((prev) => [
+    const nextMessages = (prev: ChatMsg[]) => [
       ...prev,
       { id: userId, role: "user", content: userText },
       { id: assistantId, role: "assistant", content: "", streaming: true },
-    ]);
+    ];
+    setChatMessages((prev) => {
+      const updated = nextMessages(prev);
+      window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: chatConvId, messages: updated }));
+      return updated;
+    });
     setChatLoading(true);
 
     try {
@@ -401,24 +431,30 @@ export default function AiAssistant({ navigate, openApply }: Props) {
           try {
             const data = JSON.parse(line.slice(6));
             if (data.content) {
-              setChatMessages((prev) =>
-                prev.map((m) => m.id === assistantId ? { ...m, content: m.content + data.content } : m)
-              );
+              setChatMessages((prev) => {
+                const updated = prev.map((m) => m.id === assistantId ? { ...m, content: m.content + data.content } : m);
+                window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: chatConvId, messages: updated }));
+                return updated;
+              });
             }
             if (data.done) {
-              setChatMessages((prev) =>
-                prev.map((m) => m.id === assistantId ? { ...m, streaming: false } : m)
-              );
+              setChatMessages((prev) => {
+                const updated = prev.map((m) => m.id === assistantId ? { ...m, streaming: false } : m);
+                window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: chatConvId, messages: updated }));
+                return updated;
+              });
             }
           } catch { /* skip bad chunk */ }
         }
       }
     } catch {
-      setChatMessages((prev) =>
-        prev.map((m) =>
+      setChatMessages((prev) => {
+        const updated = prev.map((m) =>
           m.id === assistantId ? { ...m, content: "Kuch error aa gaya. Please dobara try karein.", streaming: false } : m
-        )
-      );
+        );
+        window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: chatConvId, messages: updated }));
+        return updated;
+      });
     } finally {
       setChatLoading(false);
     }
@@ -439,6 +475,21 @@ export default function AiAssistant({ navigate, openApply }: Props) {
       }
     }
   }, [phase, initChat]);
+
+  useEffect(() => {
+    if (!chatReady) return;
+    const savedRaw = window.localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!savedRaw) return;
+    try {
+      const saved = JSON.parse(savedRaw) as ChatPersistedState;
+      if (saved?.messages?.length) {
+        setChatMessages(saved.messages);
+        setChatConvId(saved.convId ?? null);
+      }
+    } catch {
+      // ignore invalid storage state
+    }
+  }, [chatReady]);
 
   // ── Lifecycle effects ─────────────────────────────────────────
 
@@ -724,14 +775,14 @@ export default function AiAssistant({ navigate, openApply }: Props) {
               className="ai-chat-input"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChatMessage(chatInput); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void sendChatMessage(chatInput); } }}
               placeholder="Ask anything about HGSS..."
               disabled={chatLoading}
               maxLength={600}
             />
             <button
               className="ai-chat-send"
-              onClick={() => sendChatMessage(chatInput)}
+              onClick={() => { void sendChatMessage(chatInput); }}
               disabled={chatLoading || !chatInput.trim()}
               title="Send"
             >

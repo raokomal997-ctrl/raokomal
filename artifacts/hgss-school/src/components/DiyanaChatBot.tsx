@@ -97,6 +97,12 @@ type Message = {
 
 type Lang = "hi-IN" | "en-US";
 
+type PersistedChatState = {
+  convId: number | null;
+  messages: Message[];
+};
+
+const CHAT_STORAGE_KEY = "hgss-diyana-chat-state-v1";
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 
 // ── Speech API type declarations (not in all TS dom libs) ──
@@ -230,10 +236,6 @@ export default function DiyanaChatBot() {
       stopSpeaking();
       loadingRef.current = false;
       setLoading(false);
-      initialized.current = false;
-      convIdRef.current = null;
-      setConvId(null);
-      setMessages([]);
       setInput("");
       setTranscript("");
     }
@@ -244,8 +246,23 @@ export default function DiyanaChatBot() {
     return `${base}/api${path}`;
   };
 
+  const persistState = useCallback((nextConvId: number | null, nextMessages: Message[]) => {
+    window.localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ convId: nextConvId, messages: nextMessages }));
+  }, []);
+
   const initConversation = async () => {
     try {
+      const savedRaw = window.localStorage.getItem(CHAT_STORAGE_KEY);
+      if (savedRaw) {
+        const saved = JSON.parse(savedRaw) as PersistedChatState;
+        if (saved?.convId && saved.messages?.length) {
+          convIdRef.current = saved.convId;
+          setConvId(saved.convId);
+          setMessages(saved.messages);
+          return;
+        }
+      }
+
       const res = await fetch(apiUrl("/openai/conversations"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -258,10 +275,14 @@ export default function DiyanaChatBot() {
       const greeting = lang === "hi-IN"
         ? "Namaste! Main Diyana hoon — Hindu Girls Sr. Sec. School, Kaithal ki aapki digital guide. Aap school ke baare mein kuch bhi pooch sakti hain — admissions, classes, facilities — main yahan hoon!"
         : "Hello! I'm Diyana — your digital guide for Hindu Girls Sr. Sec. School, Kaithal. Ask me anything about admissions, academics or facilities!";
-      setMessages([{ id: crypto.randomUUID(), role: "assistant", content: greeting }]);
+      const greetingMessage = [{ id: crypto.randomUUID(), role: "assistant" as const, content: greeting }];
+      setMessages(greetingMessage);
+      persistState(conv.id, greetingMessage);
       // Do NOT auto-speak greeting — browsers block audio without a direct user gesture
     } catch {
-      setMessages([{ id: crypto.randomUUID(), role: "assistant", content: "Namaste! Server se connect nahi ho pa raha. Please thodi der baad try karein." }]);
+      const fallback = [{ id: crypto.randomUUID(), role: "assistant" as const, content: "Namaste! Server se connect nahi ho pa raha. Please thodi der baad try karein." }];
+      setMessages(fallback);
+      persistState(null, fallback);
     }
   };
 
@@ -383,12 +404,20 @@ export default function DiyanaChatBot() {
     sendAfterRecordRef.current = "";
 
     const userId = crypto.randomUUID();
-    setMessages((prev) => [...prev, { id: userId, role: "user", content: userText }]);
+    setMessages((prev) => {
+      const updated = [...prev, { id: userId, role: "user" as const, content: userText }];
+      persistState(currentConvId, updated);
+      return updated;
+    });
     loadingRef.current = true;
     setLoading(true);
 
     const assistantId = crypto.randomUUID();
-    setMessages((prev) => [...prev, { id: assistantId, role: "assistant", content: "", streaming: true }]);
+    setMessages((prev) => {
+      const updated = [...prev, { id: assistantId, role: "assistant" as const, content: "", streaming: true }];
+      persistState(currentConvId, updated);
+      return updated;
+    });
 
     // Create a fresh AbortController for this request
     const ac = new AbortController();
@@ -421,16 +450,20 @@ export default function DiyanaChatBot() {
           try {
             const data = JSON.parse(line.slice(6));
             if (data.content) {
-              setMessages((prev) =>
-                prev.map((m) =>
+              setMessages((prev) => {
+                const updated = prev.map((m) =>
                   m.id === assistantId ? { ...m, content: m.content + data.content } : m
-                )
-              );
+                );
+                persistState(currentConvId, updated);
+                return updated;
+              });
             }
             if (data.done || data.error) {
-              setMessages((prev) =>
-                prev.map((m) => (m.id === assistantId ? { ...m, streaming: false } : m))
-              );
+              setMessages((prev) => {
+                const updated = prev.map((m) => (m.id === assistantId ? { ...m, streaming: false } : m));
+                persistState(currentConvId, updated);
+                return updated;
+              });
               streamDone = true;
               break;
             }
@@ -443,13 +476,15 @@ export default function DiyanaChatBot() {
     } catch (err: unknown) {
       // Ignore abort errors (user closed chat)
       if (err instanceof Error && err.name === "AbortError") return;
-      setMessages((prev) =>
-        prev.map((m) =>
+      setMessages((prev) => {
+        const updated = prev.map((m) =>
           m.id === assistantId
             ? { ...m, content: "Kuch error aa gaya. Please dobara try karein.", streaming: false }
             : m
-        )
-      );
+        );
+        persistState(currentConvId, updated);
+        return updated;
+      });
     } finally {
       loadingRef.current = false;
       setLoading(false);
@@ -464,7 +499,10 @@ export default function DiyanaChatBot() {
   };
 
   const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      void sendMessageText(input);
+    }
   };
 
   const quickQuestions: { hi: string; en: string }[] = [
@@ -548,7 +586,7 @@ export default function DiyanaChatBot() {
               >
                 {lang === "hi-IN" ? "HI" : "EN"}
               </button>
-              <button className="dc-close" onClick={() => setOpen(false)}>✕</button>
+              <button className="dc-close" onClick={() => { setOpen(false); setInput(""); setTranscript(""); }}>✕</button>
             </div>
           </div>
 
@@ -640,7 +678,7 @@ export default function DiyanaChatBot() {
             </div>
             <button
               className="dc-send"
-              onClick={(e) => { e.stopPropagation(); sendMessage(); }}
+              onClick={(e) => { e.stopPropagation(); void sendMessageText(input); }}
               disabled={loading || !input.trim() || recording || convId === null}
               title="Send"
             >

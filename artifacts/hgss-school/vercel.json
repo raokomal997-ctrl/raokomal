@@ -3,6 +3,10 @@
   "outputDirectory": "dist/public",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://hgss-api-server.onrender.com/api/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

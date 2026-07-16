@@ -741,29 +741,38 @@ main { flex: 1; padding-top: 88px; }
   background: rgba(244,208,63,.12);
 }
 
-/* Mobile menu close (✕) button — top-right corner */
+/* Mobile menu close (✕) button — in-flow, always at top */
 .mobile-close-btn {
-  position: absolute !important;
-  top: 12px !important;
-  right: 16px !important;
-  width: 36px !important;
-  height: 36px !important;
+  /* Stay in flex flow so it doesn't scroll away */
+  position: static !important;
+  align-self: flex-end !important;
+  flex-shrink: 0;
+  width: 40px !important;
+  min-width: 40px;
+  height: 40px !important;
   padding: 0 !important;
+  margin-bottom: 6px;
   display: flex !important;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  color: rgba(255,255,255,.7) !important;
-  background: rgba(255,255,255,.07) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: rgba(255,255,255,.8) !important;
+  background: rgba(255,255,255,.1) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
   border-radius: 50% !important;
-  border: 1px solid rgba(255,255,255,.12) !important;
   cursor: pointer;
-  transition: background .15s, color .15s;
-  align-self: flex-end;
+  transition: background .18s, color .18s;
+  /* Ensure it's always tappable — minimum 44×44 touch target */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
-.mobile-close-btn:hover {
-  background: rgba(244,208,63,.2) !important;
+.mobile-close-btn:hover,
+.mobile-close-btn:active {
+  background: rgba(244,208,63,.25) !important;
   color: var(--gold) !important;
+  border-color: rgba(244,208,63,.4) !important;
 }
 
 .mobile-menu .nav-cta {

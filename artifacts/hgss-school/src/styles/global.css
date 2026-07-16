@@ -2092,7 +2092,6 @@ img { max-width: 100%; height: auto; }
   .navbar { padding: 0 16px; }
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
-  .mobile-menu { display: flex; flex-direction: column; }
 }
 
 /* ── Hero — full mobile treatment ── */

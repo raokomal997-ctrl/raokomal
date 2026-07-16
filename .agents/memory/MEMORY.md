@@ -1,0 +1,1 @@
+- [HGSS School project layout](hgss-project.md) — Vercel import was already a pnpm workspace; migration-backup held previous state, not a Next.js app.

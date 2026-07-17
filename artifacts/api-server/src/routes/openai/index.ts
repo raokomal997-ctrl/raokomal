@@ -95,59 +95,25 @@ function getGroq(): OpenAI {
 
 const router = Router();
 
-// TEMPORARY debug route — remove after diagnosing Groq connectivity
+// TEMPORARY debug route
 router.get("/debug/groq-check", async (req, res) => {
   const key = process.env.GROQ_API_KEY;
   if (!key) { res.json({ hasKey: false }); return; }
   try {
     const r = await fetch("https://api.groq.com/openai/v1/models", {
-      headers: { Authorization: \`Bearer \${key}\` },
+      headers: { Authorization: "Bearer " + key },
     });
     const text = await r.text();
     res.json({
       hasKey: true,
       keyLength: key.length,
-      keyPreview: \`\${key.slice(0, 6)}...\${key.slice(-4)}\`,
       groqStatus: r.status,
       groqBodyPreview: text.slice(0, 200),
     });
   } catch (err) {
-    res.json({ hasKey: true, keyLength: key.length, error: err instanceof Error ? err.message : String(err) });
+    res.json({ hasKey: true, error: err instanceof Error ? err.message : String(err) });
   }
 });
-
-// ── Groq model ────────────────────────────────────────────────────────────────
-// llama-3.1-8b-instant: Groq's fastest model — ideal for school FAQ chatbot
-const GROQ_MODEL = "llama-3.1-8b-instant";
-
-// ── Strictly school-only system prompt (kept compact to stay within Groq's
-//    free-tier tokens-per-minute limit — a long prompt was causing 413/429
-//    errors and made the chatbot appear to hang on "thinking...") ───────────
-const DIYANA_SYSTEM_PROMPT = `You are Diyana, the AI assistant of Hindu Girls Senior Secondary School (HGSS), Kaithal, Haryana. Board: HBSE/BSEH (Bhiwani) ONLY — never say CISCE/ICSE/ISC/CBSE. Class 10 = HBSE Secondary Exam, Class 12 = HBSE Senior Secondary Exam.
-
-ONLY answer questions about HGSS. If asked anything unrelated (general knowledge, homework, entertainment, etc.), refuse politely: "Main sirf HGSS school ke baare mein help kar sakti hoon. School ke admissions, fees, facilities, academics, ya koi bhi school-related sawaal poochhein — main poori koshish karungi! 😊"
-
-Personality: warm, professional, like a helpful school receptionist. Match the user's language (Hindi/Hinglish → reply Hinglish; English → reply English). Be concise, use bold/bullets, no long preamble.
-
-KNOWLEDGE BASE:
-- Est. 1974, girls-only, 1500+ students, 80+ faculty, School Code 10365. Address: Ambala Road, Model Town, Kaithal – 136027, Haryana. Motto: विद्या ददाति विनयम् (Knowledge bestows humility).
-- Classes: Nursery to Class XII. Streams (XI-XII): Science, Commerce, Arts. Medium: English.
-- School hours: Mon–Sat, 7:30 AM–2:45 PM. 8 periods/day with short break and lunch break.
-- Principal: Mrs. Sunita Sharma. Vice Principal: Mrs. Anjali Verma.
-- Admissions 2026-27 open (Pre-Primary to Class XII). Process: (1) Online application (2) Document submission — birth certificate, marksheets, TC, photos, Aadhar, address proof (3) Interaction (4) Confirmation & fee payment.
-- Fees (indicative, ₹): Pre-Primary 18,000/yr tuition + 1,500/mo; Primary (I-V) 24,000/yr + 2,000/mo; Middle (VI-VIII) 28,000/yr + 2,400/mo; Secondary (IX-X) 34,000/yr + 2,800/mo; Senior Secondary (XI-XII) 42,000/yr + 3,500/mo. Admission fee ₹8,000-18,000 depending on level. Monthly fee due by 10th, late fine ₹50/day. Modes: cash, DD, bank transfer.
-- Scholarships: 10-15% sibling discount, up to 25% merit scholarship (90%+ scorers), 50% staff-ward discount, EWS full exemption.
-- Facilities: science labs, computer lab, library (12,000+ books), art/music/dance rooms, indoor sports hall, playgrounds, medical room, GPS-tracked transport, CCTV & lady security, canteen.
-- Sports: volleyball, judo, kabaddi, athletics, badminton, kho-kho, basketball — multiple district/state championships.
-- Results: HBSE Class X 99.2% pass (2025), Class XII 98.7% pass (2025).
-- Clubs: NCC Girls Battalion, Science Club, Literary Club (magazine 'Kiran'), Eco Club, Cultural Club, Health Club, Math Club, Community Service Club.
-- Contact: Phone +91 1746 234 336, Mobile +91 70156 72075, Email hinduschoolktl@gmail.com. Office hours Mon–Sat 8:30 AM–2:30 PM.
-
-If something isn't in the knowledge base, say: "Iske exact details ke liye school office se contact karein — +91 1746 234 336 ya hinduschoolktl@gmail.com 😊". Never share individual student data. Never badmouth other schools.`;
-
-// Keep only the most recent messages when building context — prevents token
-// usage (and Groq TPM rate limits) from growing unbounded as a chat gets long.
-const MAX_HISTORY_MESSAGES = 10;
 
 router.get("/conversations", async (req, res) => {
   try {

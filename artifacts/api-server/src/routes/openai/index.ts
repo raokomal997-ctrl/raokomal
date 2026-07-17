@@ -95,6 +95,27 @@ function getGroq(): OpenAI {
 
 const router = Router();
 
+// TEMPORARY debug route — remove after diagnosing Groq connectivity
+router.get("/debug/groq-check", async (req, res) => {
+  const key = process.env.GROQ_API_KEY;
+  if (!key) { res.json({ hasKey: false }); return; }
+  try {
+    const r = await fetch("https://api.groq.com/openai/v1/models", {
+      headers: { Authorization: \`Bearer \${key}\` },
+    });
+    const text = await r.text();
+    res.json({
+      hasKey: true,
+      keyLength: key.length,
+      keyPreview: \`\${key.slice(0, 6)}...\${key.slice(-4)}\`,
+      groqStatus: r.status,
+      groqBodyPreview: text.slice(0, 200),
+    });
+  } catch (err) {
+    res.json({ hasKey: true, keyLength: key.length, error: err instanceof Error ? err.message : String(err) });
+  }
+});
+
 // ── Groq model ────────────────────────────────────────────────────────────────
 // llama-3.1-8b-instant: Groq's fastest model — ideal for school FAQ chatbot
 const GROQ_MODEL = "llama-3.1-8b-instant";

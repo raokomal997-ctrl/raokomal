@@ -104,6 +104,7 @@ type PersistedChatState = {
 
 const CHAT_STORAGE_KEY = "hgss-diyana-chat-state-v1";
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
+const API_BASE = "https://hgss-api-server.onrender.com";
 
 // ── Speech API type declarations (not in all TS dom libs) ──
 interface SpeechRecognitionResultItem {
@@ -242,8 +243,7 @@ export default function DiyanaChatBot() {
   }, [open]);
 
   const apiUrl = (path: string) => {
-    const base = BASE_URL.endsWith("/") ? BASE_URL.slice(0, -1) : BASE_URL;
-    return `${base}/api${path}`;
+    return `${API_BASE}/api${path}`;
   };
 
   const persistState = useCallback((nextConvId: number | null, nextMessages: Message[]) => {
